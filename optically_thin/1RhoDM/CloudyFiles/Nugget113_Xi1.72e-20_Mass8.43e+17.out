@@ -1,0 +1,1664 @@
+                                                          Cloudy 22.02
+                                                         www.nublado.org
+
+                                                  PRNG seed: 0xd039bf762507adaf
+
+                       **************************************22Oct14**************************************
+                       *                                                                                 *
+                       * #this is a cloudy script for a nugget in hydro equil                            *
+                       * #-----------------------------------                                            *
+                       * title - nugget in hydrostatic equilibrium                                       *
+                       * #-------------------------------                                                *
+                       * hextra -12.5 density                                                            *
+                       * CMB                                                                             *
+                       * #--------------------                                                           *
+                       * sphere                                                                          *
+                       * radius 0 10                                                                     *
+                       * set dr 6                                                                        *
+                       * hden 16.5                                                                       *
+                       * #-----------------------------                                                  *
+                       * #composition                                                                    *
+                       * abundances "ISM.abn" no grains                                                  *
+                       * #---------------------------                                                    *
+                       * constant pressure                                                               *
+                       * set pressure convergence 0.01                                                   *
+                       * set pressure ionize 20000                                                       *
+                       * gravity spherical                                                               *
+                       * gravity external 9.9e21 0.1 3                                                   *
+                       * #------------------                                                             *
+                       * stop temperature 4.9 exceeds                                                    *
+                       * iterate 3                                                                       *
+                       * #--------------                                                                 *
+                       * stop zone 10000                                                                 *
+CAUTION - it will take a lot of memory to save results for 10000 zones.  Is this many zones really necessary?
+                       * print last iteration                                                            *
+                       * save continuum "m.con" units micron last                                        *
+                       * save continuum "r.con" last                                                     *
+                       * save overview ".ovr" last                                                       *
+                       * save pressure ".prs" last                                                       *
+                       * save line list "line.txt" "LineList.dat"                                        *
+
+ /gpfs/fs0/scratch/d/dcurtin/brkngrbz/CloudyRun/FinalOne/Scan/LineList.dat:2:4: WARNING: read "o 2" as spectrum, assuming required spectrum is "o  2"
+  o 2 3726.03A
+      ^
+
+ /gpfs/fs0/scratch/d/dcurtin/brkngrbz/CloudyRun/FinalOne/Scan/LineList.dat:3:4: WARNING: read "o 2" as spectrum, assuming required spectrum is "o  2"
+  o 2 3728.81A
+      ^
+
+ /gpfs/fs0/scratch/d/dcurtin/brkngrbz/CloudyRun/FinalOne/Scan/LineList.dat:4:4: WARNING: read "h 1" as spectrum, assuming required spectrum is "h  1"
+  h 1 6562.80A
+      ^
+
+ /gpfs/fs0/scratch/d/dcurtin/brkngrbz/CloudyRun/FinalOne/Scan/LineList.dat:5:4: WARNING: read "h 1" as spectrum, assuming required spectrum is "h  1"
+  h 1 4340.46A
+      ^
+
+ /gpfs/fs0/scratch/d/dcurtin/brkngrbz/CloudyRun/FinalOne/Scan/LineList.dat:6:4: WARNING: read "n 2" as spectrum, assuming required spectrum is "n  2"
+  n 2 6548.05A
+      ^
+
+ /gpfs/fs0/scratch/d/dcurtin/brkngrbz/CloudyRun/FinalOne/Scan/LineList.dat:7:4: WARNING: read "n 2" as spectrum, assuming required spectrum is "n  2"
+  n 2 6583.45A
+      ^
+
+ /gpfs/fs0/scratch/d/dcurtin/brkngrbz/CloudyRun/FinalOne/Scan/LineList.dat:8:4: WARNING: read "s 2" as spectrum, assuming required spectrum is "s  2"
+  s 2 6716.44A
+      ^
+
+ /gpfs/fs0/scratch/d/dcurtin/brkngrbz/CloudyRun/FinalOne/Scan/LineList.dat:9:4: WARNING: read "s 2" as spectrum, assuming required spectrum is "s  2"
+  s 2 6730.82A
+      ^
+
+ /gpfs/fs0/scratch/d/dcurtin/brkngrbz/CloudyRun/FinalOne/Scan/LineList.dat:10:4: WARNING: read "s 3" as spectrum, assuming required spectrum is "s  3"
+  s 3 6312.06A
+      ^
+
+ /gpfs/fs0/scratch/d/dcurtin/brkngrbz/CloudyRun/FinalOne/Scan/LineList.dat:11:4: WARNING: read "s 3" as spectrum, assuming required spectrum is "s  3"
+  s 3 9530.62A
+      ^
+                       * luminosity 0.0001 linear                                                        *
+                       * blackbody t = 0.0001 K linear                                                   *
+ Is T(star)=  1.00e-04 correct???
+ This temperature is very low - the blackbody will have significant flux low the low energy limit of the code, presently   3.04e-09 Ryd.
+ Was this intended?
+                       *                                                                                 *
+                       ***********************************************************************************
+
+
+
+ NOTE Is this value of the hydrogen density reasonable?
+ NOTE It seems pretty high to me.
+
+
+ NOTE Setcon: continuum has zero intensity starting at  2.1665e-03 Ryd.
+  5201 cells in the incident continuum have zero intensity.  Problems???
+
+ NOTE There is no hydrogen-ionizing radiation.
+ Was this intended?
+
+ NOTE There is no Balmer continuum radiation.<<<<
+ Was this intended?
+
+           !The plasma frequency is 5.32e-04 Ryd.  The incident continuum is set to 0 below this.
+
+ >>>
+ >>> NOTE The incident continuum is surprisingly faint.
+ >>> The total energy in the Balmer and Lyman continua is 0.00e+00 erg cm-2 s-1.
+ >>> This is many orders of magnitude fainter than the ISM galactic background.
+ >>> This seems unphysical - please check that the continuum intensity has been properly set.
+ >>> YOU MAY BE MAKING A BIG MISTAKE!!
+ >>>
+
+
+
+           9244CellPeak3.04E-09   Lo 3.04e-09=  29.98m   Hi-Con:7.13E+06 Ryd   E(hi):7.35E+06Ryd     E(hi):     100.00 MeV
+           L(nu>1ryd):   0.0000   Average nu:0.000E+00   L( X-ray):   0.0000   L(BalC):   0.0000     Q(Balmer C):   0.0000
+           Q(1.0-1.8):   0.0000   Q(1.8-4.0):   0.0000   Q(4.0-20):   0.0000   Q(20--):   0.0000     Ion pht flx:0.000E+00
+           L(gam ray):   0.0000   Q(gam ray):   0.0000   L(Infred):  -0.7958   Alf(ox):   0.0000     Total lumin:  -0.7958
+           log L/Lsun: -34.3788   Abs bol mg:  90.6870   Abs V mag: -38.0000   Bol cor: 128.6870     nuFnu(Bbet):   0.0000
+           U(1.0----):0.000E+00   U(4.0----):0.000E+00   T(En-Den):2.737E+00   T(Comp):2.167E+01     nuJnu(912A):0.000E+00
+           Occ(FarIR):0.000E+00   Occ(H n=6):0.000E+00   Occ(1Ryd):0.000E+00   Occ(4R):0.000E+00     Occ (Nu-hi):0.000E+00
+           Tbr(FarIR):0.000E+00   Tbr(H n=6):0.000E+00   Tbr(1Ryd):0.000E+00   Tbr(4R):0.000E+00     Tbr (Nu-hi):0.000E+00
+  
+                                                  Gas Phase Chemical Composition
+        H :  0.0000  He: -1.0088  Li:-10.2676  B :-10.0506  C : -3.6003  N : -4.1002  O : -3.4962  F : -7.6990  Ne: -3.9101
+        Na: -6.5003  Mg: -4.8996  Al: -7.1002  Si: -5.5003  P : -6.7959  S : -4.4895  Cl: -7.0000  Ar: -5.5498  K : -7.9586
+        Ca: -9.3872  Ti: -9.2366  V :-10.0000  Cr: -8.0000  Mn: -7.6383  Fe: -6.2000  Co: -8.2291  Ni: -7.7399  Cu: -8.8239
+                                                            Zn: -7.6990
+ 
+ ####  1  Te:6.736E+03 Hden:3.160E+16 Ne:3.304E+11 R:5.000E+05 R-R0:5.000E+05 dR:1.000E+06 NTR:100 Htot:9.992E+03 T912: 2.51e+07###
+ Hydrogen      1.00e+00 1.00e-07 H+o/Hden 1.00e+00 3.39e-11 H-    H2 4.85e-07 6.03e-12 H2+ HeH+ 6.53e-13 Ho+ ColD 3.16e+22 3.16e+15
+ Helium        1.00e+00 2.35e-17 0.00e+00 HeI 2s3S 5.40e-16 Comp H,C 2.58e-44 8.02e-42 Fill Fac 1.00e+00 Gam1/tot 8.80e-09
+ He singlet n  1.00e+00 1.61e-17 6.33e-20 2.32e-21 1.84e-21 3.43e-21 He tripl 5.40e-16 1.93e-17 5.33e-20 2.70e-20 3.38e-20
+ Pressure      NgasTgas 2.34e+20 P(total) 3.23e+04 P( gas ) 3.23e+04 P(Radtn) 0.00e+00 Rad accl 2.98e-26 ForceMul 0.00e+00
+ Texc(La)      4.56e+03 T(I con) 1.19e-08 T(D con) 8.41e-01 T(U tot) 8.41e-01 nT (c+d) 2.03e+05 Prad/Gas 0.00e+00 Pmag/Gas 0.00e+00
+ Molecules     CH/Ctot: 2.06e-12 CH+/Ctot 3.47e-16 CO/Ctot: 1.00e+00 CO+/Ctot 5.62e-12 H2O/Otot 1.44e-13 OH/Ototl 2.55e-07
+ Lithium       2.79e-02 9.72e-01 0.00e+00 0.00e+00 Berylliu 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 sec ion: 0.00e+00
+ Boron         9.36e-01 6.36e-02 5.29e-22 0.00e+00 0.00e+00 0.00e+00
+ Carbon        4.40e-06 7.53e-12 4.40e-30 0.00e+00 0.00e+00 0.00e+00 0.00e+00 H2O+/O   4.60e-12 OH+/Otot 9.05e-09 Hex(tot) 9.99e+03
+ Nitrogen      6.46e-02 4.39e-09 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 O2/Ototl 1.48e-08 O2+/Otot 1.34e-09
+ Oxygen        1.73e-01 1.37e-08 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00
+ Fluorine      7.00e-08 6.65e-17 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00
+ Neon          1.00e+00 9.71e-12 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00
+ Sodium        5.02e-03 9.95e-01 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00
+ Magnesium     2.85e-01 7.15e-01 5.24e-09 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00
+ Aluminium  0  1.67e-02 9.83e-01 1.22e-12 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00
+ Silicon    0  9.69e-01 3.10e-02 1.15e-11 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00
+ Phosphorus 0  1.36e-01 8.64e-01 7.58e-15 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00
+ Sulphur    0  7.74e-01 4.00e-04 1.23e-20 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00
+ Chlorine   0  8.19e-01 1.64e-01 1.00e-16 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00
+ Argon      0  1.00e+00 1.03e-09 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00
+ Potassium  0  7.32e-04 9.99e-01 5.78e-22 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00
+ Calcium    0  2.81e-02 9.72e-01 2.49e-05 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00
+ Titanium   0  1.96e-02 9.80e-01 1.42e-06 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00
+ Vanadium   0  5.12e-02 9.49e-01 2.42e-09 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00
+ Chromium   0  7.59e-02 9.24e-01 5.34e-09 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00
+ Manganese  0  2.84e-02 9.72e-01 4.96e-09 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00
+ Iron       0  1.68e-02 9.83e-01 1.96e-09 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00
+ Cobalt     0  4.78e-01 5.22e-01 2.75e-12 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00
+ Nickel     0  3.90e-02 9.61e-01 8.99e-18 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00
+ Copper     0  6.89e-01 3.11e-01 4.19e-17 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00
+ Zinc       0  9.70e-01 3.02e-02 5.50e-14 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00
+ ###1105  Te:7.949E+04 Hden:1.015E+09 Ne:1.190E+09 R:1.105E+09 R-R0:1.104E+09 dR:1.000E+06 NTR:  5 Htot:3.210E-04 T912: 4.99e+07###
+ P(Lines):(P  3 918.147A 0.25) (He 2 303.784A 0.15) (O  2 834.465A 0.11) (O  2 833.330A 0.07) 
+ Hydrogen      3.39e-08 1.00e+00 H+o/Hden 1.00e+00 1.71e-20 H-    H2 4.93e-26 9.08e-22 H2+ HeH+ 6.34e-19 Ho+ ColD 3.93e+24 6.64e+21
+ Helium        9.73e-08 2.64e-01 7.36e-01 HeI 2s3S 2.13e-11 Comp H,C 1.17e-11 1.66e-10 Fill Fac 1.00e+00 Gam1/tot 9.95e-01
+ He singlet n  9.72e-08 2.09e-12 2.03e-13 1.67e-14 2.41e-14 1.33e-14 He tripl 2.13e-11 1.84e-12 4.44e-14 2.21e-13 3.63e-14
+ Pressure      NgasTgas 1.83e+14 P(total) 2.78e-02 P( gas ) 2.53e-02 P(Radtn) 2.47e-03 Rad accl 1.03e-01 ForceMul 2.38e+00
+ Texc(La)      1.39e+04 T(I con) 0.00e+00 T(D con) 2.04e+03 T(U tot) 2.04e+03 nT (c+d) 4.92e+08 Prad/Gas 8.87e-02 Pmag/Gas 0.00e+00
+ Molecules     CH/Ctot: 5.19e-30 CH+/Ctot 2.01e-21 CO/Ctot: 7.61e-33 CO+/Ctot 1.15e-26 H2O/Otot 3.54e-49 OH/Ototl 2.10e-27
+ Lithium       3.77e-11 2.82e-01 7.18e-01 3.99e-06 Berylliu 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 sec ion: 1.48e-17
+ Boron         1.42e-15 6.95e-07 3.26e-03 9.97e-01 0.00e+00 0.00e+00
+ Carbon        1.35e-13 6.34e-05 7.35e-01 2.54e-01 1.13e-02 0.00e+00 0.00e+00 H2O+/O   1.52e-49 OH+/Otot 1.66e-27 Hex(tot) 3.21e-04
+ Nitrogen      9.24e-10 3.65e-04 6.62e-01 3.37e-01 4.03e-04 0.00e+00 0.00e+00 0.00e+00 O2/Ototl 7.51e-29 O2+/Otot 3.74e-29
+ Oxygen        2.05e-09 7.96e-04 8.43e-01 1.56e-01 1.30e-04 0.00e+00 0.00e+00 0.00e+00 0.00e+00
+ Fluorine      2.29e-09 1.22e-03 9.38e-01 6.10e-02 2.96e-05 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00
+ Neon          3.58e-09 2.66e-03 9.37e-01 6.02e-02 2.02e-05 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00
+ Sodium        1.57e-10 3.86e-02 9.13e-01 4.82e-02 3.16e-06 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00
+ Magnesium     6.36e-13 7.88e-06 9.71e-01 2.87e-02 2.34e-06 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00
+ Aluminium  0  2.42e-15 6.85e-07 6.18e-04 9.99e-01 1.59e-05 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00
+ Silicon    0  2.38e-14 1.11e-05 3.59e-02 4.61e-01 5.03e-01 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00
+ Phosphorus 0  6.00e-14 4.30e-05 3.72e-02 9.23e-01 3.77e-02 1.85e-03 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00
+ Sulphur    0  5.41e-16 9.67e-06 8.66e-02 7.99e-01 1.14e-01 8.44e-05 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00
+ Chlorine   0  5.35e-16 7.83e-07 9.73e-02 8.69e-01 3.32e-02 8.25e-05 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00
+ Argon      0  6.75e-15 8.33e-08 7.86e-03 9.34e-01 5.82e-02 4.32e-05 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00
+ Potassium  0  1.11e-12 4.20e-05 1.62e-01 7.29e-01 1.09e-01 4.37e-05 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00
+ Calcium    0  4.38e-18 2.12e-08 3.14e-01 6.56e-01 3.04e-02 4.33e-05 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00
+ Titanium   0  4.70e-21 4.39e-11 2.22e-05 3.04e-01 6.96e-01 8.22e-05 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00
+ Vanadium   0  2.08e-20 1.57e-11 1.59e-05 9.22e-02 8.72e-01 3.55e-02 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00
+ Chromium   0  1.04e-21 3.11e-11 4.17e-05 1.79e-01 7.94e-01 2.71e-02 4.68e-06 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00
+ Manganese  0  2.60e-19 1.22e-10 7.41e-05 2.59e-01 7.22e-01 1.88e-02 2.51e-06 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00
+ Iron       0  8.28e-19 7.02e-10 1.36e-04 5.63e-01 4.30e-01 6.41e-03 1.86e-06 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00
+ Cobalt     0  3.30e-20 2.73e-11 7.33e-05 3.45e-01 6.51e-01 3.91e-03 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00
+ Nickel     0  1.04e-19 9.00e-11 1.39e-04 5.57e-01 4.40e-01 2.78e-03 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00
+ Copper     0  7.12e-20 3.30e-10 4.29e-04 6.97e-01 3.01e-01 1.61e-03 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00
+ Zinc       0  2.20e-17 7.16e-09 5.74e-04 8.98e-01 1.02e-01 3.02e-04 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00 0.00e+00
+   - nugget in hydrostatic equilibrium  
+   Calculation stopped because highest Te reached. Iteration 3 of 3
+   The geometry is spherical.
+ C-The thickness of the first zone was set larger than optimal by a SET DR command.
+ C-The thickness of the first zone was set larger than optimal by a SET DR command.
+ C-An ionization jump occurred, elem Mg 3, by 7188% from 7.58e-03 (zone 514) to 1.03e-02 (zone 515) to 7.37e-01 (zone 516)
+ C-An ionization jump occurred, elem Ca 3, by 1195% from 5.18e-02 (zone 514) to 8.36e-02 (zone 515) to 9.99e-01 (zone 516)
+ C-An ionization jump occurred, elem Ti 3, by 15795% from 3.03e-03 (zone 514) to 4.54e-03 (zone 515) to 7.18e-01 (zone 516)
+ C-An ionization jump occurred, elem Co 3, by 16394% from 3.37e-03 (zone 514) to 5.52e-03 (zone 515) to 9.04e-01 (zone 516)
+ C-The radiation pressure jumped by 568% from 5.73e-03 (zone 515) to 3.74e-03 (zone 516) to 3.68e-02 (zone 517)
+ C-The temperature varied by 58.3% between two zones
+ C-The electron density varied by 48.8% between two zones
+  !There is no hydrogen-ionizing radiation.  Was this intended?
+  !Thermal collisional ionization of H reached 99.78% of the local ionization rate.
+  !The high electron density makes the Nussbaumer/Storey CNO recombination predictions unreliable.
+  !Charge transfer H => H+ reached 223699082.5% of the local H ionization rate.
+  !Charge transfer heating reached 13.82% of the local heating.
+  !Charge transfer cooling reached 10.49% of the local heating.
+  !Photoionization of upper level of Mg II 2798 reached 100.0% of the total Mg+ photo rate.
+  !Photoionization of upper levels of [O III] reached 99.9% of the total O++ photo rate.
+  !Destruction of He 2TriS reached 15.1% of the total He0 dest rate at zone 1, 0.0% of that was photoionization.
+  !Continuum was lowered into model H -like HYDR due to high density at SOME point but NOT at the last zone.
+  !Continuum zero at some energies.
+  !The largest plasma frequency was 5.32e-04 Ryd = 1.71e+02 micron  The continuum is set to 0 below this.
+  !AGE: Cloud age was not set.  Longest timescale was 1.71e+04 s = 4.74e+00 hours.
+  !Mutual neutralization production of H-alpha was significant.
+  !Optical depth to negative hydrogen ion is 1.58e+00
+  !The intensity of the incident radiation field is less than 10 times the Habing diffuse ISM field.  Is this OK?
+  !   Consider adding diffuse ISM emission with TABLE ISM command.
+  !The cloud is optically thick at optical wavelengths, extending to 4.268e+05 Ryd =2.135e-03A
+  !The ratio of radiation to gas pressure reached 2.73e-01 at zone 785.  Caused by line number 5999, label Level2 P  3                918.147A
+  !A temperature discontinuity occurred from 1.01e+04K (zone 515) to 1.60e+04K (zone 516).
+  !An ionization jump occurred elem Si 3, by 909% from 7.14e-02 (zone 514) to 1.06e-01 (zone 515) to 9.68e-01 (zone 516)
+  !An ionization jump occurred elem Cr 1, by 224% from 7.21e-03 (zone 367) to 5.36e-03 (zone 368) to 1.20e-02 (zone 369)
+  !An ionization jump occurred elem Cr 3, by 164% from 1.12e-02 (zone 367) to 7.32e-03 (zone 368) to 1.20e-02 (zone 369)
+  !An ionization jump occurred elem Mn 3, by 192% from 4.09e-01 (zone 514) to 5.04e-01 (zone 515) to 9.68e-01 (zone 516)
+  !An ionization jump occurred elem Fe 3, by 263% from 2.82e-01 (zone 514) to 3.78e-01 (zone 515) to 9.94e-01 (zone 516)
+  !An H density jump occurred by 172% from 3.34e+11 (zone 514) to 3.11e+11 (zone 515) to 1.81e+11 (zone 516)
+  !Isotropic continuum subtraction significantly affects line intensities
+   Te-ne bounds of Case B lookup table exceeded, H I Case B line intensities set to zero.
+   Grains were not present but might survive in this environment (energy density temperature was 2.74e+00K)
+   G-bar cooling lines reached 8.22% of the local cooling.  Line=S  3      
+   H- absorption heating was 11.4% of the total.
+   The Balmer continuum optical depth was 9.12e+00.
+   The Paschen continuum optical depth was 5.84e+00.
+   The continuum optical depth at the lowest energy considered (3.045e-09 Ryd) was 7.198e+14.
+   The optical depth to Rayleigh scattering at 1300A is 2.63e+01
+   The optical depth to the H2+ molecular ion is 2.56e-02
+   Line radiation pressure capped by thermalization length.
+
+                       *********************************> Cloudy 22.02 <**********************************
+                       * #this is a cloudy script for a nugget in hydro equil                            *
+                       * #-----------------------------------                                            *
+                       * title - nugget in hydrostatic equilibrium                                       *
+                       * #-------------------------------                                                *
+                       * hextra -12.5 density                                                            *
+                       * CMB                                                                             *
+                       * #--------------------                                                           *
+                       * sphere                                                                          *
+                       * radius 0 10                                                                     *
+                       * set dr 6                                                                        *
+                       * hden 16.5                                                                       *
+                       * #-----------------------------                                                  *
+                       * #composition                                                                    *
+                       * abundances "ISM.abn" no grains                                                  *
+                       * #---------------------------                                                    *
+                       * constant pressure                                                               *
+                       * set pressure convergence 0.01                                                   *
+                       * set pressure ionize 20000                                                       *
+                       * gravity spherical                                                               *
+                       * gravity external 9.9e21 0.1 3                                                   *
+                       * #------------------                                                             *
+                       * stop temperature 4.9 exceeds                                                    *
+                       * iterate 3                                                                       *
+                       * #--------------                                                                 *
+                       * stop zone 10000                                                                 *
+                       * print last iteration                                                            *
+                       * save continuum "m.con" units micron last                                        *
+                       * save continuum "r.con" last                                                     *
+                       * save overview ".ovr" last                                                       *
+                       * save pressure ".prs" last                                                       *
+                       * save line list "line.txt" "LineList.dat"                                        *
+                       * luminosity 0.0001 linear                                                        *
+                       * blackbody t = 0.0001 K linear                                                   *
+                       *********************************> Log(U):-37.00 <*********************************
+                       >>>>>>>>>> Cautions are present.
+
+                     Emission Line Spectrum.  Constant  Pressure Model.  Closed geometry.  Iteration 3 of 3.
+                                    Luminosity (erg/s) emitted by a shell with full coverage.
+
+
+                                                   Intrinsic line intensities
+general properties.............................      Ca B                103.614m   22.920    0.0045      Mg 1                3832.30A   24.453    0.1527
+TotH                      0    29.235 9240.6514      Ca B                88.1566m   22.869    0.0040      Mg 1                3838.29A   22.655    0.0024
+TotC                      0    29.235 9236.9697      Ca B                392.174m   22.908    0.0043      Mg 1                3838.29A   24.528    0.1814
+BFH1                      0    22.800    0.0034      Ca B                210.082m   22.888    0.0042      Mg 1                3838.29A   23.780    0.0324
+BFHx                      0    23.002    0.0054      Ca B                149.517m   22.844    0.0038      Mg 1                4571.10A   24.194    0.0842
+Line                      0    22.492    0.0017      Ca B                119.326m   22.797    0.0034      Mg 1                5167.32A   24.636    0.2326
+TotM                      0    25.638    2.3381      Ca B                452.459m   22.781    0.0033      Mg 1                5172.68A   24.775    0.3204
+CT H                      0    26.961   49.1545      Ca B                241.644m   22.765    0.0031      Mg 1                5183.60A   24.775    0.3209
+extH                      0    29.179 8132.4473      Ca B                171.511m   22.724    0.0029      Mg 1                8806.76A   24.633    0.2310
+H FB                      0    27.758  308.2033      Ca B                518.623m   22.661    0.0025      Mg 1                1.18282m   24.421    0.1418
+HFBc                      0    27.461  155.7106      Ca B                276.213m   22.647    0.0024      Mg 1                1.50250m   24.309    0.1097
+H  1c                     0    28.995 5325.2734      Ca B                590.941m   22.546    0.0019      Mg 1                1.50402m   24.274    0.1012
+He 2c                     0    23.329    0.0115      H  1                2431.34A   24.191    0.0835      Mg 1                1.50477m   24.190    0.0833
+He 1c                     0    23.772    0.0319      H  1                1215.67A   23.939    0.0468      Mg 1                1.71087m   24.150    0.0759
+Al 1c                     0    23.697    0.0268      H  1                6562.80A   25.621    2.2512      Mg 1                3.39620m   23.370    0.0126
+C  1c                     0    25.413    1.3926      H  1                4861.32A   25.269    1.0000      Mn 1                4033.06A   22.681    0.0026
+C  2c                     0    24.818    0.3542      H  1                4340.46A   25.190    0.8339      Mn 1                4034.48A   22.593    0.0021
+C  3c                     0    24.652    0.2416      H  1                4101.73A   25.128    0.7228      Mn 2                2576.10A   24.164    0.0786
+Ca 1c                     0    24.177    0.0808      H  1                3970.07A   25.127    0.7210      Mn 2                2593.72A   24.160    0.0777
+Cu 1c                     0    24.295    0.1061      H  1                3889.05A   25.132    0.7288      Mn 2                2605.68A   24.141    0.0744
+Fe 2c                     0    26.220    8.9313      H  1                3835.38A   25.134    0.7330      Mn 2                3438.97A   23.452    0.0152
+K  1c                     0    25.125    0.7176      H  1                3797.90A   25.134    0.7319      Mn 2                3460.03A   23.442    0.0149
+Li 1c                     0    23.745    0.0299      H  1                3770.63A   25.129    0.7250      Mn 2                4128.12A   23.334    0.0116
+Mg 1c                     0    25.920    4.4792      H  1                3750.15A   25.121    0.7115      Mn 2                4205.37A   23.045    0.0060
+Mn 1c                     0    22.702    0.0027      H  1                3734.37A   25.108    0.6904      N  1                1492.63A   22.698    0.0027
+Mn 2c                     0    24.955    0.4849      H  1                3721.94A   25.090    0.6616      N  1                1492.82A   22.657    0.0024
+N  1c                     0    25.107    0.6881      H  1                3711.97A   25.065    0.6253      N  1                1494.68A   22.630    0.0023
+Na 1c                     0    25.968    5.0038      H  1                3703.85A   25.036    0.5844      N  1                1742.72A   22.518    0.0018
+O  1c                     0    25.228    0.9105      H  1                3697.15A   25.007    0.5463      N  1                1742.73A   23.114    0.0070
+O  2c                     0    24.017    0.0560      H  1                3691.55A   24.978    0.5120      N  1                1745.25A   23.004    0.0054
+O  3c                     0    23.669    0.0251      H  1                3686.83A   24.951    0.4810      N  1                1745.26A   22.738    0.0029
+P  2c                     0    23.593    0.0211      H  1                3682.81A   24.925    0.4527      N  1                7423.64A   23.280    0.0102
+S  1c                     0    25.175    0.8057      H  1                3679.35A   24.899    0.4269      N  1                7442.30A   23.479    0.0162
+S  2c                     0    23.882    0.0410      H  1                1.87510m   24.624    0.2265      N  1                7468.31A   23.589    0.0209
+S  3c                     0    23.869    0.0398      H  1                1.28181m   24.912    0.4395      N  1                8184.86A   23.557    0.0194
+Si 1c                     0    25.529    1.8177      H  1                1.09381m   25.012    0.5538      N  1                8188.01A   23.543    0.0188
+Si 2c                     0    24.787    0.3292      H  1                1.00494m   25.080    0.6474      N  1                8200.36A   23.072    0.0063
+Si 3c                     0    23.882    0.0410      H  1                9545.97A   25.111    0.6952      N  1                8210.71A   23.324    0.0113
+Si 4c                     0    22.832    0.0037      H  1                9229.02A   25.112    0.6966      N  1                8216.34A   23.744    0.0298
+Zn 2c                     0    23.425    0.0143      H  1                9014.91A   25.086    0.6565      N  1                8223.13A   23.546    0.0189
+Al 2c                     0    23.937    0.0465      H  1                8862.79A   25.048    0.6004      N  1                8242.39A   23.549    0.0191
+C  4c                     0    22.684    0.0026      H  1                8750.48A   25.010    0.5509      N  1                8567.74A   23.083    0.0065
+Ca 2c                     0    24.958    0.4887      H  1                8665.02A   24.975    0.5075      N  1                8594.00A   23.316    0.0111
+Mg 2c                     0    25.808    3.4574      H  1                8598.40A   24.940    0.4690      N  1                8629.24A   23.525    0.0180
+Mg 2h                     0    24.710    0.2760      H  1                8545.39A   24.907    0.4342      N  1                8655.88A   23.115    0.0070
+N  2c                     0    23.791    0.0333      H  1                8502.49A   24.874    0.4027      N  1                8680.28A   23.883    0.0411
+N  3c                     0    23.724    0.0285      H  1                8467.26A   24.842    0.3741      N  1                8683.40A   23.752    0.0304
+S  4c                     0    22.884    0.0041      H  1                8437.96A   24.811    0.3479      N  1                8686.15A   23.560    0.0195
+continua.......................................      H  1                8413.32A   24.780    0.3241      N  1                8703.25A   23.542    0.0187
+Bac                 3646.00A   28.685 2605.1702      H  1                8392.40A   24.750    0.3023      N  1                8711.70A   23.582    0.0205
+nFnu                3645.00A   28.874 4027.9075      H  1                8374.48A   24.720    0.2824      N  1                8718.84A   23.544    0.0188
+nFnu                3647.00A   28.422 1422.7372      H  1                4.05115m   23.893    0.0420      N  1                8728.90A   23.048    0.0060
+cout                3646.00A   28.685 2605.1702      H  1                2.62515m   24.306    0.1088      N  1                8747.37A   22.812    0.0035
+thin                3646.00A   28.993 5292.1934      H  1                2.16553m   24.527    0.1811      N  1                9028.92A   22.886    0.0041
+Ba C                      0    26.131    7.2782      H  1                1.94456m   24.634    0.2315      N  1                9060.48A   23.132    0.0073
+PA C                      0    26.216    8.8420      H  1                1.81741m   24.670    0.2517      N  1                9386.80A   23.541    0.0187
+FIR                 83.0000m   25.067    0.6279      H  1                1.73621m   24.654    0.2427      N  1                9392.79A   23.670    0.0252
+TIR                 1800.00m   44.649 *********      H  1                1.68065m   24.624    0.2264      N  1                9460.68A   23.074    0.0064
+NIRa                2.85000m   28.851 3818.5044      H  1                1.64072m   24.594    0.2115      N  1                9822.75A   22.540    0.0019
+NIRb                3.00000m   28.569 1996.2900      H  1                1.61093m   24.565    0.1978      N  1                9863.33A   22.890    0.0042
+MIRa                15.0000m   27.272  100.7712      H  1                1.58805m   24.536    0.1850      N  1                9872.15A   22.272    0.0010
+MIRb                22.5000m   27.278  102.0358      H  1                1.57007m   24.507    0.1731      N  1                1.01051m   22.990    0.0053
+NMIR                21.7500m   28.851 3818.5044      H  1                1.55565m   24.478    0.1620      N  1                1.01089m   23.155    0.0077
+TFIR                611.250m   23.874    0.0403      H  1                1.54389m   24.450    0.1516      N  1                1.01125m   23.291    0.0105
+TALL                10000.0A   29.216 8851.0449      H  1                1.53418m   24.421    0.1419      N  1                1.01146m   23.405    0.0137
+F12                 12.0000m   26.610   21.9089      H  1                1.52605m   24.393    0.1329      N  1                1.01283m   22.611    0.0022
+F25                 25.0000m   25.676    2.5508      H  1                1.51919m   24.364    0.1245      N  1                1.01473m   22.666    0.0025
+F60                 60.0000m   24.968    0.5002      H  1                1.51332m   24.337    0.1168      N  1                1.01648m   22.549    0.0019
+F100                100.000m   24.133    0.0731      H  1                7.45782m   23.229    0.0091      N  1                1.05003m   22.386    0.0013
+MIPS                24.0000m   25.382    1.2967      H  1                4.65251m   23.750    0.0303      N  1                1.05070m   22.826    0.0036
+MIPS                70.0000m   24.402    0.1358      H  1                3.73954m   24.019    0.0562      N  1                1.05134m   22.524    0.0018
+MIPS                160.000m   23.374    0.0127      H  1                3.29609m   24.150    0.0761      N  1                1.05206m   22.726    0.0029
+IRAC                3.60000m   27.279  102.2614      H  1                3.03837m   24.189    0.0831      N  1                1.05396m   23.163    0.0078
+IRAC                4.50000m   27.100   67.7094      H  1                2.87221m   24.173    0.0802      N  1                1.05496m   22.795    0.0034
+IRAC                5.80000m   26.924   45.1749      H  1                2.75752m   24.153    0.0766      N  1                1.06530m   22.537    0.0019
+IRAC                8.00000m   26.779   32.3672      H  1                2.67440m   24.133    0.0731      N  1                1.07135m   22.617    0.0022
+SPR1                250.000m   22.994    0.0053      H  1                2.61194m   24.112    0.0697      N  1                1.07579m   22.377    0.0013
+SPR2                350.000m   22.605    0.0022      H  1                2.56363m   24.091    0.0664      N  1                1.12271m   22.313    0.0011
+SPR3                500.000m   22.538    0.0019      H  1                2.52540m   24.069    0.0631      N  1                1.12662m   22.399    0.0013
+PAC1                70.0000m   24.462    0.1558      H  1                2.49458m   24.046    0.0598      N  1                1.12917m   22.922    0.0045
+PAC2                100.000m   24.122    0.0713      H  1                2.46931m   24.023    0.0567      N  1                1.12943m   22.316    0.0011
+PAC3                160.000m   23.645    0.0238      H  1                2.44833m   23.999    0.0537      N  1                1.13139m   22.694    0.0027
+PAH                 3.30000m   26.474   16.0211      H  1                2.43070m   23.975    0.0509      N  1                1.13232m   22.339    0.0012
+PAHC                3.23000m   26.202    8.5699      H  1                2.41573m   23.952    0.0481      N  1                1.15661m   22.784    0.0033
+PAHC                3.37000m   26.144    7.4927      H  1                12.3685m   22.797    0.0034      N  1                1.16252m   22.605    0.0022
+PAH                 6.20000m   26.361   12.3563      H  1                7.50045m   23.357    0.0122      N  1                1.16515m   22.313    0.0011
+PAHC                5.65000m   26.474   16.0280      H  1                5.90660m   23.638    0.0234      N  1                1.20745m   22.499    0.0017
+PAH                 7.90000m   26.307   10.9074      H  1                5.12726m   23.769    0.0316      N  1                1.21300m   22.397    0.0013
+PAHC                6.90000m   26.498   16.9515      H  1                4.67124m   23.796    0.0336      N  1                1.21868m   22.729    0.0029
+PAH                 11.3000m   25.376    1.2803      H  1                4.37526m   23.782    0.0326      N  1                1.22039m   22.333    0.0012
+PAHC                10.9000m   25.421    1.4189      H  1                4.16966m   23.766    0.0314      N  1                1.22888m   22.364    0.0012
+PAH                 11.8000m   25.530    1.8221      H  1                4.01977m   23.750    0.0303      N  1                1.22892m   22.295    0.0011
+PAHC                12.6500m   25.440    1.4819      H  1                3.90648m   23.733    0.0291      N  1                1.22985m   22.278    0.0010
+PAH                 13.3000m   25.424    1.4302      H  1                3.81841m   23.716    0.0280      N  1                1.23288m   22.610    0.0022
+PAHC                14.1000m   25.337    1.1683      H  1                3.74837m   23.697    0.0268      N  1                1.23816m   22.707    0.0027
+Bcon                3640.00A   28.525 1800.8099      H  1                3.69163m   23.678    0.0257      N  1                1.24613m   22.902    0.0043
+Pcon                5000.00A   28.879 4069.9597      H  1                3.64493m   23.659    0.0245      N  1                1.24696m   23.080    0.0065
+O3bn                5007.00A   27.354  121.5962      H  1                3.60599m   23.639    0.0234      N  1                1.34296m   22.999    0.0054
+MeFB                      0    25.842    3.7375      H  1                3.57313m   23.618    0.0223      N  1                1.34645m   22.483    0.0016
+Mion                      0    25.794    3.3502      H  1                19.0567m   22.399    0.0013      N  1                1.35813m   23.180    0.0081
+nFnu                122.400m   24.013    0.0555      H  1                11.3056m   22.972    0.0050      N  1                1.35877m   22.420    0.0014
+nFnu                60.8322m   24.815    0.3514      H  1                8.75768m   23.264    0.0099      N  1                1.36023m   22.482    0.0016
+nFnu                41.2152m   25.069    0.6310      H  1                7.50606m   23.400    0.0135      N  1                1.36242m   22.723    0.0028
+nFnu                30.8695m   25.400    1.3509      H  1                6.77015m   23.423    0.0143      N  1                1.47571m   22.884    0.0041
+nFnu                24.7829m   25.648    2.3953      H  1                6.29020m   23.412    0.0139      N  1                1.49666m   22.514    0.0018
+nFnu                24.2998m   25.673    2.5368      H  1                5.95522m   23.401    0.0135      N  1                1.50509m   22.300    0.0011
+nFnu                22.8302m   25.734    2.9137      H  1                5.70991m   23.389    0.0132      N  1                1.55823m   22.373    0.0013
+nFnu                21.4199m   25.812    3.4924      H  1                5.52368m   23.377    0.0128      Na 1                2852.81A   24.220    0.0893
+nFnu                21.1235m   25.833    3.6620      H  1                5.37831m   23.363    0.0124      Na 1                2853.01A   24.120    0.0710
+nFnu                19.6199m   25.908    4.3580      H  1                5.26225m   23.349    0.0120      Na 1                3302.37A   24.625    0.2269
+nFnu                17.6534m   26.020    5.6299      H  1                5.16787m   23.334    0.0116      Na 1                3302.98A   24.562    0.1962
+nFnu                17.3700m   26.040    5.9016      H  1                5.08993m   23.319    0.0112      Na 1                5682.63A   24.670    0.2518
+nFnu                15.6901m   26.166    7.8794      H  1                5.02472m   23.302    0.0108      Na 1                5688.19A   23.677    0.0256
+nFnu                14.6036m   26.234    9.2343      H  1                16.2047m   22.630    0.0023      Na 1                5688.20A   24.628    0.2286
+nFnu                12.4300m   26.413   13.9360      H  1                12.3838m   22.931    0.0046      Na 1                5889.95A   24.963    0.4945
+nFnu                11.4000m   26.514   17.5893      H  1                10.5006m   23.069    0.0063      Na 1                5895.92A   25.006    0.5463
+nFnu                10.4600m   26.600   21.4020      H  1                9.38946m   23.089    0.0066      Na 1                6154.23A   24.513    0.1754
+nFnu                9.48002m   26.709   27.5309      H  1                8.66214m   23.080    0.0065      Na 1                6160.75A   24.580    0.2047
+nFnu                9.32488m   26.727   28.7303      H  1                8.15267m   23.071    0.0063      Na 1                8183.26A   24.582    0.2055
+nFnu                8.21035m   26.854   38.4599      H  1                7.77825m   23.063    0.0062      Na 1                8194.79A   23.697    0.0268
+nFnu                7.58000m   26.940   46.8438      H  1                7.49305m   23.054    0.0061      Na 1                8194.82A   24.460    0.1552
+nFnu                7.05026m   27.006   54.5835      H  1                7.26967m   23.044    0.0060      Na 1                1.07464m   24.129    0.0724
+nFnu                4.11370m   27.512  174.8708      H  1                7.09078m   23.033    0.0058      Na 1                1.07493m   24.023    0.0567
+nFnu                2.32440m   27.922  450.0584      H  1                6.94487m   23.022    0.0057      Na 1                1.13814m   24.391    0.1323
+nFnu                1.64313m   28.088  659.0090      H  1                6.82402m   23.009    0.0055      Na 1                1.14038m   24.329    0.1147
+nFnu                1.48022m   28.164  785.6182      H  1                22.3344m   22.331    0.0012      Na 1                1.70311m   22.723    0.0028
+nFnu                1.43649m   28.244  944.5621      H  1                16.8760m   22.634    0.0023      Na 1                1.70384m   22.558    0.0019
+nFnu                1.11867m   28.450 1515.1095      H  1                14.1792m   22.774    0.0032      Na 1                1.84653m   23.597    0.0213
+nFnu                8329.68A   28.623 2259.9263      H  1                12.5836m   22.790    0.0033      Na 1                1.84653m   22.310    0.0011
+nFnu                8078.61A   28.702 2708.2795      H  1                11.5363m   22.781    0.0033      Na 1                1.84655m   23.490    0.0166
+nFnu                6209.66A   28.728 2878.5022      H  1                10.8007m   22.774    0.0032      Na 1                2.20565m   23.584    0.0207
+nFnu                4885.36A   28.661 2465.3784      H  1                10.2585m   22.768    0.0032      Na 1                2.20837m   23.600    0.0214
+nFnu                3704.34A   28.436 1468.2953      H  1                9.84435m   22.762    0.0031      Na 1                2.33484m   23.517    0.0177
+nFnu                3587.67A   28.857 3875.4573      H  1                9.51914m   22.755    0.0031      Na 1                2.33791m   23.500    0.0170
+nFnu                2430.05A   28.070  632.1733      H  1                9.25801m   22.747    0.0030      Na 1                2.33790m   23.232    0.0092
+nFnu                2392.03A   28.024  568.4885      H  1                9.04450m   22.738    0.0029      Na 1                3.40776m   23.088    0.0066
+nFnu                2071.34A   27.584  206.3673      H  1                22.3255m   22.370    0.0013      Na 1                3.41426m   23.092    0.0066
+nFnu                2052.68A   27.550  190.7902      H  1                18.6101m   22.509    0.0017      Na 1                5.42688m   22.589    0.0021
+nFnu                1793.44A   27.051   60.4704      H  1                16.4073m   22.521    0.0018      Na 1                5.43417m   22.578    0.0020
+nFnu                1585.12A   26.435   14.6393      H  1                14.9582m   22.512    0.0017      O  1                1302.17A   23.701    0.0270
+nFnu                1458.33A   25.655    2.4327      H  1                13.9380m   22.505    0.0017      O  1                1304.86A   23.662    0.0247
+nFnu                1356.96A   25.303    1.0814      H  1                13.1844m   22.501    0.0017      O  1                1306.03A   23.570    0.0200
+nFnu                1297.29A   25.054    0.6098      H  1                12.6075m   22.496    0.0017      O  1                1355.60A   22.689    0.0026
+nFnu                1262.79A   24.904    0.4317      H  1                12.1535m   22.491    0.0017      O  1                1358.51A   22.449    0.0015
+nFnu                1218.08A   24.680    0.2578      H  1                11.7882m   22.485    0.0016      O  1                1641.31A   22.737    0.0029
+nFnu                1196.33A   24.917    0.4447      H  1                23.8615m   22.270    0.0010      O  1                3947.29A   23.057    0.0061
+nFnu                1175.06A   24.873    0.4021      H  1                20.9149m   22.277    0.0010      O  1                3947.48A   22.914    0.0044
+nFnu                1143.64A   24.714    0.2784      He 2                303.784A   23.328    0.0115      O  1                3947.59A   22.706    0.0027
+nFnu                1113.22A   24.569    0.1993      He-like iso-sequence...........................      O  1                4368.19A   22.604    0.0022
+nFnu                1103.23A   24.532    0.1831      He 1                1.08291m   23.469    0.0159      O  1                4368.24A   23.018    0.0056
+nFnu                1073.86A   24.163    0.0784      He 1                1.08303m   23.803    0.0342      O  1                4368.26A   22.936    0.0046
+nFnu                1064.34A   24.111    0.0694      He 1                1.08303m   24.047    0.0599      O  1                5577.34A   22.773    0.0032
+nFnu                1035.92A   23.975    0.0508      Blnd                1.08302m   24.310    0.1100      O  1                6300.30A   22.698    0.0027
+nFnu                1000.00A   23.784    0.0327      He 1                3888.64A   22.961    0.0049      O  1                7771.94A   24.327    0.1142
+nFnu                925.144A   23.446    0.0150      He 1                2.05813m   23.457    0.0154      O  1                7774.17A   24.288    0.1045
+nFnu                897.800A   25.991    5.2746      He 1                5015.68A   22.809    0.0035      O  1                7775.39A   24.218    0.0890
+nFnu                760.023A   25.350    1.2039      He 1                7065.18A   22.479    0.0016      O  1                8446.25A   24.045    0.0597
+nFnu                701.514A   25.026    0.5720      Blnd                7065.25A   22.736    0.0029      O  1                8446.36A   24.002    0.0540
+nFnu                608.160A   24.417    0.1405      He 1                5875.98A   22.524    0.0018      O  1                8446.76A   24.080    0.0647
+nFnu                575.146A   24.165    0.0787      He 1                5875.64A   22.944    0.0047      O  1                9260.81A   23.349    0.0120
+nFnu                511.948A   23.632    0.0230      He 1                5875.61A   23.166    0.0079      O  1                9260.85A   23.611    0.0220
+nFnu                496.874A   25.022    0.5657      Blnd                5875.66A   23.428    0.0144      O  1                9260.94A   23.561    0.0196
+nFnu                399.153A   23.843    0.0375      He 1                4471.47A   22.399    0.0013      O  1                9262.58A   23.400    0.0135
+RRC............................................      Blnd                4471.50A   22.656    0.0024      O  1                9262.67A   23.714    0.0278
+H  1                911.753A   27.404  136.5760      He 1                7281.35A   22.283    0.0010      O  1                9262.78A   23.861    0.0391
+H  1                3645.98A   27.159   77.6819      He 1                6678.15A   23.261    0.0098      O  1                9265.83A   23.170    0.0080
+H  1                3645.98A   27.522  179.0983      Ca B                3888.64A   22.769    0.0032      O  1                9265.93A   23.610    0.0219
+H  1                8203.57A   26.489   16.6013      Ca B                4471.49A   22.431    0.0015      O  1                9266.01A   23.984    0.0519
+H  1                8203.57A   26.908   43.5473      Ca B                5875.64A   22.969    0.0050      O  1                1.12863m   23.770    0.0317
+H  1                8203.57A   26.839   37.1050      Ca B                6678.15A   22.569    0.0020      O  1                1.12864m   23.562    0.0196
+H  1                1.45842m   25.987    5.2257      Ca B                7065.22A   22.642    0.0024      O  1                1.12869m   23.614    0.0221
+H  1                1.45842m   26.415   13.9837      Ca B                1.08303m   24.134    0.0733      O  1                1.12870m   23.440    0.0148
+H  1                1.45842m   26.457   15.4266      Ca B                2.05813m   23.465    0.0157      O  1                1.12871m   22.710    0.0028
+H  1                1.45842m   26.155    7.6909      Pho+                3889.00A   25.054    0.6098      O  1                1.12873m   23.938    0.0466
+H  1                2.27878m   25.626    2.2766      extra Lyman....................................      O  1                1.12951m   23.518    0.0177
+H  1                2.27878m   26.055    6.1097      database lines.................................      O  1                1.12977m   23.605    0.0217
+H  1                2.27878m   26.133    7.3136      Al 1                2575.09A   22.514    0.0018      O  1                1.13024m   23.655    0.0243
+H  1                2.27878m   25.981    5.1556      Al 1                2660.39A   22.439    0.0015      O  1                1.31639m   23.413    0.0139
+H  1                2.27878m   25.521    1.7880      Al 1                3082.15A   22.521    0.0018      O  1                1.31649m   23.525    0.0180
+H  1                3.28145m   25.331    1.1536      Al 1                3092.71A   22.945    0.0047      O  1                1.31651m   23.130    0.0073
+H  1                3.28145m   25.757    3.0762      Al 1                3092.84A   22.774    0.0032      O  1                2.76312m   22.831    0.0037
+H  1                3.28145m   25.845    3.7650      Al 1                3944.01A   22.903    0.0043      O  1                2.76403m   22.723    0.0028
+H  1                3.28145m   25.742    2.9731      Al 1                3961.52A   23.340    0.0118      O  1                2.76455m   22.579    0.0020
+H  1                3.28145m   25.448    1.5095      Al 1                1.31234m   22.709    0.0028      O  1                2.89251m   22.478    0.0016
+H  1                3.28145m   24.865    0.3940      Al 1                1.31507m   22.494    0.0017      O  1                2.89273m   22.703    0.0027
+H  1                4.46642m   25.087    0.6580      B  1                2496.77A   22.386    0.0013      O  1                2.89280m   22.726    0.0029
+H  1                4.46642m   25.510    1.7424      C  1                1560.31A   23.242    0.0094      O  2                796.645A   22.317    0.0011
+H  1                4.46642m   25.600    2.1436      C  1                1560.68A   23.370    0.0126      O  2                796.683A   22.594    0.0021
+H  1                4.46642m   25.518    1.7736      C  1                1560.71A   23.150    0.0076      O  2                832.758A   23.007    0.0055
+H  1                4.46642m   25.287    1.0421      C  1                1561.34A   23.346    0.0119      O  2                833.330A   23.290    0.0105
+H  1                4.46642m   24.887    0.4146      C  1                1561.37A   22.912    0.0044      O  2                834.465A   23.460    0.0155
+H  1                4.46642m   24.212    0.0876      C  1                1561.44A   23.548    0.0190      O  3                1660.81A   22.316    0.0011
+H  1                5.83369m   24.882    0.4098      C  1                1613.38A   23.333    0.0116      O  3                1666.15A   22.782    0.0033
+H  1                5.83369m   25.302    1.0789      C  1                1613.80A   23.316    0.0111      O  3                835.289A   23.056    0.0061
+H  1                5.83369m   25.392    1.3266      C  1                1614.51A   23.321    0.0113      O  3                833.749A   22.718    0.0028
+H  1                5.83369m   25.319    1.1209      C  1                1656.27A   23.848    0.0379      O  3                835.092A   22.457    0.0015
+H  1                5.83369m   25.118    0.7056      C  1                1656.93A   23.680    0.0257      O  3                832.929A   22.388    0.0013
+H  1                5.83369m   24.793    0.3341      C  1                1657.01A   23.922    0.0450      O  3                833.715A   22.282    0.0010
+H  1                5.83369m   24.315    0.1112      C  1                1657.38A   23.665    0.0249      O  3                702.900A   22.331    0.0012
+H  1                5.83369m   23.572    0.0201      C  1                1657.91A   23.620    0.0224      O  3                703.854A   22.507    0.0017
+H  1                7.38326m   24.705    0.2727      C  1                1658.12A   23.696    0.0267      O  3                599.590A   22.409    0.0014
+H  1                7.38326m   25.123    0.7144      C  1                1930.90A   24.011    0.0552      P  2                1532.53A   22.630    0.0023
+H  1                7.38326m   25.212    0.8765      C  1                1992.01A   23.433    0.0146      P  2                2195.57A   22.351    0.0012
+H  1                7.38326m   25.143    0.7479      C  1                1993.62A   24.009    0.0549      P  2                1536.42A   22.594    0.0021
+H  1                7.38326m   24.957    0.4880      C  1                2478.56A   24.350    0.1204      P  2                1535.92A   22.776    0.0032
+H  1                7.38326m   24.671    0.2523      C  1                2582.90A   23.939    0.0468      P  2                2210.34A   22.712    0.0028
+H  1                7.38326m   24.279    0.1022      C  1                2964.84A   22.690    0.0026      P  2                1543.13A   22.651    0.0024
+H  1                7.38326m   23.744    0.0299      C  1                2967.21A   22.800    0.0034      P  2                1542.30A   22.430    0.0014
+H  1                7.38326m   22.950    0.0048      C  1                8727.13A   23.177    0.0081      S  1                1474.38A   22.497    0.0017
+H  1                9.11514m   24.550    0.1908      C  1                1.06853m   24.595    0.2117      S  1                1483.04A   22.559    0.0019
+H  1                9.11514m   24.966    0.4981      C  1                1.07073m   24.520    0.1781      S  1                1807.31A   23.810    0.0347
+H  1                9.11514m   25.054    0.6095      C  1                1.07540m   24.134    0.0733      S  1                1820.34A   23.792    0.0333
+H  1                9.11514m   24.987    0.5225      C  1                1.17299m   22.821    0.0036      S  1                1826.24A   23.745    0.0299
+H  1                9.11514m   24.810    0.3478      C  1                1.17564m   23.627    0.0228      S  1                1900.29A   22.270    0.0010
+H  1                9.11514m   24.545    0.1888      C  1                1.29706m   23.342    0.0118      S  1                1914.70A   22.299    0.0011
+H  1                9.11514m   24.198    0.0849      C  1                1.45425m   24.447    0.1507      S  1                9212.86A   24.015    0.0556
+H  1                9.11514m   23.757    0.0308      C  1                1.78534m   23.278    0.0102      S  1                9228.09A   24.004    0.0544
+H  1                9.11514m   23.181    0.0082      C  1                1.78570m   23.013    0.0055      S  1                9237.54A   23.978    0.0511
+H  1                9.11514m   22.346    0.0012      C  2                858.092A   22.386    0.0013      S  1                1.04554m   24.252    0.0962
+H  1                11.0293m   25.531    1.8274      C  2                858.559A   22.358    0.0012      S  1                1.04568m   24.119    0.0708
+H  1                13.1258m   25.410    1.3834      C  2                903.623A   22.984    0.0052      S  1                1.04594m   24.220    0.0893
+H  1                15.4046m   25.299    1.0723      C  2                903.962A   22.772    0.0032      S  1                1.08212m   22.449    0.0015
+H  1                17.8657m   25.198    0.8480      C  2                904.142A   23.158    0.0077      S  2                1259.52A   23.303    0.0108
+H  1                20.5091m   25.103    0.6824      C  2                904.480A   22.734    0.0029      S  2                1253.81A   23.192    0.0084
+H  1                23.3348m   25.015    0.5573      C  2                1036.34A   23.264    0.0099      S  2                1250.58A   22.932    0.0046
+H  1                26.3428m   24.933    0.4611      C  2                1037.02A   23.221    0.0090      S  2                1204.27A   22.706    0.0027
+H  1                29.5331m   24.856    0.3860      C  2                1334.53A   23.990    0.0526      S  2                1204.32A   22.876    0.0040
+H  1                32.9057m   24.783    0.3264      C  2                1335.66A   24.077    0.0643      S  2                1102.36A   22.414    0.0014
+H  1                36.4606m   24.714    0.2785      C  2                1335.71A   24.476    0.1610      S  3                1713.11A   22.691    0.0026
+H  1                40.1978m   24.648    0.2395      C  2                2324.69A   22.781    0.0033      S  3                1728.94A   23.142    0.0075
+H  1                44.1173m   24.586    0.2076      C  2                2325.40A   23.122    0.0071      S  3                1190.20A   22.645    0.0024
+H  1                48.2191m   24.527    0.1811      C  2                2328.12A   22.833    0.0037      S  3                1194.45A   22.385    0.0013
+H  1                52.5033m   24.470    0.1589      C  3                1908.73A   23.825    0.0360      S  3                1194.06A   22.936    0.0046
+H  1                56.9697m   25.642    2.3593      C  3                977.020A   24.464    0.1566      S  3                1201.73A   22.474    0.0016
+He 1                504.259A   23.820    0.0355      C  3                1175.26A   22.984    0.0052      S  3                1200.97A   23.169    0.0079
+He 1                3420.88A   22.335    0.0012      C  3                1175.99A   22.956    0.0049      S  3                1015.78A   22.346    0.0012
+C  1                1101.10A   23.179    0.0081      C  3                1175.59A   22.967    0.0050      S  3                1021.32A   22.590    0.0021
+N  1                853.298A   24.000    0.0538      C  3                1174.93A   23.368    0.0126      S  3                1077.16A   22.764    0.0031
+O  1                910.310A   23.398    0.0135      C  3                1176.37A   23.006    0.0055      Si 1                2207.98A   23.342    0.0118
+Mg 1                1621.56A   23.699    0.0269      C  3                1175.71A   23.399    0.0135      Si 1                2210.89A   23.530    0.0182
+Al 1                2070.57A   23.757    0.0308      C  3                2296.87A   22.508    0.0017      Si 1                2211.75A   23.351    0.0121
+Si 1                1520.91A   23.915    0.0443      Ca 1                4226.73A   23.843    0.0375      Si 1                2216.67A   23.735    0.0292
+P  1                1181.93A   22.480    0.0016      Ca 1                6102.72A   22.885    0.0041      Si 1                2218.06A   23.561    0.0196
+S  1                1196.76A   23.648    0.0240      Ca 1                6122.22A   23.089    0.0066      Si 1                2218.92A   23.448    0.0151
+Fe 1                1569.02A   23.064    0.0062      Ca 1                6162.17A   23.135    0.0073      Si 1                2435.15A   23.294    0.0106
+grains.........................................      Ca 1                6439.08A   23.368    0.0126      Si 1                2438.77A   23.816    0.0352
+H-like iso-sequence............................      Ca 1                6449.81A   22.950    0.0048      Si 1                2443.36A   23.816    0.0352
+Cool                1215.67A   28.637 2331.4285      Ca 1                6455.60A   22.374    0.0013      Si 1                2452.12A   23.796    0.0336
+Crst                960.000A   28.448 1510.6976      Ca 1                6462.57A   23.288    0.0104      Si 1                2506.90A   24.199    0.0850
+Crst                4861.32A   28.228  909.5719      Ca 1                6471.66A   22.856    0.0039      Si 1                2514.32A   24.094    0.0668
+Crst                      0    28.028  573.5864      Ca 1                6493.78A   23.168    0.0079      Si 1                2516.11A   24.281    0.1029
+CION                      0    27.781  325.1035      Ca 1                6499.65A   22.918    0.0045      Si 1                2519.20A   24.089    0.0661
+Strk                6562.80A   22.859    0.0039      Cu 1                3247.54A   23.693    0.0266      Si 1                2524.11A   24.104    0.0684
+Strk                4861.32A   22.841    0.0037      Cu 1                3273.95A   23.641    0.0236      Si 1                2528.51A   24.125    0.0717
+Strk                1.87510m   22.952    0.0048      Cu 1                3337.84A   22.581    0.0020      Si 1                2881.58A   23.944    0.0473
+Dest                1215.67A   23.742    0.0297      Cu 1                5105.55A   23.216    0.0088      Si 1                2970.35A   23.946    0.0475
+Dest                6562.80A   24.650    0.2406      Cu 1                5700.24A   23.136    0.0074      Si 1                2987.64A   23.801    0.0341
+Dest                4.05160m   22.728    0.0029      Cu 1                5782.13A   23.170    0.0080      Si 1                3006.74A   22.598    0.0021
+Dest                4861.32A   24.574    0.2018      Fe 2                2599.40A   24.002    0.0540      Si 1                3020.00A   22.717    0.0028
+Dest                1.87510m   23.434    0.0146      Fe 2                2585.88A   23.972    0.0504      Si 1                3905.52A   23.791    0.0333
+CaBo                4861.32A   27.713  277.9738      Fe 2                2382.04A   23.917    0.0444      Si 1                4102.94A   23.923    0.0451
+Ca B                3970.07A   27.557  194.2646      Fe 2                2373.74A   23.816    0.0352      Si 1                4115.96A   23.912    0.0439
+Ca B                3889.05A   27.341  117.9388      Fe 2                2366.87A   23.306    0.0109      Si 1                1.31527m   23.309    0.0110
+Ca B                3835.38A   27.157   77.2819      Fe 2                2343.50A   23.607    0.0218      Si 1                1.32876m   23.815    0.0352
+Ca B                3797.90A   26.998   53.5724      Fe 2                2260.08A   23.687    0.0262      Si 1                1.58884m   23.564    0.0197
+Ca B                3770.63A   26.858   38.7687      Fe 2                2249.18A   23.606    0.0217      Si 2                2334.41A   23.368    0.0125
+Ca B                3750.15A   26.732   29.0115      Fe 2                2233.75A   23.175    0.0081      Si 2                1808.01A   23.584    0.0207
+Ca B                3734.37A   26.618   22.3186      Fe 2                2625.67A   24.465    0.1571      Si 2                1526.71A   23.158    0.0077
+Ca B                3721.94A   26.513   17.5520      Fe 2                2611.87A   24.599    0.2135      Si 2                1304.37A   22.320    0.0011
+Ca B                3711.97A   26.417   14.0661      Fe 2                2598.37A   24.544    0.1884      Si 2                2350.17A   23.451    0.0152
+Ca B                3703.85A   26.328   11.4563      Fe 2                2395.63A   24.621    0.2246      Si 2                2344.20A   22.667    0.0025
+Ca B                3697.15A   26.245    9.4579      Fe 2                2388.63A   24.342    0.1184      Si 2                2334.60A   23.168    0.0079
+Ca B                3691.55A   26.167    7.9024      Fe 2                2383.06A   23.907    0.0434      Si 2                1817.45A   23.461    0.0155
+Ca B                3686.83A   26.093    6.6730      Fe 2                2364.83A   24.178    0.0811      Si 2                1816.93A   23.795    0.0336
+Ca B                3682.81A   26.024    5.6879      Fe 2                2332.80A   24.314    0.1108      Si 2                1533.43A   23.198    0.0085
+Ca B                3679.35A   25.958    4.8884      Fe 2                2279.92A   23.810    0.0348      Si 2                1309.28A   22.358    0.0012
+Ca B                3676.36A   25.896    4.2326      Fe 2                2268.82A   23.436    0.0147      Si 2                3862.60A   23.550    0.0191
+Ca B                3673.76A   25.836    3.6894      Fe 2                2253.13A   23.676    0.0255      Si 2                3853.66A   23.177    0.0081
+Ca B                3671.48A   25.779    3.2368      Fe 2                2631.32A   24.477    0.1616      Si 2                3856.02A   23.697    0.0268
+Ca B                1.28181m   27.612  220.3479      Fe 2                2617.62A   24.359    0.1229      Si 2                6371.37A   23.613    0.0221
+Ca B                1.09381m   27.297  106.5832      Fe 2                2607.09A   24.495    0.1681      Si 2                6347.11A   23.768    0.0315
+Ca B                1.00494m   27.038   58.7176      Fe 2                2404.89A   24.496    0.1688      Si 3                1892.03A   23.588    0.0209
+Ca B                9545.97A   26.823   35.8095      Fe 2                2399.24A   24.324    0.1134      Si 3                1206.50A   23.532    0.0183
+Ca B                9229.02A   26.641   23.5197      Fe 2                2395.42A   23.948    0.0477      Si 4                1393.75A   22.654    0.0024
+Ca B                9014.91A   26.482   16.3380      Fe 2                2380.76A   24.085    0.0655      Si 4                1402.77A   22.361    0.0012
+Ca B                8862.79A   26.342   11.8368      Fe 2                2348.30A   24.298    0.1070      Zn 2                2062.00A   23.019    0.0056
+Ca B                8750.48A   26.217    8.8670      Fe 2                2327.40A   23.966    0.0498      Zn 2                2025.48A   23.116    0.0070
+Ca B                8665.02A   26.103    6.8249      Fe 2                2283.49A   23.317    0.0112      Al 2                2669.15A   23.542    0.0187
+Ca B                8598.40A   25.999    5.3700      Fe 2                2267.59A   23.680    0.0257      Al 2                1670.79A   23.584    0.0206
+Ca B                8545.39A   25.903    4.3059      Fe 2                2631.05A   24.448    0.1510      Al 2                2816.18A   22.491    0.0017
+Ca B                8502.49A   25.814    3.5079      Fe 2                2620.41A   24.032    0.0579      C  4                1548.19A   22.538    0.0019
+Ca B                8467.26A   25.731    2.8966      Fe 2                2613.82A   24.368    0.1257      Ca 2                3968.47A   24.358    0.1228
+Ca B                8437.96A   25.653    2.4206      Fe 2                2410.52A   24.359    0.1229      Ca 2                8662.14A   24.001    0.0540
+Ca B                8413.32A   25.580    2.0446      Fe 2                2406.66A   24.266    0.0994      Ca 2                3933.66A   24.429    0.1446
+Ca B                8392.40A   25.510    1.7430      Fe 2                2404.43A   23.938    0.0466      Ca 2                8498.02A   23.795    0.0335
+Ca B                8374.48A   25.445    1.4982      Fe 2                2359.11A   24.217    0.0888      Ca 2                8542.09A   24.092    0.0665
+Ca B                8359.01A   25.382    1.2975      Fe 2                2338.01A   24.067    0.0629      Ca 2                3706.02A   22.987    0.0052
+Ca B                8345.56A   25.323    1.1311      Fe 2                2628.29A   24.365    0.1248      Ca 2                3736.90A   23.105    0.0068
+Ca B                8333.79A   25.266    0.9924      Fe 2                2621.67A   24.161    0.0779      Ca 2                3158.87A   22.993    0.0053
+Ca B                4.05115m   27.201   85.5294      Fe 2                2413.31A   24.165    0.0788      Ca 2                3181.27A   22.754    0.0031
+Ca B                2.62515m   26.913   44.0037      Fe 2                2411.07A   24.178    0.0811      Ca 2                3179.33A   23.087    0.0066
+Ca B                2.16553m   26.661   24.6816      Fe 2                2344.28A   24.040    0.0590      Mg 2                2802.71A   25.228    0.9105
+Ca B                1.94456m   26.450   15.1672      Fe 2                2732.45A   23.631    0.0230      Mg 2                2795.53A   25.341    1.1794
+Ca B                1.81741m   26.269   10.0077      Fe 2                2717.51A   23.482    0.0163      Mg 2                2936.52A   24.360    0.1233
+Ca B                1.73621m   26.112    6.9674      Fe 2                2493.29A   23.445    0.0150      Mg 2                2928.64A   24.366    0.1249
+Ca B                1.68065m   25.973    5.0568      Fe 2                2484.20A   23.833    0.0367      Mg 2                2797.93A   24.334    0.1161
+Ca B                1.64072m   25.848    3.7923      Fe 2                2476.68A   23.740    0.0296      Mg 2                2790.77A   24.343    0.1185
+Ca B                1.61093m   25.735    2.9214      Fe 2                2451.10A   23.686    0.0261      Mg 2                2798.00A   24.446    0.1504
+Ca B                1.58805m   25.631    2.3002      Fe 2                2360.00A   24.020    0.0563      Mg 2                1398.79A   22.314    0.0011
+Ca B                1.57007m   25.535    1.8454      Fe 2                2348.12A   24.074    0.0637      Mg 2                9244.22A   24.153    0.0765
+Ca B                1.55565m   25.446    1.5040      Fe 2                2331.31A   23.908    0.0436      Mg 2                1.09518m   23.948    0.0478
+Ca B                1.54389m   25.363    1.2424      Fe 2                2774.73A   23.021    0.0056      Mg 2                9218.22A   24.247    0.0951
+Ca B                1.53418m   25.286    1.0387      Fe 2                2759.33A   23.553    0.0192      Mg 2                1.09154m   23.694    0.0266
+Ca B                1.52605m   25.212    0.8774      Fe 2                2744.26A   23.352    0.0121      Mg 2                1.09143m   24.034    0.0581
+Ca B                1.51919m   25.143    0.7480      Fe 2                2519.10A   23.215    0.0088      Mg 2                1753.47A   22.653    0.0024
+Ca B                1.51332m   25.077    0.6431      Fe 2                2511.37A   23.673    0.0254      Mg 2                8234.63A   23.665    0.0249
+Ca B                1.50828m   25.015    0.5570      Fe 2                2505.21A   23.708    0.0275      Mg 2                8213.99A   23.526    0.0181
+Ca B                1.50390m   24.955    0.4857      Fe 2                2485.07A   23.489    0.0166      Mg 2                1750.66A   22.648    0.0024
+Ca B                1.50009m   24.899    0.4261      Fe 2                2449.73A   23.576    0.0203      Mg 2                7896.03A   23.522    0.0179
+Ca B                7.45782m   26.583   20.5910      Fe 2                2391.48A   23.820    0.0356      Mg 2                1737.61A   22.338    0.0012
+Ca B                4.65251m   26.358   12.2839      Fe 2                2379.28A   23.942    0.0470      Mg 2                7877.06A   23.847    0.0379
+Ca B                3.73954m   26.155    7.6851      Fe 2                2362.02A   23.815    0.0352      Mg 2                1734.85A   22.589    0.0021
+Ca B                3.29609m   25.978    5.1099      Fe 2                2775.34A   23.362    0.0124      Mg 2                7896.35A   23.948    0.0477
+Ca B                3.03837m   25.822    3.5732      Fe 2                2763.50A   23.116    0.0070      Mg 2                1737.63A   22.622    0.0023
+Ca B                2.87221m   25.684    2.5990      Fe 2                2537.37A   23.335    0.0116      Mg 2                4481.34A   24.017    0.0559
+Ca B                2.75752m   25.560    1.9532      Fe 2                2531.09A   23.360    0.0123      Mg 2                4481.16A   22.929    0.0046
+Ca B                2.67440m   25.447    1.5062      Fe 2                2526.83A   23.634    0.0232      Mg 2                4481.14A   24.040    0.0590
+Ca B                2.61194m   25.344    1.1870      Fe 2                2510.53A   22.913    0.0044      Mg 2                2.41247m   22.293    0.0011
+Ca B                2.56363m   25.248    0.9528      Fe 2                2474.46A   23.340    0.0118      Mg 2                3850.40A   22.825    0.0036
+Ca B                2.52540m   25.159    0.7768      Fe 2                2451.26A   23.111    0.0070      Mg 2                2.14322m   22.440    0.0015
+Ca B                2.49458m   25.077    0.6420      Fe 2                2402.60A   23.737    0.0294      Mg 2                2.40418m   22.489    0.0017
+Ca B                2.46931m   24.999    0.5369      Fe 2                2385.01A   23.724    0.0285      Mg 2                2.13690m   22.673    0.0025
+Ca B                2.44833m   24.926    0.4536      Fe 2                2785.02A   23.000    0.0054      Mg 2                3848.22A   23.051    0.0060
+Ca B                2.43070m   24.857    0.3869      Fe 2                2777.59A   22.930    0.0046      N  2                2139.01A   22.376    0.0013
+Ca B                2.41573m   24.791    0.3327      Fe 2                2549.13A   23.093    0.0067      N  2                2142.77A   22.777    0.0032
+Ca B                2.40290m   24.729    0.2882      Fe 2                2542.32A   23.511    0.0174      N  2                1085.70A   23.288    0.0104
+Ca B                2.39182m   24.669    0.2513      Fe 2                2491.70A   22.655    0.0024      N  2                1084.58A   22.780    0.0032
+Ca B                2.38217m   24.613    0.2205      Fe 2                2468.18A   22.823    0.0036      N  2                1085.55A   22.848    0.0038
+Ca B                12.3685m   26.081    6.4789      Fe 2                3277.35A   24.081    0.0649      N  2                1083.99A   22.630    0.0023
+Ca B                7.50045m   25.903    4.3093      Fe 2                3255.89A   24.001    0.0539      N  2                1084.56A   22.472    0.0016
+Ca B                5.90660m   25.734    2.9163      Fe 2                3234.93A   23.170    0.0080      N  2                916.012A   22.503    0.0017
+Ca B                5.12726m   25.582    2.0551      Fe 2                2926.59A   24.182    0.0818      N  2                916.701A   22.475    0.0016
+Ca B                4.67124m   25.446    1.5012      Fe 2                2916.15A   23.541    0.0187      N  3                1748.65A   22.359    0.0012
+Ca B                4.37526m   25.322    1.1307      Fe 2                2907.86A   23.647    0.0239      N  3                1753.99A   22.374    0.0013
+Ca B                4.16966m   25.210    0.8735      Fe 2                2880.76A   24.015    0.0557      N  3                1749.67A   22.878    0.0041
+Ca B                4.01977m   25.107    0.6892      Fe 2                2833.37A   23.257    0.0097      N  3                989.799A   22.871    0.0040
+Ca B                3.90648m   25.012    0.5537      Fe 2                2755.74A   24.512    0.1750      N  3                991.511A   22.537    0.0019
+Ca B                3.81841m   24.924    0.4518      Fe 2                2739.55A   24.479    0.1622      N  3                991.577A   23.215    0.0088
+Ca B                3.74837m   24.841    0.3735      Fe 2                2716.70A   23.456    0.0154      N  3                764.351A   22.286    0.0010
+Ca B                3.69163m   24.764    0.3125      Fe 2                3302.86A   23.638    0.0234      N  3                684.998A   22.388    0.0013
+Ca B                3.64493m   24.691    0.2642      Fe 2                3281.29A   23.922    0.0449      N  3                685.817A   22.456    0.0015
+Ca B                3.60599m   24.622    0.2253      Fe 2                3264.76A   23.397    0.0134      level 1 lines..................................
+Ca B                3.57313m   24.556    0.1938      Fe 2                2953.77A   24.131    0.0727      recombination..................................
+Ca B                3.54514m   24.494    0.1679      Fe 2                2945.26A   23.502    0.0171      level2 lines...................................
+Ca B                3.52107m   24.435    0.1464      Fe 2                2939.51A   23.752    0.0304      C  1                1247.50A   22.551    0.0019
+Ca B                3.50021m   24.378    0.1285      Fe 2                2917.47A   23.704    0.0272      C  1                1314.77A   22.736    0.0029
+Ca B                19.0567m   25.662    2.4696      Fe 2                2868.87A   23.944    0.0473      N  2                634.441A   22.466    0.0016
+Ca B                11.3056m   25.519    1.7764      Fe 2                2837.73A   22.770    0.0032      Na 1                2739.04A   22.624    0.0023
+Ca B                8.75768m   25.374    1.2737      Fe 2                2772.73A   23.553    0.0192      Na 1                2649.48A   22.317    0.0011
+Ca B                7.50606m   25.241    0.9378      Fe 2                2749.32A   24.422    0.1421      Mg 1                1817.31A   22.650    0.0024
+Ca B                6.77015m   25.120    0.7092      Fe 2                3312.66A   22.845    0.0038      Si 1                1853.05A   23.520    0.0178
+Ca B                6.29020m   25.009    0.5492      Fe 2                3295.82A   23.793    0.0334      Si 1                1693.70A   23.048    0.0060
+Ca B                5.95522m   24.907    0.4340      Fe 2                3285.41A   23.408    0.0138      Si 1                1625.84A   22.728    0.0029
+Ca B                5.70991m   24.812    0.3491      Fe 2                2970.52A   24.040    0.0590      Si 1                1999.94A   23.447    0.0151
+Ca B                5.52368m   24.724    0.2850      Fe 2                2964.66A   23.607    0.0218      Si 1                1590.89A   22.414    0.0014
+Ca B                5.37831m   24.642    0.2359      Fe 2                2961.28A   23.758    0.0308      Si 1                1667.83A   22.625    0.0023
+Ca B                5.26225m   24.564    0.1973      Fe 2                2892.83A   23.721    0.0283      Si 1                1615.62A   22.332    0.0012
+Ca B                5.16787m   24.492    0.1669      Fe 2                2861.17A   23.544    0.0188      Si 1                1834.15A   22.969    0.0050
+Ca B                5.08993m   24.423    0.1424      Fe 2                3313.99A   23.312    0.0110      Si 1                1767.93A   22.582    0.0021
+Ca B                5.02472m   24.357    0.1225      Fe 2                3303.46A   23.640    0.0235      Si 1                1681.82A   22.345    0.0012
+Ca B                4.96953m   24.295    0.1062      Fe 2                2979.35A   23.931    0.0459      S  1                1356.05A   22.537    0.0019
+Ca B                4.92236m   24.236    0.0926      Fe 2                2975.94A   23.763    0.0312      S  2                750.323A   23.101    0.0068
+Ca B                4.88170m   24.179    0.0813      Fe 2                2874.85A   23.342    0.0118      S  3                667.049A   23.415    0.0140
+Ca B                27.7958m   25.303    1.0815      Fe 2                3969.39A   23.201    0.0085      S  3                691.219A   22.666    0.0025
+Ca B                16.2047m   25.185    0.8244      Fe 2                3938.29A   23.222    0.0090      S  3                704.220A   22.894    0.0042
+Ca B                12.3838m   25.060    0.6176      Fe 2                3914.50A   23.004    0.0054      Fe 1                2484.25A   22.800    0.0034
+Ca B                10.5006m   24.942    0.4707      Fe 2                3475.74A   23.365    0.0125      Fe 1                2526.51A   22.652    0.0024
+Ca B                9.38946m   24.833    0.3660      Fe 2                3463.96A   23.070    0.0063      Fe 1                2729.74A   22.646    0.0024
+Ca B                8.66214m   24.731    0.2899      Fe 2                3456.00A   22.367    0.0013      K  1                3217.31A   22.347    0.0012
+Ca B                8.15267m   24.637    0.2335      Fe 2                3425.57A   23.397    0.0134      Ti 1                3991.76A   22.448    0.0015
+Ca B                7.77825m   24.550    0.1909      Fe 2                3358.78A   22.624    0.0023      Ti 1                3743.34A   22.356    0.0012
+Ca B                7.49305m   24.468    0.1581      Fe 2                3227.74A   24.117    0.0704      Ti 1                3646.27A   22.422    0.0014
+Ca B                7.26967m   24.391    0.1324      Fe 2                3196.07A   23.958    0.0489      Ti 2                3364.74A   24.315    0.1112
+Ca B                7.09078m   24.318    0.1120      Fe 2                3969.37A   22.681    0.0026      Ti 2                3237.15A   24.205    0.0863
+Ca B                6.94487m   24.250    0.0956      Fe 2                3945.21A   22.943    0.0047      Ti 2                1904.17A   22.606    0.0022
+Ca B                6.82402m   24.184    0.0823      Fe 2                3930.30A   23.041    0.0059      Ti 2                1907.36A   22.723    0.0028
+Ca B                6.72263m   24.122    0.0713      Fe 2                3487.99A   23.285    0.0104      V  1                4867.05A   23.180    0.0081
+Ca B                6.63661m   24.063    0.0622      Fe 2                3479.91A   23.157    0.0077      V  1                4589.11A   23.067    0.0063
+Ca B                6.56290m   24.007    0.0546      Fe 2                3475.25A   22.581    0.0021      V  1                3879.74A   23.066    0.0063
+Ca B                38.8593m   24.990    0.5257      Fe 2                3381.36A   23.027    0.0057      V  1                3838.18A   23.095    0.0067
+Ca B                22.3344m   24.891    0.4187      Fe 2                3338.19A   22.491    0.0017      V  1                3185.86A   23.118    0.0071
+Ca B                16.8760m   24.781    0.3247      Fe 2                3981.61A   22.412    0.0014      V  2                2710.94A   23.090    0.0066
+Ca B                14.1792m   24.675    0.2543      Fe 2                3508.20A   23.068    0.0063      V  2                2684.22A   23.211    0.0088
+Ca B                12.5836m   24.575    0.2024      Fe 2                3503.47A   23.095    0.0067      V  2                2139.33A   22.444    0.0015
+Ca B                11.5363m   24.482    0.1634      Fe 2                3364.21A   22.372    0.0013      Cr 1                4269.56A   24.327    0.1144
+Ca B                10.8007m   24.396    0.1338      Fe 2                3521.63A   22.602    0.0022      Cr 1                3589.90A   24.293    0.1057
+Ca B                10.2585m   24.314    0.1109      Fe 2                3495.23A   22.681    0.0026      Cr 1                2365.64A   22.470    0.0016
+Ca B                9.84435m   24.237    0.0930      Fe 2                3458.12A   22.704    0.0027      Cr 2                2059.78A   23.499    0.0170
+Ca B                9.51914m   24.165    0.0787      Fe 2                4177.69A   23.251    0.0096      Mn 1                4032.42A   22.899    0.0043
+Ca B                9.25801m   24.097    0.0672      Fe 2                4124.79A   22.694    0.0027      Mn 1                2797.32A   22.666    0.0025
+Ca B                9.04450m   24.032    0.0579      Fe 2                4670.18A   22.845    0.0038      Co 1                3565.84A   23.666    0.0250
+Ca B                8.86725m   23.970    0.0502      Fe 2                4648.94A   22.399    0.0013      Co 1                3438.64A   23.551    0.0191
+Ca B                8.71818m   23.911    0.0438      Fe 2                4580.06A   22.970    0.0050      Co 2                2060.90A   23.016    0.0056
+Ca B                8.59144m   23.854    0.0385      Fe 2                4461.44A   22.571    0.0020      Co 2                2018.80A   22.950    0.0048
+Ca B                52.5206m   24.712    0.2770      Fe 2                4233.17A   23.974    0.0506      Co 2                1949.74A   22.829    0.0036
+Ca B                29.8314m   24.628    0.2283      Fe 2                4178.86A   23.724    0.0285      Ni 1                3480.03A   22.423    0.0014
+Ca B                22.3255m   24.529    0.1821      Fe 2                4384.32A   23.070    0.0063      Ni 1                3310.94A   22.355    0.0012
+Ca B                18.6101m   24.433    0.1459      Fe 2                4413.60A   22.649    0.0024      Ni 2                1751.83A   22.656    0.0024
+Ca B                16.4073m   24.342    0.1183      Fe 2                4314.31A   23.100    0.0068      Ni 2                1744.24A   22.755    0.0031
+Ca B                14.9582m   24.256    0.0971      Fe 2                4338.70A   22.484    0.0016      Cu 1                2179.87A   22.319    0.0011
+Ca B                13.9380m   24.176    0.0806      Fe 2                4871.28A   22.646    0.0024      Zn 1                2138.57A   23.532    0.0183
+Ca B                13.1844m   24.099    0.0677      Fe 2                4855.55A   22.450    0.0015      hyperfine structure............................
+Ca B                12.6075m   24.027    0.0573      Fe 2                4584.00A   22.402    0.0014      inner shell....................................
+Ca B                12.1535m   23.959    0.0490      Fe 2                5000.74A   22.289    0.0010      molecules......................................
+Ca B                11.7882m   23.894    0.0422      Fe 2                4991.13A   22.318    0.0011      H-FB                      0    28.620 2245.4873
+Ca B                11.4889m   23.833    0.0366      Fe 2                5132.67A   22.741    0.0030      H-CT                6562.80A   28.285 1038.0737
+Ca B                11.2399m   23.774    0.0320      Fe 2                5100.66A   22.643    0.0024      H- H                      0    28.290 1049.0769
+Ca B                11.0301m   23.717    0.0281      Fe 2                4993.36A   23.060    0.0062      H2+                       0    28.328 1145.9227
+Ca B                69.0531m   24.461    0.1557      Fe 2                4629.34A   23.744    0.0299      H2+p                      0    26.135    7.3476
+Ca B                38.8324m   24.389    0.1319      Fe 2                4583.84A   23.980    0.0514      HEH+                      0    22.579    0.0020
+Ca B                28.8233m   24.301    0.1076      Fe 2                4520.22A   23.651    0.0241      bands..........................................
+Ca B                23.8615m   24.213    0.0879      Fe 2                5146.13A   22.736    0.0029      Fe 2b               2500.00A   26.018    5.6047
+Ca B                20.9149m   24.129    0.0724      Fe 2                5120.35A   22.571    0.0020      Fe 2b               5000.00A   25.135    0.7346
+Ca B                18.9731m   24.049    0.0603      Fe 2                4893.82A   22.557    0.0019      Fe 2b               7000.00A   23.887    0.0415
+Ca B                17.6035m   23.974    0.0507      Fe 2                4666.76A   23.244    0.0094      Fe 2b               10000.0A   22.642    0.0024
+Ca B                16.5899m   23.902    0.0430      Fe 2                4620.52A   23.267    0.0100      Fe 2b               2355.00A   25.618    2.2327
+Ca B                15.8126m   23.834    0.0368      Fe 2                4555.89A   23.741    0.0296      Fe 2b               2430.00A   25.907    4.3489
+Ca B                15.1998m   23.770    0.0317      Fe 2                5154.41A   22.552    0.0019      Fe 2b               2445.00A   25.907    4.3408
+Ca B                14.7058m   23.708    0.0275      Fe 2                5136.80A   22.464    0.0016      Fe 2b               2495.00A   24.755    0.3063
+Ca B                14.3003m   23.649    0.0240      Fe 2                4582.83A   23.312    0.0110      Fe 2b               2610.00A   25.487    1.6532
+Ca B                13.9624m   23.593    0.0211      Fe 2                5150.94A   22.335    0.0012      Fe 2b               2695.00A   23.770    0.0317
+Ca B                88.7304m   24.234    0.0922      Fe 2                6516.08A   23.258    0.0098      Fe 2b               2758.00A   25.034    0.5825
+Ca B                49.4742m   24.172    0.0799      Fe 2                6432.68A   23.073    0.0064      Fe 2b               2780.00A   25.170    0.7955
+Ca B                36.4606m   24.091    0.0664      Fe 2                6369.46A   22.620    0.0022      Fe 2b               2797.00A   23.078    0.0064
+Ca B                30.0018m   24.011    0.0551      Fe 2                5284.11A   23.377    0.0128      Fe 2b               2840.00A   24.167    0.0790
+Ca B                26.1611m   23.933    0.0461      Fe 2                5256.94A   22.607    0.0022      Fe 2b               2935.00A   25.014    0.5562
+Ca B                23.6264m   23.858    0.0388      Fe 2                5169.03A   24.184    0.0822      Fe 2b               2960.00A   24.932    0.4604
+Ca B                21.8360m   23.787    0.0330      Fe 2                5018.44A   24.222    0.0898      Fe 2b               3180.00A   24.886    0.4136
+Ca B                20.5091m   23.720    0.0282      Fe 2                4923.93A   24.075    0.0639      Fe 2b               3250.00A   24.897    0.4246
+Ca B                19.4898m   23.656    0.0244      Fe 2                4731.45A   23.370    0.0126      Fe 2b               3590.00A   24.145    0.0751
+Ca B                18.6850m   23.594    0.0211      Fe 2                4663.71A   22.798    0.0034      Fe 2b               3910.00A   23.856    0.0386
+Ca B                18.0352m   23.536    0.0185      Fe 2                5991.38A   22.950    0.0048      Fe 2b               4255.00A   24.317    0.1116
+Ca B                17.5011m   23.480    0.0162      Fe 2                5316.62A   23.880    0.0408      Fe 2b               4558.00A   24.534    0.1841
+Ca B                111.826m   24.025    0.0570      Fe 2                6084.11A   22.721    0.0028      Fe 2b               4600.00A   24.564    0.1970
+Ca B                61.8935m   23.971    0.0504      Fe 2                5425.26A   23.096    0.0067      Fe 2b               4743.00A   23.390    0.0132
+Ca B                45.3285m   23.898    0.0425      Fe 2                5362.87A   23.570    0.0200      Fe 2b               4855.00A   23.266    0.0099
+Ca B                37.0994m   23.823    0.0358      Fe 2                5276.00A   23.759    0.0309      Fe 2b               4920.00A   24.508    0.1733
+Ca B                32.2006m   23.750    0.0303      Fe 2                6113.32A   22.386    0.0013      Fe 2b               4975.00A   24.482    0.1632
+Ca B                28.9638m   23.681    0.0258      Fe 2                5414.07A   22.872    0.0040      Fe 2b               4971.00A   23.216    0.0089
+Ca B                26.6746m   23.614    0.0221      Fe 2                5325.55A   23.118    0.0071      Fe 2b               5143.00A   24.266    0.0993
+Ca B                24.9758m   23.550    0.0191      Fe 2                5534.85A   23.430    0.0145      Fe 2b               5270.00A   24.629    0.2292
+Ca B                23.6693m   23.489    0.0166      Fe 2                5525.12A   22.445    0.0015      Fe 2b               5318.00A   24.383    0.1299
+Ca B                22.6362m   23.431    0.0145      Fe 2                5432.97A   22.940    0.0047      Fe 2b               5540.00A   23.505    0.0172
+Ca B                21.8011m   23.375    0.0128      Fe 2                7655.49A   22.360    0.0012      Fe 2b               5865.00A   23.223    0.0090
+Ca B                138.613m   23.832    0.0365      Fe 2                7479.69A   22.487    0.0017      Fe 2b               6265.00A   23.176    0.0081
+Ca B                76.2269m   23.785    0.0328      Fe 2                7711.72A   23.228    0.0091      Fe 2b               6565.00A   23.478    0.0162
+Ca B                55.5181m   23.718    0.0281      Fe 2                7533.37A   22.506    0.0017      Fe 2b               7445.00A   23.416    0.0140
+Ca B                45.2225m   23.649    0.0240      K  1                3446.37A   23.204    0.0086      Fe 2b               8625.00A   22.612    0.0022
+Ca B                39.0879m   23.581    0.0205      K  1                3447.37A   22.951    0.0048      miscellaneous..................................
+Ca B                35.0308m   23.515    0.0176      K  1                4044.14A   23.878    0.0406      Blnd                1400.00A   22.844    0.0038
+Ca B                32.1582m   23.452    0.0152      K  1                4047.21A   23.722    0.0284      Blnd                1650.00A   22.918    0.0045
+Ca B                30.0243m   23.391    0.0133      K  1                6911.08A   23.692    0.0265      Blnd                8446.00A   24.521    0.1785
+Ca B                28.3812m   23.333    0.0116      K  1                6936.29A   22.487    0.0017      Blnd                1304.00A   24.125    0.0717
+Ca B                27.0806m   23.278    0.0102      K  1                6938.76A   23.764    0.0313      Blnd                4368.00A   23.363    0.0124
+Ca B                169.365m   23.653    0.0242      K  1                6964.69A   22.714    0.0028      Blnd                1.31000m   23.862    0.0392
+Ca B                92.6113m   23.612    0.0220      K  1                7664.90A   24.449    0.1514      Blnd                1.13000m   24.408    0.1377
+Ca B                67.1206m   23.550    0.0191      K  1                7698.96A   24.362    0.1238      Blnd                2.90000m   23.126    0.0072
+Ca B                54.4395m   23.485    0.0165      K  1                1.16902m   23.806    0.0344      Blnd                4.60000m   22.406    0.0014
+Ca B                46.8779m   23.421    0.0142      K  1                1.17697m   23.764    0.0312      Blnd                2798.00A   25.589    2.0899
+Ca B                41.8727m   23.359    0.0123      K  1                1.17729m   23.867    0.0396      Blnd                1256.00A   23.645    0.0238
+Ca B                38.3258m   23.300    0.0107      K  1                1.24323m   23.702    0.0271      Blnd                1198.00A   23.524    0.0180
+Ca B                35.6885m   23.242    0.0094      K  1                1.25222m   23.756    0.0307      Blnd                1720.00A   23.274    0.0101
+Ca B                33.6559m   23.187    0.0083      K  1                1.25261m   23.061    0.0062      Blnd                5892.00A   25.286    1.0407
+Ca B                204.356m   23.485    0.0164      K  1                1.25393m   22.863    0.0039      Blnd                2665.00A   23.542    0.0187
+Ca B                111.183m   23.450    0.0152      K  1                1.33778m   22.967    0.0050      Blnd                2335.00A   23.854    0.0385
+Ca B                80.2272m   23.393    0.0133      K  1                1.33971m   22.796    0.0034      Blnd                1888.00A   23.588    0.0209
+Ca B                64.8188m   23.332    0.0116      K  1                1.51631m   23.543    0.0188      Blnd                1397.00A   22.833    0.0037
+Ca B                55.6250m   23.272    0.0101      K  1                1.51684m   23.534    0.0184      Blnd                8579.00A   24.457    0.1540
+Ca B                49.5352m   23.213    0.0088      K  1                2.70666m   22.954    0.0048      Blnd                3933.00A   24.696    0.2674
+Ca B                45.2165m   23.156    0.0077      K  1                2.72047m   22.900    0.0043      Blnd                1657.00A   24.531    0.1827
+Ca B                42.0026m   23.101    0.0068      K  1                3.13841m   22.710    0.0028      Blnd                2326.00A   23.451    0.0152
+Ca B                243.859m   23.328    0.0115      K  1                3.14068m   22.357    0.0012      Blnd                1335.00A   24.713    0.2779
+Ca B                132.080m   23.297    0.0107      K  1                3.15930m   22.625    0.0023      Blnd                1909.00A   23.825    0.0360
+Ca B                94.9289m   23.244    0.0094      K  1                3.63626m   22.420    0.0014      Blnd                1176.00A   23.937    0.0465
+Ca B                76.4287m   23.187    0.0083      K  1                3.66124m   22.498    0.0017      Blnd                1549.00A   22.715    0.0028
+Ca B                65.3841m   23.130    0.0073      K  1                3.70714m   22.569    0.0020      Blnd                1.04030m   22.335    0.0012
+Ca B                58.0639m   23.074    0.0064      K  1                3.73310m   22.366    0.0012      Blnd                1085.00A   23.606    0.0217
+Ca B                52.8691m   23.020    0.0056      K  1                3.73459m   22.600    0.0021      Blnd                2141.00A   22.922    0.0045
+Ca B                288.147m   23.180    0.0081      Li 1                6103.53A   22.561    0.0020      Blnd                1750.00A   23.145    0.0075
+Ca B                155.437m   23.153    0.0077      Li 1                6103.64A   22.765    0.0031      Blnd                990.000A   23.436    0.0147
+Ca B                111.317m   23.104    0.0068      Li 1                6707.76A   23.599    0.0214      Blnd                6300.00A   22.822    0.0036
+Ca B                89.3375m   23.050    0.0060      Li 1                6707.91A   23.405    0.0137      Blnd                833.000A   23.767    0.0315
+Ca B                76.2097m   22.996    0.0053      Mg 1                2025.82A   23.681    0.0258      Blnd                1666.00A   22.910    0.0044
+Ca B                67.5042m   22.943    0.0047      Mg 1                2154.35A   23.288    0.0104      Blnd                835.000A   23.380    0.0129
+Ca B                337.494m   23.040    0.0059      Mg 1                2852.13A   24.786    0.3289      C 1R                1656.00A   22.556    0.0019
+Ca B                181.393m   23.017    0.0056      Mg 1                3829.35A   24.441    0.1485
+Ca B                129.482m   22.971    0.0050      Mg 1                3832.30A   23.975    0.0508
+
+                                                    Emergent line intensities
+general properties.............................      Fe 2                2613.82A   24.118    0.0893      O  1                9262.58A   22.967    0.0063
+continua.......................................      Fe 2                2410.52A   24.117    0.0890      O  1                9262.67A   23.393    0.0168
+FIR                 83.0000m   24.766    0.3970      Fe 2                2406.66A   24.016    0.0707      O  1                9262.78A   23.568    0.0252
+NIRa                2.85000m   28.550 2414.1804      Fe 2                2404.43A   23.737    0.0372      O  1                9265.83A   22.684    0.0033
+NIRb                3.00000m   28.268 1262.1342      Fe 2                2359.11A   24.075    0.0809      O  1                9265.93A   23.295    0.0134
+MIRa                15.0000m   26.971   63.7108      Fe 2                2338.01A   23.832    0.0463      O  1                9266.01A   23.744    0.0377
+MIRb                22.5000m   26.977   64.5103      Fe 2                2628.29A   24.141    0.0942      O  1                1.12863m   23.590    0.0265
+NMIR                21.7500m   28.550 2414.1804      Fe 2                2621.67A   23.977    0.0645      O  1                1.12864m   23.373    0.0161
+TFIR                611.250m   23.573    0.0255      Fe 2                2413.31A   23.925    0.0573      O  1                1.12869m   23.419    0.0179
+TALL                10000.0A   28.915 5595.9131      Fe 2                2411.07A   23.925    0.0573      O  1                1.12870m   23.195    0.0107
+F12                 12.0000m   26.309   13.8515      Fe 2                2344.28A   23.809    0.0439      O  1                1.12871m   22.407    0.0017
+F25                 25.0000m   25.375    1.6127      Fe 2                2732.45A   23.473    0.0202      O  1                1.12873m   23.717    0.0355
+F60                 60.0000m   24.667    0.3162      Fe 2                2717.51A   23.285    0.0131      O  1                1.12951m   23.093    0.0084
+F100                100.000m   23.832    0.0462      Fe 2                2493.29A   23.303    0.0137      O  1                1.12977m   23.232    0.0116
+MIPS                24.0000m   25.081    0.8198      Fe 2                2484.20A   23.753    0.0385      O  1                1.13024m   23.313    0.0140
+MIPS                70.0000m   24.101    0.0859      Fe 2                2476.68A   23.654    0.0307      O  1                1.31639m   23.133    0.0093
+MIPS                160.000m   23.073    0.0081      Fe 2                2451.10A   23.600    0.0271      O  1                1.31649m   23.258    0.0123
+IRAC                3.60000m   26.978   64.6529      Fe 2                2360.00A   23.850    0.0482      O  1                1.31651m   22.775    0.0041
+IRAC                4.50000m   26.799   42.8081      Fe 2                2348.12A   23.864    0.0498      O  1                2.76312m   22.366    0.0016
+IRAC                5.80000m   26.623   28.5610      Fe 2                2331.31A   23.729    0.0365      O  1                2.76403m   22.215    0.0011
+IRAC                8.00000m   26.478   20.4636      Fe 2                2774.73A   22.638    0.0030      O  1                2.89273m   22.374    0.0016
+SPR1                250.000m   22.693    0.0034      Fe 2                2759.33A   23.366    0.0158      O  1                2.89280m   22.329    0.0015
+SPR2                350.000m   22.304    0.0014      Fe 2                2744.26A   23.105    0.0087      O  2                718.608A   22.172    0.0010
+PAC1                70.0000m   24.161    0.0985      Fe 2                2519.10A   23.049    0.0076      O  2                796.645A   22.211    0.0011
+PAC2                100.000m   23.821    0.0451      Fe 2                2511.37A   23.574    0.0255      O  2                796.683A   22.497    0.0021
+PAC3                160.000m   23.344    0.0150      Fe 2                2505.21A   23.615    0.0280      O  2                832.758A   23.001    0.0068
+PAH                 3.30000m   26.173   10.1290      Fe 2                2485.07A   23.360    0.0156      O  2                833.330A   23.283    0.0131
+PAHC                3.23000m   25.901    5.4182      Fe 2                2449.73A   23.472    0.0202      O  2                834.465A   23.452    0.0193
+PAHC                3.37000m   25.843    4.7371      Fe 2                2391.48A   23.736    0.0371      O  3                1666.15A   22.498    0.0021
+PAH                 6.20000m   26.060    7.8120      Fe 2                2379.28A   23.773    0.0403      O  3                835.289A   22.628    0.0029
+PAHC                5.65000m   26.173   10.1334      Fe 2                2362.02A   23.682    0.0327      O  3                833.749A   22.308    0.0014
+PAH                 7.90000m   26.006    6.8960      Fe 2                2775.34A   23.110    0.0088      P  2                1532.53A   22.545    0.0024
+PAHC                6.90000m   26.197   10.7173      Fe 2                2763.50A   22.772    0.0040      P  2                1536.42A   22.498    0.0021
+PAH                 11.3000m   25.075    0.8094      Fe 2                2537.37A   23.149    0.0096      P  2                1535.92A   22.711    0.0035
+PAHC                10.9000m   25.120    0.8971      Fe 2                2531.09A   23.184    0.0104      P  2                2210.34A   22.369    0.0016
+PAH                 11.8000m   25.229    1.1520      Fe 2                2526.83A   23.527    0.0229      P  2                1543.13A   22.555    0.0024
+PAHC                12.6500m   25.139    0.9369      Fe 2                2510.53A   22.595    0.0027      P  2                1542.30A   22.403    0.0017
+PAH                 13.3000m   25.123    0.9042      Fe 2                2474.46A   23.177    0.0102      S  1                1474.38A   22.417    0.0018
+PAHC                14.1000m   25.036    0.7386      Fe 2                2451.26A   22.891    0.0053      S  1                1474.57A   22.183    0.0010
+Bcon                3640.00A   28.234 1165.5779      Fe 2                2402.60A   23.648    0.0303      S  1                1483.04A   22.478    0.0020
+Pcon                5000.00A   28.578 2576.2966      Fe 2                2385.01A   23.634    0.0293      S  1                1707.13A   22.171    0.0010
+O3bn                5007.00A   27.054   77.0234      Fe 2                2785.02A   22.624    0.0029      S  1                1807.31A   23.777    0.0408
+RRC............................................      Fe 2                2777.59A   22.513    0.0022      S  1                1820.34A   23.757    0.0389
+grains.........................................      Fe 2                2549.13A   22.827    0.0046      S  1                1826.24A   23.707    0.0346
+H-like iso-sequence............................      Fe 2                2542.32A   23.375    0.0161      S  1                9212.86A   23.795    0.0424
+H  1                1215.67A   23.934    0.0584      Fe 2                2491.70A   22.262    0.0012      S  1                9228.09A   23.775    0.0405
+H  1                6562.80A   25.454    1.9358      Fe 2                2468.18A   22.491    0.0021      S  1                9237.54A   23.729    0.0364
+H  1                4861.32A   25.167    1.0000      Fe 2                3277.35A   23.937    0.0588      S  1                1.04554m   24.177    0.1024
+H  1                4340.46A   25.118    0.8927      Fe 2                3255.89A   23.839    0.0470      S  1                1.04568m   24.002    0.0684
+H  1                4101.73A   25.061    0.7831      Fe 2                3234.93A   22.668    0.0032      S  1                1.04594m   24.135    0.0928
+H  1                3970.07A   25.063    0.7874      Fe 2                2926.59A   24.065    0.0791      S  2                1259.52A   23.301    0.0136
+H  1                3889.05A   25.069    0.7980      Fe 2                2916.15A   23.306    0.0138      S  2                1253.81A   23.189    0.0105
+H  1                3835.38A   25.072    0.8023      Fe 2                2907.86A   23.450    0.0192      S  2                1250.58A   22.927    0.0057
+H  1                3797.90A   25.070    0.7998      Fe 2                2880.76A   23.904    0.0545      S  2                1204.27A   22.703    0.0034
+H  1                3770.63A   25.066    0.7914      Fe 2                2833.37A   22.946    0.0060      S  2                1204.32A   22.873    0.0051
+H  1                3750.15A   25.058    0.7779      Fe 2                2755.74A   24.241    0.1185      S  2                1102.36A   22.402    0.0017
+H  1                3734.37A   25.048    0.7595      Fe 2                2739.55A   24.197    0.1070      S  3                1713.11A   22.420    0.0018
+H  1                3721.94A   25.034    0.7353      Fe 2                2716.70A   23.254    0.0122      S  3                1728.94A   22.870    0.0050
+H  1                3711.97A   25.014    0.7022      Fe 2                3302.86A   23.332    0.0146      S  3                1190.20A   22.627    0.0029
+H  1                3703.85A   24.987    0.6609      Fe 2                3281.29A   23.731    0.0367      S  3                1194.45A   22.380    0.0016
+H  1                3697.15A   24.960    0.6206      Fe 2                3264.76A   22.994    0.0067      S  3                1194.06A   22.921    0.0057
+H  1                3691.55A   24.933    0.5832      Fe 2                2953.77A   24.012    0.0700      S  3                1201.73A   22.470    0.0020
+H  1                3686.83A   24.906    0.5485      Fe 2                2945.26A   23.244    0.0119      S  3                1200.97A   23.161    0.0099
+H  1                3682.81A   24.880    0.5162      Fe 2                2939.51A   23.582    0.0260      S  3                1015.78A   22.266    0.0013
+H  1                3679.35A   24.854    0.4863      Fe 2                2917.47A   23.523    0.0227      S  3                1021.32A   22.562    0.0025
+H  1                1.87510m   24.433    0.1844      Fe 2                2868.87A   23.832    0.0463      S  3                1077.16A   22.550    0.0024
+H  1                1.28181m   24.794    0.4234      Fe 2                2837.73A   22.267    0.0013      Si 1                2207.98A   23.181    0.0103
+H  1                1.09381m   24.909    0.5519      Fe 2                2772.73A   23.364    0.0157      Si 1                2210.89A   23.385    0.0165
+H  1                1.00494m   24.981    0.6515      Fe 2                2749.32A   24.136    0.0931      Si 1                2211.75A   23.198    0.0107
+H  1                9545.97A   25.015    0.7038      Fe 2                3312.66A   22.212    0.0011      Si 1                2216.67A   23.613    0.0279
+H  1                9229.02A   25.024    0.7195      Fe 2                3295.82A   23.552    0.0243      Si 1                2218.06A   23.437    0.0186
+H  1                9014.91A   25.011    0.6974      Fe 2                3285.41A   23.003    0.0068      Si 1                2218.92A   23.314    0.0140
+H  1                8862.79A   24.978    0.6474      Fe 2                2970.52A   23.917    0.0562      Si 1                2435.15A   22.988    0.0066
+H  1                8750.48A   24.944    0.5975      Fe 2                2964.66A   23.382    0.0164      Si 1                2438.77A   23.678    0.0324
+H  1                8665.02A   24.908    0.5506      Fe 2                2961.28A   23.587    0.0263      Si 1                2443.36A   23.675    0.0322
+H  1                8598.40A   24.872    0.5068      Fe 2                2892.83A   23.550    0.0242      Si 1                2452.12A   23.646    0.0301
+H  1                8545.39A   24.836    0.4660      Fe 2                2861.17A   23.328    0.0145      Si 1                2506.90A   24.060    0.0781
+H  1                8502.49A   24.799    0.4281      Fe 2                3313.99A   22.849    0.0048      Si 1                2514.32A   23.938    0.0590
+H  1                8467.26A   24.762    0.3931      Fe 2                3303.46A   23.334    0.0147      Si 1                2516.11A   24.148    0.0958
+H  1                8437.96A   24.725    0.3609      Fe 2                2979.35A   23.798    0.0428      Si 1                2519.20A   23.934    0.0584
+H  1                8413.32A   24.687    0.3314      Fe 2                2975.94A   23.591    0.0265      Si 1                2524.11A   23.949    0.0605
+H  1                8392.40A   24.650    0.3043      Fe 2                2874.85A   23.046    0.0076      Si 1                2528.51A   23.969    0.0634
+H  1                8374.48A   24.614    0.2795      Fe 2                3969.39A   22.859    0.0049      Si 1                2881.58A   23.620    0.0284
+H  1                4.05115m   23.589    0.0264      Fe 2                3938.29A   22.882    0.0052      Si 1                2970.35A   23.682    0.0327
+H  1                2.62515m   24.129    0.0915      Fe 2                3914.50A   22.609    0.0028      Si 1                2987.64A   23.500    0.0215
+H  1                2.16553m   24.396    0.1694      Fe 2                3475.74A   22.875    0.0051      Si 1                3905.52A   23.494    0.0212
+H  1                1.94456m   24.524    0.2275      Fe 2                3463.96A   22.451    0.0019      Si 1                4102.94A   23.712    0.0351
+H  1                1.81741m   24.583    0.2607      Fe 2                3425.57A   22.938    0.0059      Si 1                4115.96A   23.715    0.0353
+H  1                1.73621m   24.586    0.2620      Fe 2                3227.74A   23.968    0.0633      Si 1                1.31527m   22.882    0.0052
+H  1                1.68065m   24.564    0.2496      Fe 2                3196.07A   23.802    0.0431      Si 1                1.32876m   23.597    0.0269
+H  1                1.64072m   24.539    0.2357      Fe 2                3969.37A   22.276    0.0013      Si 1                1.58884m   23.426    0.0182
+H  1                1.61093m   24.512    0.2211      Fe 2                3945.21A   22.534    0.0023      Si 2                2334.41A   23.155    0.0097
+H  1                1.58805m   24.482    0.2065      Fe 2                3930.30A   22.652    0.0031      Si 2                1808.01A   23.547    0.0240
+H  1                1.57007m   24.451    0.1924      Fe 2                3487.99A   22.749    0.0038      Si 2                1526.71A   23.122    0.0090
+H  1                1.55565m   24.419    0.1788      Fe 2                3479.91A   22.562    0.0025      Si 2                1304.37A   22.235    0.0012
+H  1                1.54389m   24.387    0.1659      Fe 2                3381.36A   22.434    0.0018      Si 2                2350.17A   23.252    0.0122
+H  1                1.53418m   24.354    0.1537      Fe 2                3508.20A   22.431    0.0018      Si 2                2344.20A   22.372    0.0016
+H  1                1.52605m   24.321    0.1424      Fe 2                3503.47A   22.466    0.0020      Si 2                2334.60A   22.904    0.0055
+H  1                1.51919m   24.287    0.1318      Fe 2                4177.69A   22.896    0.0054      Si 2                1817.45A   23.411    0.0175
+H  1                1.51332m   24.254    0.1220      Fe 2                4124.79A   22.236    0.0012      Si 2                1816.93A   23.769    0.0400
+H  1                7.45782m   22.698    0.0034      Fe 2                4670.18A   22.373    0.0016      Si 2                1533.43A   23.162    0.0099
+H  1                4.65251m   23.448    0.0191      Fe 2                4580.06A   22.520    0.0023      Si 2                1309.28A   22.273    0.0013
+H  1                3.73954m   23.802    0.0431      Fe 2                4233.17A   23.874    0.0509      Si 2                3862.60A   23.291    0.0133
+H  1                3.29609m   23.978    0.0647      Fe 2                4178.86A   23.556    0.0245      Si 2                3853.66A   22.792    0.0042
+H  1                3.03837m   24.054    0.0771      Fe 2                4384.32A   22.653    0.0031      Si 2                3856.02A   23.489    0.0210
+H  1                2.87221m   24.067    0.0794      Fe 2                4413.60A   22.172    0.0010      Si 2                6371.37A   23.280    0.0130
+H  1                2.75752m   24.062    0.0785      Fe 2                4314.31A   22.692    0.0033      Si 2                6347.11A   23.502    0.0216
+H  1                2.67440m   24.050    0.0764      Fe 2                5132.67A   22.237    0.0012      Si 3                1892.03A   23.410    0.0175
+H  1                2.61194m   24.033    0.0735      Fe 2                4993.36A   22.605    0.0027      Si 3                1206.50A   23.500    0.0215
+H  1                2.56363m   24.013    0.0701      Fe 2                4629.34A   23.558    0.0246      Si 4                1393.75A   22.308    0.0014
+H  1                2.52540m   23.990    0.0665      Fe 2                4583.84A   23.869    0.0504      Zn 2                2062.00A   22.914    0.0056
+H  1                2.49458m   23.966    0.0629      Fe 2                4520.22A   23.435    0.0185      Zn 2                2025.48A   23.002    0.0068
+H  1                2.46931m   23.940    0.0592      Fe 2                5146.13A   22.228    0.0012      Al 2                2669.15A   23.231    0.0116
+H  1                2.44833m   23.912    0.0556      Fe 2                4666.76A   22.854    0.0049      Al 2                1670.79A   23.559    0.0246
+H  1                2.43070m   23.884    0.0521      Fe 2                4620.52A   22.885    0.0052      C  4                1548.19A   22.216    0.0011
+H  1                2.41573m   23.855    0.0488      Fe 2                4555.89A   23.557    0.0246      Ca 2                3968.47A   24.296    0.1347
+H  1                7.50045m   22.975    0.0064      Fe 2                4582.83A   22.947    0.0060      Ca 2                8662.14A   23.817    0.0446
+H  1                5.90660m   23.352    0.0153      Fe 2                6516.08A   22.810    0.0044      Ca 2                3933.66A   24.375    0.1614
+H  1                5.12726m   23.534    0.0233      Fe 2                6432.68A   22.574    0.0026      Ca 2                8498.02A   23.512    0.0221
+H  1                4.67124m   23.623    0.0285      Fe 2                5284.11A   23.001    0.0068      Ca 2                8542.09A   23.942    0.0595
+H  1                4.37526m   23.635    0.0294      Fe 2                5169.03A   24.100    0.0856      Ca 2                3706.02A   22.582    0.0026
+H  1                4.16966m   23.639    0.0297      Fe 2                5018.44A   24.147    0.0955      Ca 2                3736.90A   22.754    0.0039
+H  1                4.01977m   23.634    0.0293      Fe 2                4923.93A   23.979    0.0648      Ca 2                3158.87A   22.453    0.0019
+H  1                3.90648m   23.623    0.0286      Fe 2                4731.45A   23.016    0.0071      Ca 2                3179.33A   22.587    0.0026
+H  1                3.81841m   23.608    0.0276      Fe 2                4663.71A   22.319    0.0014      Mg 2                2802.71A   25.195    1.0656
+H  1                3.74837m   23.590    0.0264      Fe 2                5991.38A   22.440    0.0019      Mg 2                2795.53A   25.312    1.3953
+H  1                3.69163m   23.569    0.0252      Fe 2                5316.62A   23.718    0.0356      Mg 2                2936.52A   24.247    0.1201
+H  1                3.64493m   23.546    0.0240      Fe 2                6084.11A   22.177    0.0010      Mg 2                2928.64A   24.263    0.1245
+H  1                3.60599m   23.522    0.0227      Fe 2                5425.26A   22.632    0.0029      Mg 2                2797.93A   24.238    0.1178
+H  1                3.57313m   23.497    0.0214      Fe 2                5362.87A   23.278    0.0129      Mg 2                2790.77A   24.229    0.1152
+H  1                11.3056m   22.456    0.0019      Fe 2                5276.00A   23.556    0.0245      Mg 2                2798.00A   24.348    0.1517
+H  1                8.75768m   22.867    0.0050      Fe 2                5414.07A   22.367    0.0016      Mg 2                9244.22A   23.993    0.0670
+H  1                7.50606m   23.086    0.0083      Fe 2                5325.55A   22.660    0.0031      Mg 2                1.09518m   23.757    0.0389
+H  1                6.77015m   23.184    0.0104      Fe 2                5534.85A   23.069    0.0080      Mg 2                9218.22A   24.122    0.0900
+H  1                6.29020m   23.220    0.0113      Fe 2                5432.97A   22.445    0.0019      Mg 2                1.09154m   23.388    0.0166
+H  1                5.95522m   23.235    0.0117      Fe 2                7711.72A   22.755    0.0039      Mg 2                1.09143m   23.875    0.0511
+H  1                5.70991m   23.231    0.0116      K  1                3446.37A   22.426    0.0018      Mg 2                1753.47A   22.580    0.0026
+H  1                5.52368m   23.228    0.0115      K  1                4044.14A   23.634    0.0293      Mg 2                8234.63A   23.295    0.0134
+H  1                5.37831m   23.219    0.0113      K  1                4047.21A   23.426    0.0181      Mg 2                8213.99A   23.046    0.0076
+H  1                5.26225m   23.207    0.0110      K  1                6911.08A   23.257    0.0123      Mg 2                1750.66A   22.568    0.0025
+H  1                5.16787m   23.191    0.0106      K  1                6938.76A   23.362    0.0157      Mg 2                7896.03A   23.024    0.0072
+H  1                5.08993m   23.173    0.0101      K  1                7664.90A   24.344    0.1502      Mg 2                1737.61A   22.241    0.0012
+H  1                5.02472m   23.152    0.0097      K  1                7698.96A   24.239    0.1179      Mg 2                7877.06A   23.518    0.0224
+H  1                12.3838m   22.413    0.0018      K  1                1.16902m   23.622    0.0285      Mg 2                1734.85A   22.511    0.0022
+H  1                10.5006m   22.650    0.0030      K  1                1.17697m   23.542    0.0237      Mg 2                7896.35A   23.675    0.0322
+H  1                9.38946m   22.777    0.0041      K  1                1.17729m   23.713    0.0352      Mg 2                1737.63A   22.550    0.0024
+H  1                8.66214m   22.822    0.0045      K  1                1.24323m   23.481    0.0206      Mg 2                4481.34A   23.854    0.0486
+H  1                8.15267m   22.850    0.0048      K  1                1.25222m   23.568    0.0251      Mg 2                4481.16A   22.750    0.0038
+H  1                7.77825m   22.864    0.0050      K  1                1.25261m   22.545    0.0024      Mg 2                4481.14A   23.893    0.0532
+H  1                7.49305m   22.869    0.0050      K  1                1.25393m   22.280    0.0013      Mg 2                3850.40A   22.342    0.0015
+H  1                7.26967m   22.858    0.0049      K  1                1.33778m   22.458    0.0020      Mg 2                2.13690m   22.186    0.0010
+H  1                7.09078m   22.850    0.0048      K  1                1.33971m   22.232    0.0012      Mg 2                3848.22A   22.592    0.0027
+H  1                6.94487m   22.839    0.0047      K  1                1.51631m   23.395    0.0169      N  2                2139.01A   22.230    0.0012
+H  1                6.82402m   22.826    0.0046      K  1                1.51684m   23.375    0.0161      N  2                2142.77A   22.558    0.0025
+H  1                14.1792m   22.246    0.0012      K  1                2.70666m   22.678    0.0032      N  2                1085.70A   23.284    0.0131
+H  1                12.5836m   22.388    0.0017      K  1                2.72047m   22.593    0.0027      N  2                1084.58A   22.775    0.0041
+H  1                11.5363m   22.459    0.0020      K  1                3.13841m   22.334    0.0015      N  2                1085.55A   22.844    0.0047
+H  1                10.8007m   22.491    0.0021      K  1                3.15930m   22.192    0.0011      N  2                1083.99A   22.624    0.0029
+H  1                10.2585m   22.514    0.0022      K  1                3.73459m   22.205    0.0011      N  2                1084.56A   22.466    0.0020
+H  1                9.84435m   22.527    0.0023      Li 1                6707.76A   23.155    0.0097      N  2                915.612A   22.227    0.0011
+H  1                9.51914m   22.531    0.0023      Li 1                6707.91A   22.914    0.0056      N  2                916.012A   22.500    0.0022
+H  1                9.25801m   22.528    0.0023      Mg 1                2025.82A   23.614    0.0280      N  2                916.701A   22.471    0.0020
+H  1                9.04450m   22.512    0.0022      Mg 1                2154.35A   23.096    0.0085      N  3                1749.67A   22.590    0.0026
+H  1                13.1844m   22.195    0.0011      Mg 1                2852.13A   24.710    0.3493      N  3                989.799A   22.550    0.0024
+H  1                12.6075m   22.205    0.0011      Mg 1                3829.35A   24.354    0.1538      N  3                991.511A   22.230    0.0012
+H  1                12.1535m   22.215    0.0011      Mg 1                3832.30A   23.899    0.0540      N  3                991.577A   22.893    0.0053
+H  1                11.7882m   22.219    0.0011      Mg 1                3832.30A   24.379    0.1628      N  3                685.817A   22.215    0.0011
+He 2                303.784A   23.088    0.0083      Mg 1                3838.29A   22.576    0.0026      level 1 lines..................................
+He-like iso-sequence...........................      Mg 1                3838.29A   24.453    0.1931      recombination..................................
+He 1                1.08291m   23.081    0.0082      Mg 1                3838.29A   23.704    0.0345      level2 lines...................................
+He 1                1.08303m   23.094    0.0084      Mg 1                4571.10A   23.986    0.0658      C  1                1247.50A   22.497    0.0021
+He 1                1.08303m   23.336    0.0147      Mg 1                5167.32A   24.568    0.2518      C  1                1314.77A   22.675    0.0032
+Blnd                1.08302m   23.664    0.0314      Mg 1                5172.68A   24.717    0.3547      N  2                634.441A   22.461    0.0020
+He 1                3888.64A   22.715    0.0035      Mg 1                5183.60A   24.713    0.3514      Mg 1                1817.31A   22.541    0.0024
+He 1                2.05813m   23.067    0.0079      Mg 1                8806.76A   24.586    0.2621      Si 1                1853.05A   23.442    0.0188
+He 1                5015.68A   22.517    0.0022      Mg 1                1.18282m   24.372    0.1602      Si 1                1693.70A   22.964    0.0063
+He 1                7065.18A   22.186    0.0010      Mg 1                1.50250m   24.277    0.1286      Si 1                1625.84A   22.632    0.0029
+Blnd                7065.25A   22.444    0.0019      Mg 1                1.50402m   24.239    0.1181      Si 1                1999.94A   23.329    0.0145
+He 1                5875.98A   22.240    0.0012      Mg 1                1.50477m   24.144    0.0949      Si 1                1590.89A   22.220    0.0011
+He 1                5875.64A   22.628    0.0029      Mg 1                1.71087m   24.107    0.0871      Si 1                1667.83A   22.505    0.0022
+He 1                5875.61A   22.849    0.0048      Mg 1                3.39620m   23.271    0.0127      Si 1                1834.15A   22.841    0.0047
+Blnd                5875.66A   23.115    0.0089      Mn 1                4033.06A   22.297    0.0013      Si 1                1767.93A   22.451    0.0019
+Blnd                4471.50A   22.380    0.0016      Mn 1                4034.48A   22.191    0.0011      Si 1                1681.82A   22.216    0.0011
+He 1                6678.15A   22.943    0.0060      Mn 2                2576.10A   24.006    0.0690      S  1                1356.05A   22.469    0.0020
+extra Lyman....................................      Mn 2                2593.72A   23.999    0.0679      S  2                750.323A   23.101    0.0086
+database lines.................................      Mn 2                2605.68A   23.978    0.0648      S  3                667.049A   23.186    0.0104
+Al 1                3092.71A   22.366    0.0016      Mn 2                3438.97A   23.024    0.0072      S  3                691.219A   22.438    0.0019
+Al 1                3944.01A   22.494    0.0021      Mn 2                3460.03A   22.968    0.0063      S  3                704.220A   22.661    0.0031
+Al 1                3961.52A   23.046    0.0076      Mn 2                4128.12A   23.027    0.0072      Fe 1                2484.25A   22.481    0.0021
+C  1                1560.31A   23.179    0.0103      Mn 2                4205.37A   22.654    0.0031      Fe 1                2526.51A   22.314    0.0014
+C  1                1560.68A   23.320    0.0142      N  1                1492.63A   22.466    0.0020      Fe 1                2729.74A   22.245    0.0012
+C  1                1560.71A   23.085    0.0083      N  1                1492.82A   22.509    0.0022      Ti 2                3364.74A   24.171    0.1009
+C  1                1561.34A   23.297    0.0135      N  1                1494.68A   22.374    0.0016      Ti 2                3237.15A   24.053    0.0768
+C  1                1561.37A   22.859    0.0049      N  1                1742.72A   22.463    0.0020      Ti 2                1904.17A   22.464    0.0020
+C  1                1561.44A   23.512    0.0221      N  1                1742.73A   23.058    0.0078      Ti 2                1907.36A   22.604    0.0027
+C  1                1613.38A   23.289    0.0132      N  1                1745.25A   22.947    0.0060      V  1                4867.05A   22.771    0.0040
+C  1                1613.80A   23.271    0.0127      N  1                1745.26A   22.683    0.0033      V  1                4589.11A   22.654    0.0031
+C  1                1614.51A   23.276    0.0128      N  1                7423.64A   22.704    0.0034      V  1                3879.74A   22.738    0.0037
+C  1                1656.27A   23.827    0.0457      N  1                7442.30A   22.970    0.0064      V  1                3838.18A   22.794    0.0042
+C  1                1656.93A   23.652    0.0306      N  1                7468.31A   23.129    0.0092      V  1                3185.86A   22.637    0.0030
+C  1                1657.01A   23.904    0.0545      N  1                8184.86A   23.061    0.0078      V  2                2710.94A   22.733    0.0037
+C  1                1657.38A   23.637    0.0295      N  1                8188.01A   23.055    0.0077      V  2                2684.22A   22.906    0.0055
+C  1                1657.91A   23.589    0.0264      N  1                8200.36A   22.436    0.0019      V  2                2139.33A   22.178    0.0010
+C  1                1658.12A   23.669    0.0318      N  1                8210.71A   22.748    0.0038      Cr 1                4269.56A   24.245    0.1196
+C  1                1930.90A   23.964    0.0626      N  1                8216.34A   23.348    0.0152      Cr 1                3589.90A   24.031    0.0731
+C  1                1992.01A   23.316    0.0141      N  1                8223.13A   23.099    0.0086      Cr 2                2059.78A   23.442    0.0188
+C  1                1993.62A   23.974    0.0640      N  1                8242.39A   23.099    0.0086      Mn 1                4032.42A   22.550    0.0024
+C  1                2478.56A   24.263    0.1246      N  1                8567.74A   22.480    0.0021      Mn 1                2797.32A   22.231    0.0012
+C  1                2582.90A   23.752    0.0384      N  1                8594.00A   22.792    0.0042      Co 1                3565.84A   23.304    0.0137
+C  1                2967.21A   22.225    0.0011      N  1                8629.24A   23.076    0.0081      Co 1                3438.64A   23.181    0.0103
+C  1                8727.13A   22.610    0.0028      N  1                8655.88A   22.535    0.0023      Co 2                2060.90A   22.906    0.0055
+C  1                1.06853m   24.523    0.2271      N  1                8680.28A   23.578    0.0257      Co 2                2018.80A   22.845    0.0048
+C  1                1.07073m   24.441    0.1878      N  1                8683.40A   23.398    0.0170      Co 2                1949.74A   22.729    0.0036
+C  1                1.07540m   23.935    0.0586      N  1                8686.15A   23.120    0.0090      Ni 2                1751.83A   22.574    0.0026
+C  1                1.17299m   22.273    0.0013      N  1                8703.25A   23.100    0.0086      Ni 2                1744.24A   22.673    0.0032
+C  1                1.17564m   23.248    0.0120      N  1                8711.70A   23.153    0.0097      Zn 1                2138.57A   23.420    0.0179
+C  1                1.29706m   22.906    0.0055      N  1                8718.84A   23.085    0.0083      hyperfine structure............................
+C  1                1.45425m   24.392    0.1677      N  1                8728.90A   22.456    0.0019      inner shell....................................
+C  1                1.78534m   22.969    0.0063      N  1                8747.37A   22.183    0.0010      molecules......................................
+C  1                1.78570m   22.617    0.0028      N  1                9028.92A   22.265    0.0013      bands..........................................
+C  2                858.092A   22.382    0.0016      N  1                9060.48A   22.555    0.0024      Fe 2b               2500.00A   25.569    2.5207
+C  2                858.559A   22.354    0.0015      N  1                9386.80A   23.112    0.0088      Fe 2b               5000.00A   24.689    0.3328
+C  2                903.623A   22.967    0.0063      N  1                9392.79A   23.289    0.0132      Fe 2b               7000.00A   23.260    0.0124
+C  2                903.962A   22.755    0.0039      N  1                9460.68A   22.485    0.0021      Fe 2b               2355.00A   25.174    1.0162
+C  2                904.142A   23.146    0.0095      N  1                9863.33A   22.242    0.0012      Fe 2b               2430.00A   25.464    1.9807
+C  2                904.480A   22.716    0.0035      N  1                1.01051m   22.369    0.0016      Fe 2b               2445.00A   25.462    1.9699
+C  2                1036.34A   23.248    0.0120      N  1                1.01089m   22.569    0.0025      Fe 2b               2495.00A   24.343    0.1498
+C  2                1037.02A   23.202    0.0108      N  1                1.01125m   22.744    0.0038      Fe 2b               2610.00A   25.024    0.7190
+C  2                1334.53A   23.978    0.0646      N  1                1.01146m   22.896    0.0054      Fe 2b               2695.00A   23.283    0.0131
+C  2                1335.66A   24.072    0.0803      N  1                1.05070m   22.178    0.0010      Fe 2b               2758.00A   24.514    0.2220
+C  2                1335.71A   24.462    0.1972      N  1                1.05396m   22.586    0.0026      Fe 2b               2780.00A   24.667    0.3164
+C  2                2324.69A   22.547    0.0024      N  1                1.12917m   22.333    0.0015      Fe 2b               2797.00A   22.484    0.0021
+C  2                2325.40A   22.890    0.0053      N  1                1.15661m   22.190    0.0011      Fe 2b               2840.00A   23.713    0.0352
+C  2                2328.12A   22.598    0.0027      N  1                1.24613m   22.329    0.0015      Fe 2b               2935.00A   24.575    0.2556
+C  3                1908.73A   23.532    0.0232      N  1                1.24696m   22.551    0.0024      Fe 2b               2960.00A   24.491    0.2105
+C  3                977.020A   24.119    0.0895      N  1                1.34296m   22.516    0.0022      Fe 2b               3180.00A   24.399    0.1704
+C  3                1175.26A   22.642    0.0030      N  1                1.35813m   22.748    0.0038      Fe 2b               3250.00A   24.398    0.1702
+C  3                1175.99A   22.620    0.0028      N  1                1.47571m   22.429    0.0018      Fe 2b               3590.00A   23.354    0.0154
+C  3                1175.59A   22.651    0.0030      Na 1                2852.81A   24.034    0.0736      Fe 2b               3910.00A   23.348    0.0152
+C  3                1174.93A   23.045    0.0076      Na 1                2853.01A   23.905    0.0547      Fe 2b               4255.00A   23.879    0.0515
+C  3                1176.37A   22.655    0.0031      Na 1                3302.37A   24.471    0.2013      Fe 2b               4558.00A   24.073    0.0806
+C  3                1175.71A   23.021    0.0071      Na 1                3302.98A   24.385    0.1651      Fe 2b               4600.00A   24.097    0.0851
+C  3                2296.87A   22.209    0.0011      Na 1                5682.63A   24.585    0.2620      Fe 2b               4743.00A   22.853    0.0048
+Ca 1                4226.73A   23.682    0.0327      Na 1                5688.19A   23.598    0.0270      Fe 2b               4855.00A   22.704    0.0034
+Ca 1                6102.72A   22.208    0.0011      Na 1                5688.20A   24.551    0.2417      Fe 2b               4920.00A   24.118    0.0893
+Ca 1                6122.22A   22.509    0.0022      Na 1                5889.95A   24.902    0.5433      Fe 2b               4975.00A   24.100    0.0856
+Ca 1                6162.17A   22.559    0.0025      Na 1                5895.92A   24.955    0.6132      Fe 2b               4971.00A   22.652    0.0031
+Ca 1                6439.08A   22.895    0.0053      Na 1                6154.23A   24.371    0.1598      Fe 2b               5143.00A   23.865    0.0499
+Ca 1                6449.81A   22.323    0.0014      Na 1                6160.75A   24.460    0.1961      Fe 2b               5270.00A   24.175    0.1019
+Ca 1                6462.57A   22.823    0.0045      Na 1                8183.26A   24.494    0.2122      Fe 2b               5318.00A   23.883    0.0520
+Ca 1                6471.66A   22.203    0.0011      Na 1                8194.79A   23.582    0.0260      Fe 2b               5540.00A   22.943    0.0060
+Ca 1                6493.78A   22.640    0.0030      Na 1                8194.82A   24.344    0.1502      Fe 2b               5865.00A   22.625    0.0029
+Ca 1                6499.65A   22.308    0.0014      Na 1                1.07464m   23.937    0.0589      Fe 2b               6265.00A   22.560    0.0025
+Cu 1                3247.54A   23.147    0.0095      Na 1                1.07493m   23.792    0.0422      Fe 2b               6565.00A   22.869    0.0050
+Cu 1                3273.95A   23.107    0.0087      Na 1                1.13814m   24.323    0.1431      Fe 2b               7445.00A   22.780    0.0041
+Cu 1                5105.55A   22.834    0.0046      Na 1                1.14038m   24.252    0.1216      miscellaneous..................................
+Cu 1                5700.24A   22.679    0.0032      Na 1                1.70311m   22.267    0.0013      Blnd                1400.00A   22.505    0.0022
+Cu 1                5782.13A   22.764    0.0039      Na 1                1.84653m   23.509    0.0220      Blnd                1650.00A   22.634    0.0029
+Fe 2                2599.40A   23.968    0.0632      Na 1                1.84653m   22.219    0.0011      Blnd                8446.00A   24.326    0.1442
+Fe 2                2585.88A   23.936    0.0587      Na 1                1.84655m   23.401    0.0171      Blnd                1304.00A   24.116    0.0888
+Fe 2                2382.04A   23.891    0.0530      Na 1                2.20565m   23.473    0.0202      Blnd                4368.00A   22.957    0.0062
+Fe 2                2373.74A   23.784    0.0414      Na 1                2.20837m   23.487    0.0209      Blnd                1.31000m   23.576    0.0256
+Fe 2                2366.87A   23.167    0.0100      Na 1                2.33484m   23.408    0.0174      Blnd                1.13000m   24.202    0.1083
+Fe 2                2343.50A   23.568    0.0252      Na 1                2.33791m   23.391    0.0167      Blnd                2.90000m   22.736    0.0037
+Fe 2                2260.08A   23.650    0.0304      Na 1                2.33790m   23.112    0.0088      Blnd                2798.00A   25.558    2.4610
+Fe 2                2249.18A   23.566    0.0250      Na 1                3.40776m   22.903    0.0054      Blnd                1256.00A   23.642    0.0299
+Fe 2                2233.75A   23.051    0.0076      Na 1                3.41426m   22.917    0.0056      Blnd                1198.00A   23.513    0.0222
+Fe 2                2625.67A   24.279    0.1295      Na 1                5.42688m   22.277    0.0013      Blnd                1720.00A   23.002    0.0068
+Fe 2                2611.87A   24.360    0.1560      Na 1                5.43417m   22.243    0.0012      Blnd                5892.00A   25.230    1.1565
+Fe 2                2598.37A   24.300    0.1359      O  1                1302.17A   23.693    0.0336      Blnd                2665.00A   23.231    0.0116
+Fe 2                2395.63A   24.391    0.1673      O  1                1304.86A   23.653    0.0306      Blnd                2335.00A   23.630    0.0291
+Fe 2                2388.63A   24.118    0.0893      O  1                1306.03A   23.559    0.0247      Blnd                1888.00A   23.410    0.0175
+Fe 2                2383.06A   23.778    0.0408      O  1                1355.60A   22.562    0.0025      Blnd                1397.00A   22.492    0.0021
+Fe 2                2364.83A   23.961    0.0622      O  1                1358.51A   22.232    0.0012      Blnd                8579.00A   24.268    0.1262
+Fe 2                2332.80A   24.138    0.0934      O  1                1641.31A   22.672    0.0032      Blnd                3933.00A   24.639    0.2961
+Fe 2                2279.92A   23.710    0.0349      O  1                3947.29A   22.560    0.0025      Blnd                1657.00A   24.506    0.2184
+Fe 2                2268.82A   23.350    0.0152      O  1                3947.48A   22.400    0.0017      Blnd                2326.00A   23.218    0.0112
+Fe 2                2253.13A   23.576    0.0257      O  1                3947.59A   22.177    0.0010      Blnd                1335.00A   24.701    0.3422
+Fe 2                2631.32A   24.259    0.1235      O  1                4368.19A   22.177    0.0010      Blnd                1909.00A   23.532    0.0232
+Fe 2                2617.62A   24.153    0.0967      O  1                4368.24A   22.616    0.0028      Blnd                1176.00A   23.593    0.0266
+Fe 2                2607.09A   24.247    0.1201      O  1                4368.26A   22.534    0.0023      Blnd                1549.00A   22.396    0.0017
+Fe 2                2404.89A   24.261    0.1241      O  1                5577.34A   22.218    0.0011      Blnd                1085.00A   23.601    0.0272
+Fe 2                2399.24A   24.085    0.0827      O  1                7771.94A   24.177    0.1023      Blnd                2141.00A   22.726    0.0036
+Fe 2                2395.42A   23.766    0.0397      O  1                7774.17A   24.119    0.0895      Blnd                1750.00A   22.857    0.0049
+Fe 2                2380.76A   23.892    0.0531      O  1                7775.39A   24.018    0.0709      Blnd                990.000A   23.116    0.0089
+Fe 2                2348.30A   24.128    0.0915      O  1                8446.25A   23.821    0.0450      Blnd                6300.00A   22.213    0.0011
+Fe 2                2327.40A   23.750    0.0383      O  1                8446.36A   23.827    0.0457      Blnd                833.000A   23.760    0.0391
+Fe 2                2283.49A   23.206    0.0109      O  1                8446.76A   23.895    0.0535      Blnd                1666.00A   22.625    0.0029
+Fe 2                2267.59A   23.582    0.0260      O  1                9260.81A   22.989    0.0066      Blnd                835.000A   22.978    0.0065
+Fe 2                2631.05A   24.218    0.1124      O  1                9260.85A   23.285    0.0131      C 1R                1656.00A   22.268    0.0013
+Fe 2                2620.41A   23.938    0.0591      O  1                9260.94A   23.224    0.0114
+
+
+
+ - nugget in hydrostatic equilibrium  
+ Cooling:  H  1c                     0 :0.577 H-FB                      0 :0.243 H2+                       0 :0.124  
+ Heating:  extH                      0 :0.880 H- H                      0 :0.114  
+
+ These are some of the most important databases used by Cloudy:
+ Many recombination coefficients were taken from http://amdpp.phys.strath.ac.uk/tamoc/RR/ and http://amdpp.phys.strath.ac.uk/tamoc/DR/
+      and are based on the following papers:
+        Badnell N. R., et al., A&A 406, 1151 (2003) [http://adsabs.harvard.edu/abs/2003A%26A...406.1151B]
+        Badnell N. R., ApJS 167, 334 (2006) [http://adsabs.harvard.edu/abs/2006ApJS..167..334B]
+ Much of the molecular emission data is from LAMDA as accessed on June 30, 2015. This database is described in:
+        Schoeier F.L., et al., A&A 432, 369 (2005) [http://adsabs.harvard.edu/abs/2005A%26A...432..369S]
+      This database is in part based on the work of the following groups:
+        JPL: Pickett H. M. et al., JQSRT, 60, 883 (1998). [http://adsabs.harvard.edu/abs/1998JQSRT..60..883P]
+        CDMS: Mueller H. S. et al., A&A 370, L49 (2001). [http://adsabs.harvard.edu/abs/2001A%26A...370L..49M]
+              Mueller H. S. et al., J. Mol. Struct. 742, 215 (2005). [http://adsabs.harvard.edu/abs/2005JMoSt.742..215M]
+ Some of the ionic emission data is from version 10.0.1 of CHIANTI. CHIANTI is a collaborative project involving the NRL (USA), the
+      Universities of Florence (Italy) and Cambridge (UK), and George Mason University (USA). These papers describe Chianti:
+        Dere K. P., et al., A&AS, 125, 149 (1997) [http://adsabs.harvard.edu/abs/1997A%26AS..125..149D]
+        Landi E., et al., ApJ, 744, 99 (2012) [http://adsabs.harvard.edu/abs/2012ApJ...744...99L]
+ Much of the H_2 data is from this web site: http://molat.obspm.fr/index.php?page=pages/Molecules/H2/H2can94.php. These data are
+      described in:
+        Abgrall H. et al., Can. J. Phys., 72, 856 (1994) [http://adsabs.harvard.edu/abs/1994CaJPh..72..856A]
+        Wrathmall S. A. & Flower D. R., J. Phys. B, 40, 3221 (2007) [http://adsabs.harvard.edu/abs/2007JPhB...40.3221W]
+ The Case A and Case B recombination predictions for one-electron systems are from
+	Storey, P.J. & Hummer, D.G., 1995, MNRAS 272, 41 http://adsabs.harvard.edu/abs/1995MNRAS.272...41S
+ The He I recombination predictions are from
+	Porter, R. L.; Ferland, G. J.; Storey, P. J.; Detisch, M. J., 2012, MNRAS, 425, 28p http://adsabs.harvard.edu/abs/2012MNRAS.425L..28P
+		http://adsabs.harvard.edu/abs/2013MNRAS.433L..89P
+
+ If you find some process or data set to be particularly critical to a result, please follow the trail of references back to the
+ original source and cite that.  This will support and encourage atomic, molecular, and chemical physicists to continue their
+ valuable work.
+
+ IONIZE PARMET:  U(1-)-37.0000  U(4-):-37.0000  U(sp):-37.00  Q(ion):   34.980  L(ion) 24.409    Q(low): 40.485    L(low) 28.778
+ ENERGY BUDGET:  Heat:  29.235  Coolg:  29.235  Error:  0.0%  Rec Lin:  24.191  F-F  H  0.000    P(rad/tot)max     2.73E-01    R(F Con):1.737e+05
+
+     Col(Heff):      2.481E+24  snd travl time  9.88E+02 sec  Te-low: 6.59E+03  Te-hi: 7.95E+04  G0TH85: 0.00E+00  G0DB96:0.00E+00
+  Emiss Measure    n(e)n(p) dl       1.361E+35  n(e)n(He+)dl         6.779E+28  En(e)n(He++) dl         1.884E+25  ne nC+:6.90E+30
+ He/Ha:1.07E-02  =   0.11*true  Lthin:2.13E-11  itr/zn:12.43  H2 itr/zn:  0.00  File Opacity: F  MassTot 1.12e+18  (gm)
+   Temps(21 cm)   T(21cm/Ly a)  1.60E+16        T(<nH/Tkin>)  6.70E+03          T(<nH/Tspin>)    6.71E+03          TB21cm:0.00E+00
+                   N(H0/Tspin)  5.85E+20        N(OH/Tkin)    3.91E+11          B(21cm)          0.00E+00
+   <a>:6.82E-01  erdeFe0.0E+00  Tcompt1.71E-03  Tthr1.18E+02  <Tden>: 6.70E+03  <dens>:8.36E-09  <MolWgt>1.28E+00
+     Mean Jeans  l(cm)1.33E+17  M(sun)1.48E+03  smallest:     len(cm):1.63E+13  M(sun):8.60E-02  a_ox tran:  0.00
+ Rion:1.000E+06  Dist:0.00E+00  Diam:0.000E+00
+ Hatom level 70  HatomType: add  HInducImp  F  He tot level: 63  He2 level:   70  ExecTime  2028.7
+ ConvrgError(%)  <eden>  0.169  MaxEden  0.955  <H-C>   0.16  Max(H-C)    0.50  <Press>   0.436  MaxPrs er  1.010
+  Continuity(%)  chng Te  58.3  elec den  48.8  n(H2)    0.0  n(CO)        6.7
+
+                                                        Averaged Quantities
+             Te      Te(Ne)   Te(NeNp)  Te(NeHe+)Te(NeHe2+) Te(NeO+)  Te(NeO2+)  Te(H2)     N(H)     Ne(O2+)   Ne(Np)
+ Radius:  2.58e+04  6.92e+03  6.77e+03  2.05e+04  5.90e+04  6.77e+03  4.05e+04  6.66e+03  3.56e+15  5.79e+09  2.05e+13
+   Area:  3.73e+04  7.27e+03  6.92e+03  2.09e+04  6.01e+04  6.92e+03  4.15e+04  6.72e+03  5.04e+14  5.37e+09  1.46e+13
+ Volume:  4.47e+04  7.77e+03  7.05e+03  2.13e+04  6.12e+04  7.06e+03  4.25e+04  6.77e+03  8.46e+13  4.97e+09  1.08e+13
+
+ Contin Optical Depths: COMP: 4.46e-03    H-: 1.58e+00 R(1300): 2.63e+01  H2+: 2.56e-02  Bra:1.16E+01
+                          Pa: 2.70e+00    Ba: 2.47e+00      Hb: 1.82e+00   La: 6.51e+04     1r:2.493E+07  1.8:7.72E+06 4.:1.159E+06
+
+ Old, new H  1 continuum optical depths:
+     1 2.49e+07     2 4.56e+00     3 2.92e+00     4 2.92e+00     5 2.92e+00     6 2.22e+00     7 2.22e+00     8 2.22e+00
+     9 2.22e+00    10 4.05e+00    11 4.05e+00    12 4.05e+00    13 4.05e+00    14 4.05e+00    15 7.98e+00    16 7.98e+00
+    17 7.98e+00    18 7.98e+00    19 7.98e+00    20 7.98e+00    21 1.39e+01    22 1.39e+01    23 1.39e+01    24 1.39e+01
+    25 1.39e+01    26 1.39e+01    27 1.39e+01    28 2.25e+01    29 2.25e+01    30 2.25e+01    31 2.25e+01    32 2.25e+01
+    33 2.25e+01    34 2.25e+01    35 2.25e+01    36 3.43e+01    37 3.43e+01    38 3.43e+01    39 3.43e+01    40 3.43e+01
+    41 3.43e+01    42 3.43e+01    43 3.43e+01    44 3.43e+01    45 4.96e+01    46 4.96e+01    47 4.96e+01    48 4.96e+01
+    49 4.96e+01    50 4.96e+01    51 4.96e+01    52 4.96e+01    53 4.96e+01    54 4.96e+01
+     1 2.49e+07     2 4.56e+00     3 2.92e+00     4 2.92e+00     5 2.92e+00     6 2.22e+00     7 2.22e+00     8 2.22e+00
+     9 2.22e+00    10 4.05e+00    11 4.05e+00    12 4.05e+00    13 4.05e+00    14 4.05e+00    15 7.98e+00    16 7.98e+00
+    17 7.98e+00    18 7.98e+00    19 7.98e+00    20 7.98e+00    21 1.39e+01    22 1.39e+01    23 1.39e+01    24 1.39e+01
+    25 1.39e+01    26 1.39e+01    27 1.39e+01    28 2.25e+01    29 2.25e+01    30 2.25e+01    31 2.25e+01    32 2.25e+01
+    33 2.25e+01    34 2.25e+01    35 2.25e+01    36 3.43e+01    37 3.43e+01    38 3.43e+01    39 3.43e+01    40 3.43e+01
+    41 3.43e+01    42 3.43e+01    43 3.43e+01    44 3.43e+01    45 4.96e+01    46 4.96e+01    47 4.96e+01    48 4.96e+01
+    49 4.96e+01    50 4.96e+01    51 4.96e+01    52 4.96e+01    53 4.96e+01    54 4.96e+01
+
+ Old, new H  1 mean line optical depths:
+  2- 1 5.01e+11  3- 2 2.45e+05  4- 3 4.26e+04  5- 4 3.40e+04  6- 5 4.23e+04  7- 6 5.09e+04  8- 7 6.66e+04
+  9- 8 8.78e+04 10- 9 1.15e+05 11-10 1.48e+05 12-11 1.87e+05 13-12 2.34e+05 14-13 2.89e+05 15-14 3.52e+05 16-15 4.24e+05
+ 17-16 5.06e+05 18-17 5.98e+05 19-18 7.01e+05 20-19 8.15e+05 21-20 9.42e+05 22-21 1.08e+06 23-22 1.23e+06 24-23 1.33e+06
+ 25-24 8.90e+05
+  2- 1 5.01e+11  3- 2 2.45e+05  4- 3 4.26e+04  5- 4 3.39e+04  6- 5 4.23e+04  7- 6 5.09e+04  8- 7 6.66e+04
+  9- 8 8.78e+04 10- 9 1.15e+05 11-10 1.48e+05 12-11 1.87e+05 13-12 2.34e+05 14-13 2.89e+05 15-14 3.52e+05 16-15 4.24e+05
+ 17-16 5.06e+05 18-17 5.98e+05 19-18 7.01e+05 20-19 8.15e+05 21-20 9.42e+05 22-21 1.08e+06 23-22 1.23e+06 24-23 1.32e+06
+ 25-24 8.89e+05
+
+ Old, new He 2 continuum optical depths:
+     1 1.16e+06     2 2.48e+07     3 1.25e+00     4 1.25e+00     5 1.25e+00     6 4.56e+00     7 4.56e+00     8 4.56e+00
+     9 4.56e+00    10 2.14e+00    11 2.14e+00    12 2.14e+00    13 2.14e+00    14 2.14e+00    15 2.92e+00    16 2.92e+00
+    17 2.92e+00    18 2.92e+00    19 2.92e+00    20 2.92e+00    21 2.59e+00    22 2.59e+00    23 2.59e+00    24 2.59e+00
+    25 2.59e+00    26 2.59e+00    27 2.59e+00    28 2.22e+00    29 2.22e+00    30 2.22e+00    31 2.22e+00    32 2.22e+00
+    33 2.22e+00    34 2.22e+00    35 2.22e+00    36 2.60e+00    37 2.60e+00    38 2.60e+00    39 2.60e+00    40 2.60e+00
+    41 2.60e+00    42 2.60e+00    43 2.60e+00    44 2.60e+00    45 4.05e+00    46 4.05e+00    47 4.05e+00    48 4.05e+00
+    49 4.05e+00    50 4.05e+00    51 4.05e+00    52 4.05e+00    53 4.05e+00    54 4.05e+00
+     1 1.16e+06     2 2.48e+07     3 1.25e+00     4 1.25e+00     5 1.25e+00     6 4.56e+00     7 4.56e+00     8 4.56e+00
+     9 4.56e+00    10 2.14e+00    11 2.14e+00    12 2.14e+00    13 2.14e+00    14 2.14e+00    15 2.92e+00    16 2.92e+00
+    17 2.92e+00    18 2.92e+00    19 2.92e+00    20 2.92e+00    21 2.59e+00    22 2.59e+00    23 2.59e+00    24 2.59e+00
+    25 2.59e+00    26 2.59e+00    27 2.59e+00    28 2.22e+00    29 2.22e+00    30 2.22e+00    31 2.22e+00    32 2.22e+00
+    33 2.22e+00    34 2.22e+00    35 2.22e+00    36 2.60e+00    37 2.60e+00    38 2.60e+00    39 2.60e+00    40 2.60e+00
+    41 2.60e+00    42 2.60e+00    43 2.60e+00    44 2.60e+00    45 4.05e+00    46 4.05e+00    47 4.05e+00    48 4.05e+00
+    49 4.05e+00    50 4.05e+00    51 4.05e+00    52 4.05e+00    53 4.05e+00    54 4.05e+00
+
+ Old, new He 2 mean line optical depths:
+  2- 1 5.87e+04  3- 2 5.47e-04  4- 3 1.76e-08  5- 4-2.42e-09  6- 5-1.52e-08  7- 6-3.68e-08  8- 7-7.85e-08
+  9- 8 8.73e-08 10- 9-3.74e-07 11-10-1.31e-08 12-11-2.81e-06 13-12-5.17e-06 14-13-9.91e-06 15-14-1.46e-05 16-15-2.18e-05
+ 17-16-2.47e-05 18-17-2.25e-05 19-18-9.31e-06 20-19 1.67e-05 21-20 6.52e-05 22-21 1.36e-04 23-22 2.42e-04 24-23 4.06e-04
+ 25-24 7.86e-04
+  2- 1 3.47e+04  3- 2 2.43e-04  4- 3 1.18e-08  5- 4-1.36e-09  6- 5-9.33e-09  7- 6-2.25e-08  8- 7-4.80e-08
+  9- 8-2.96e-08 10- 9-2.29e-07 11-10 3.91e-08 12-11-1.73e-06 13-12-3.12e-06 14-13-6.13e-06 15-14-9.02e-06 16-15-1.37e-05
+ 17-16-1.58e-05 18-17-1.48e-05 19-18-7.48e-06 20-19 7.87e-06 21-20 3.75e-05 22-21 8.14e-05 23-22 1.48e-04 24-23 2.53e-04
+ 25-24 4.96e-04
+
+ Old He Is optical depths:    1 7.72e+06    2 2.09e+00    3 3.18e+00    4 3.93e+00    5 3.93e+00
+ New He Is optical depths:    1 7.72e+06    2 2.09e+00    3 3.18e+00    4 3.93e+00    5 3.93e+00
+          Old He Is Lines:  584 3.12e+10 3889 7.58e-01 5016 1.86e-01 5876 2.87e-01
+          New He Is Lines:  584 3.12e+10 3889 5.86e-01 5016 1.35e-01 5876 1.62e-01
+
+==== H      compounds ====           Log10 column densities [cm^-2]
+   H2        : 18.387   H2*       : 17.609   H2+       : 15.564   H3+       : 11.078
+==== He     compounds ====
+   HeH+      : 14.590
+==== Li     compounds ====
+   LiH       :  6.800   LiH+      :  4.795
+==== C      compounds ====
+   CH        : 14.923   CH+       : 12.659   CH2       :  9.642   CH2+      :  7.909   CH3       :  3.783   CH3+      :  2.542
+   CH4       : -0.585   CH4+      : -2.345   CH5+      : -9.159   C2        : 13.032   C2+       : 11.726   C2H       :  8.192
+   C2H+      :  7.136   C2H2      :  2.455   C2H2+     :  2.061   C2H3+     : -5.487   C3        :  1.139   C3+       :  4.748
+   C3H       :  0.653   C3H+      :  0.321
+==== N      compounds ====
+   NH        : 16.075   NH+       : 15.369   NH2       : 12.729   NH2+      : 10.592   NH3       : 12.034   NH3+      :  8.322
+   NH4+      :  4.306   CN        : 15.705   CN+       :  8.826   HCN       : 11.007   HCN+      :  9.945   HNC       :  7.001
+   HCNH+     :  4.923   HC3N      :  0.359   N2        : 18.107   N2+       : 12.266   N2H+      :  6.419
+==== O      compounds ====
+   OH        : 15.416   OH+       : 14.997   H2O       :  9.381   H2O+      :  9.959   H3O+      :  4.815   CO        : 19.701
+   CO+       : 12.491   HCO+      : 12.593   H2CO      :  7.460   NO        : 17.351   NO+       : 13.725   HNO       :  9.780
+   HNO+      :  9.423   OCN       :  6.871   OCN+      : 11.552   N2O       : 13.750   O2        : 11.436   O2+       : 12.945
+   NO2       : 13.357   NO2+      :  5.752
+==== F      compounds ====
+   HF        : 15.947   HF+       :  1.991   H2F+      :  3.645   CF+       : 11.188
+==== Ne     compounds ====
+   NeH+      : 12.759
+==== Si     compounds ====
+   SiH       :  6.352   SiH2+     :  5.086   SiN       :  4.399   SiN+      : 11.801   SiO       : 13.386   SiO+      : 11.243
+   SiOH+     :  6.981
+==== S      compounds ====
+   HS        : 16.329   HS+       : 14.079   CS        : 13.806   CS+       : 12.339   HCS+      :  8.611   NS        : 15.898
+   NS+       : 13.067   SO        : 17.266   SO+       : 14.181   OCS       : 15.138   OCS+      : 11.641   S2        : 16.134
+   S2+       : 12.963
+==== Cl     compounds ====
+   HCl       : 13.724   HCl+      : 12.654   H2Cl+     :  8.911   CCl       :-11.976   CCl+      :  2.948   H2CCl+    :-14.679
+   ClO       :-12.477   ClO+      :-18.457
+==== Ar     compounds ====
+   ArH+      : 12.742
+
+
+               1      2      3      4      5      6      7      8      9     10     11     12     13     14     15     16     17
+
+ Hydrogen   24.594 21.822 18.454 (H2)                Log10 Column density (cm^-2)
+ Helium     23.586 18.012 15.953
+ Lithium    13.133 14.298  6.423  0.366
+ Boron      14.527 13.127  7.643  7.633-30.000-30.000
+ Carbon     20.972 17.559 15.011 12.641 10.783-30.000-30.000
+ Nitrogen   20.490 17.628 14.361 12.306  8.813-30.000-30.000-30.000
+ Oxygen     21.080 18.219 14.478 12.525  8.909-30.000-30.000-30.000-30.000
+ Fluorine   16.844 11.367 10.260  7.788  3.988-30.000-30.000-30.000-30.000-30.000
+ Neon       20.685 15.111 13.537 11.532  7.575-30.000-30.000-30.000-30.000-30.000-30.000
+ Sodium     17.144 18.043 10.950  8.786  3.964-30.000-30.000-30.000-30.000-30.000-30.000-30.000
+ Magnesium  18.373 19.674 15.600 10.095  5.301-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000
+ Aluminium  14.556 17.494 11.247 10.821  4.350-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000
+ Silicon    18.748 18.834 13.971 12.530 10.911-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000
+ Phosphorus 15.417 17.797 11.988 10.761  8.472  6.740-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000
+ Sulphur    20.080 18.839 14.235 12.884 11.261  7.704-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000
+ Chlorine   15.628 17.590 11.757 10.385  8.201  5.200-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000
+-30.000
+ Argon      19.045 13.047 13.383 12.136 10.015  6.384-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000
+-30.000-30.000
+ Potassium  15.076 16.624 10.107  9.121  7.633  3.874-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000
+-30.000-30.000-30.000
+ Calcium    14.355 15.142 10.014  7.466  5.538  2.366-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000
+-30.000-30.000-30.000-30.000
+ Titanium   12.347 15.358  9.857  9.011  7.681  2.974-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000
+-30.000-30.000-30.000-30.000-30.000-30.000
+ Vanadium   14.399 14.155  9.051  7.999  7.203  5.140-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000
+-30.000-30.000-30.000-30.000-30.000-30.000-30.000
+ Chromium   16.465 16.007 12.327  9.958  9.037  6.891  2.678-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000
+-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000
+ Manganese  13.979 16.956 12.951 10.290  9.267  7.058  2.586-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000
+-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000
+ Iron       15.169 18.395 14.015 11.843 10.296  7.946  3.701-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000
+-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000
+ Cobalt     16.320 15.362 10.836  9.791  8.593  5.725-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000
+-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000
+ Nickel     13.945 16.854 11.278 10.254  8.751  6.021-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000
+-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000
+ Copper     15.664 15.110 10.214  9.166  7.426  4.663-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000
+-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000
+ Zinc       16.893 14.624 11.035 10.309  7.980  5.006-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000
+-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000-30.000
+ Exc state                  He[2] 12.226                 C+[2] 17.381                  C[1] 19.993                  C[2] 20.469
+                             C[3] 20.688                  O[1] 20.824                  O[2] 20.587                  O[3] 20.104
+                           Si+[1] 18.375                C+2[2] 13.496                C+2[3] 13.936                C+2[4] 14.195
+
+
+ Hydrogen   -0.003 -2.231 -6.114 (H2)                 Log10 Mean Ionisation (over volume)
+ Helium     -0.000 -3.957 -5.602
+ Lithium    -1.477 -0.015 -5.843-11.866
+ Boron      -0.044 -1.015 -5.076 -4.937
+ Carbon     -0.008 -2.756 -4.258 -6.302 -8.127
+ Nitrogen   -0.002 -2.312 -4.401 -6.141 -9.595
+ Oxygen     -0.007 -2.324 -4.713 -6.522-10.103
+ Fluorine   -0.011 -3.964 -4.722 -7.045-10.817
+ Neon       -0.000 -3.969 -5.148 -7.084-11.018
+ Sodium     -1.051 -0.040 -5.146 -7.237-12.034
+ Magnesium  -1.390 -0.018 -3.551 -7.525-12.296
+ Aluminium  -3.049 -0.000 -4.560 -4.752-11.054
+ Silicon    -0.316 -0.286 -3.853 -4.773 -6.118
+ Phosphorus -2.569 -0.001 -4.158 -5.071 -7.263 -8.972
+ Sulphur    -0.018 -1.391 -4.190 -5.247 -6.780-10.314
+ Chlorine   -2.458 -0.002 -4.165 -5.216 -7.328-10.308
+ Argon      -0.000 -4.519 -4.057 -4.943 -6.974-10.573
+ Potassium  -1.685 -0.009 -4.670 -5.486 -6.927-10.672
+ Calcium    -1.050 -0.041 -3.849 -5.701 -7.589-10.750
+ Titanium   -3.157 -0.000 -4.023 -4.519 -5.640-10.297
+ Vanadium   -0.263 -0.343 -3.983 -4.734 -5.366 -7.381
+ Chromium   -0.188 -0.455 -3.270 -4.751 -5.522 -7.623-11.820
+ Manganese  -3.152 -0.001 -3.263 -4.766 -5.647 -7.817-12.272
+ Iron       -3.406 -0.000 -3.527 -4.663 -6.044 -8.364-12.594
+ Cobalt     -0.071 -0.822 -3.974 -4.689 -5.730 -8.557
+ Nickel     -3.098 -0.000 -4.005 -4.700 -6.049 -8.748
+ Copper     -0.117 -0.628 -3.989 -4.699 -6.285 -9.021
+ Zinc       -0.012 -1.570 -4.234 -4.681 -6.851 -9.801
+
+               1      2      3      4      5      6      7      8      9     10     11     12     13     14     15     16     17
+
+ Hydrogen   -0.001 -2.497 -5.978 (H2)                 Log10 Mean Ionisation (over area)
+ Helium     -0.000 -4.672 -6.519
+ Lithium    -1.403 -0.017 -6.774-12.814
+ Boron      -0.027 -1.223 -5.891 -5.826
+ Carbon     -0.012 -3.097 -5.028 -7.229 -9.070
+ Nitrogen   -0.001 -2.580 -5.176 -7.066-10.539
+ Oxygen     -0.010 -2.595 -5.570 -7.449-11.047
+ Fluorine   -0.020 -4.650 -5.582 -7.977-11.763
+ Neon       -0.000 -4.676 -6.050 -8.020-11.965
+ Sodium     -1.000 -0.046 -6.047 -8.173-12.983
+ Magnesium  -1.366 -0.019 -3.862 -8.464-13.246
+ Aluminium  -3.021 -0.000 -5.308 -5.616-12.000
+ Silicon    -0.318 -0.285 -4.461 -5.577 -7.051
+ Phosphorus -2.540 -0.001 -4.890 -5.958 -8.196 -9.916
+ Sulphur    -0.019 -1.360 -4.936 -6.138 -7.713-11.258
+ Chlorine   -2.415 -0.002 -4.907 -6.115 -8.262-11.252
+ Argon      -0.000 -5.170 -4.764 -5.829 -7.903-11.518
+ Potassium  -1.626 -0.010 -5.503 -6.402 -7.866-11.618
+ Calcium    -0.990 -0.047 -4.498 -6.622 -8.530-11.696
+ Titanium   -3.121 -0.000 -4.686 -5.337 -6.560-11.241
+ Vanadium   -0.229 -0.388 -4.667 -5.568 -6.281 -8.319
+ Chromium   -0.155 -0.523 -3.727 -5.597 -6.441 -8.564-12.769
+ Manganese  -3.116 -0.000 -3.634 -5.619 -6.569 -8.759-13.222
+ Iron       -3.370 -0.000 -3.957 -5.511 -6.972 -9.307-13.545
+ Cobalt     -0.057 -0.909 -4.656 -5.535 -6.653 -9.499
+ Nickel     -3.066 -0.000 -4.694 -5.554 -6.977 -9.692
+ Copper     -0.111 -0.647 -4.677 -5.556 -7.216 -9.965
+ Zinc       -0.005 -1.917 -4.951 -5.537 -7.784-10.746
+
+               1      2      3      4      5      6      7      8      9     10     11     12     13     14     15     16     17
+
+ Hydrogen   -0.001 -2.773 -5.839 (H2)                 Log10 Mean Ionisation (over radius)
+ Helium     -0.000 -5.574 -7.633
+ Lithium    -1.194 -0.029 -7.904-13.962
+ Boron      -0.017 -1.417 -6.901 -6.911
+ Carbon     -0.023 -3.435 -5.983 -8.354-10.211
+ Nitrogen   -0.005 -2.867 -6.133 -8.189-11.681
+ Oxygen     -0.018 -2.879 -6.620 -8.574-12.190
+ Fluorine   -0.052 -5.529 -6.635 -9.108-12.908
+ Neon       -0.000 -5.574 -7.148 -9.153-13.110
+ Sodium     -0.951 -0.052 -7.145 -9.308-14.131
+ Magnesium  -1.323 -0.021 -4.095 -9.600-14.395
+ Aluminium  -2.939 -0.001 -6.248 -6.674-13.144
+ Silicon    -0.346 -0.260 -5.123 -6.565 -8.183
+ Phosphorus -2.382 -0.002 -5.810 -7.038 -9.326-11.059
+ Sulphur    -0.025 -1.266 -5.870 -7.221 -8.844-12.401
+ Chlorine   -1.967 -0.005 -5.838 -7.210 -9.393-12.395
+ Argon      -0.000 -5.998 -5.662 -6.909 -9.030-12.661
+ Potassium  -1.561 -0.012 -6.529 -7.515 -9.003-12.762
+ Calcium    -0.852 -0.066 -5.193 -7.741 -9.670-12.842
+ Titanium   -3.011 -0.000 -5.502 -6.347 -7.677-12.384
+ Vanadium   -0.196 -0.440 -5.543 -6.596 -7.392 -9.455
+ Chromium   -0.130 -0.588 -4.268 -6.637 -7.558 -9.703-13.916
+ Manganese  -2.978 -0.001 -4.005 -6.666 -7.689 -9.899-14.371
+ Iron       -3.226 -0.000 -4.380 -6.552 -8.099-10.449-14.694
+ Cobalt     -0.045 -1.004 -5.530 -6.575 -7.772-10.640
+ Nickel     -2.910 -0.001 -5.576 -6.601 -8.104-10.834
+ Copper     -0.107 -0.661 -5.557 -6.605 -8.345-11.108
+ Zinc       -0.002 -2.272 -5.861 -6.587 -8.916-11.890
+
+               1      2      3      4      5      6      7      8      9     10     11     12     13     14     15     16     17
+
+ Hydrogen   -0.001 -2.485 -6.038 (H2)         Log10 Mean Ionisation (over volume*electron density)
+ Helium     -0.000 -6.519 -9.601
+ Lithium    -1.454 -0.016 -9.947-16.066
+ Boron      -0.029 -1.190 -8.423 -8.766
+ Carbon     -0.009 -3.142 -7.159-10.370-12.297
+ Nitrogen   -0.001 -2.565 -7.280-10.198-13.769
+ Oxygen     -0.008 -2.584 -8.305-10.591-14.280
+ Fluorine   -0.014 -6.397 -8.332-11.150-15.003
+ Neon       -0.000 -6.509 -9.048-11.209-15.208
+ Sodium     -1.020 -0.044 -9.048-11.370-16.237
+ Magnesium  -1.375 -0.019 -3.905-11.667-16.503
+ Aluminium  -3.032 -0.000 -7.411 -8.390-15.240
+ Silicon    -0.306 -0.296 -4.970 -7.853-10.231
+ Phosphorus -2.552 -0.001 -6.855 -8.842-11.371-13.148
+ Sulphur    -0.017 -1.407 -6.976 -9.007-10.890-14.493
+ Chlorine   -2.437 -0.002 -6.935 -9.094-11.442-14.486
+ Argon      -0.000 -6.643 -6.606 -8.737-11.061-14.752
+ Potassium  -1.651 -0.010 -8.109 -9.487-11.072-14.859
+ Calcium    -1.024 -0.043 -5.193 -9.735-11.749-14.942
+ Titanium   -3.135 -0.000 -5.852 -7.840 -9.664-14.475
+ Vanadium   -0.241 -0.371 -6.402 -8.188 -9.359-11.521
+ Chromium   -0.165 -0.501 -3.863 -8.285 -9.546-11.781-16.021
+ Manganese  -3.130 -0.000 -3.695 -8.348 -9.690-11.980-16.479
+ Iron       -3.384 -0.000 -4.082 -8.195-10.125-12.535-16.804
+ Cobalt     -0.061 -0.886 -6.307 -8.218 -9.769-12.725
+ Nickel     -3.079 -0.000 -6.468 -8.276-10.131-12.922
+ Copper     -0.109 -0.653 -6.438 -8.291-10.381-13.197
+ Zinc       -0.005 -1.928 -6.899 -8.268-10.962-13.983
+
+               1      2      3      4      5      6      7      8      9     10     11     12     13     14     15     16     17
+
+ Hydrogen   -0.001 -2.681 -5.925 (H2)         Log10 Mean Ionisation (over area*electron density)
+ Helium     -0.000 -7.245-10.564
+ Lithium    -1.376 -0.019-10.936-17.076
+ Boron      -0.020 -1.355 -9.271 -9.700
+ Carbon     -0.013 -3.372 -7.924-11.350-13.301
+ Nitrogen   -0.001 -2.769 -8.035-11.175-14.774
+ Oxygen     -0.011 -2.785 -9.190-11.571-15.285
+ Fluorine   -0.025 -7.111 -9.220-12.139-16.010
+ Neon       -0.000 -7.234 -9.992-12.202-16.216
+ Sodium     -0.978 -0.048 -9.994-12.365-17.247
+ Magnesium  -1.356 -0.020 -4.029-12.664-17.514
+ Aluminium  -3.009 -0.000 -8.178 -9.283-16.247
+ Silicon    -0.320 -0.283 -5.267 -8.634-11.222
+ Phosphorus -2.528 -0.001 -7.600 -9.753-12.360-14.153
+ Sulphur    -0.020 -1.343 -7.731 -9.905-11.880-15.499
+ Chlorine   -2.402 -0.002 -7.689-10.032-12.433-15.491
+ Argon      -0.000 -7.051 -7.334 -9.660-12.045-15.757
+ Potassium  -1.600 -0.011 -8.968-10.453-12.070-15.866
+ Calcium    -0.967 -0.050 -5.427-10.706-12.750-15.950
+ Titanium   -3.105 -0.000 -6.157 -8.677-10.634-15.480
+ Vanadium   -0.213 -0.411 -7.104 -9.052-10.324-12.517
+ Chromium   -0.141 -0.558 -4.206 -9.162-10.518-12.782-17.031
+ Manganese  -3.101 -0.000 -3.926 -9.235-10.665-12.981-17.490
+ Iron       -3.355 -0.000 -4.322 -9.070-11.108-13.539-17.816
+ Cobalt     -0.051 -0.954 -6.949 -9.094-10.742-13.728
+ Nickel     -3.053 -0.000 -7.188 -9.160-11.114-13.926
+ Copper     -0.109 -0.654 -7.156 -9.177-11.368-14.202
+ Zinc       -0.003 -2.216 -7.647 -9.154-11.953-14.989
+
+               1      2      3      4      5      6      7      8      9     10     11     12     13     14     15     16     17
+
+ Hydrogen   -0.001 -2.868 -5.812 (H2)         Log10 Mean Ionisation (over radius*electron density)
+ Helium     -0.000 -8.162-11.718
+ Lithium    -1.167 -0.031-12.118-18.281
+ Boron      -0.015 -1.483-10.308-10.824
+ Carbon     -0.021 -3.563 -8.878-12.521-14.498
+ Nitrogen   -0.001 -2.968 -8.979-12.344-15.972
+ Oxygen     -0.017 -2.979-10.265-12.743-16.484
+ Fluorine   -0.054 -8.006-10.298-13.321-17.211
+ Neon       -0.000 -8.151-11.126-13.389-17.418
+ Sodium     -0.936 -0.053-11.130-13.554-18.452
+ Magnesium  -1.334 -0.021 -4.159-13.855-18.720
+ Aluminium  -2.981 -0.000 -9.134-10.366-17.448
+ Silicon    -0.357 -0.251 -5.528 -9.602-12.405
+ Phosphorus -2.502 -0.001 -8.534-10.852-13.542-15.352
+ Sulphur    -0.026 -1.244 -8.676-10.983-13.063-16.699
+ Chlorine   -2.353 -0.002 -8.633-11.159-13.617-16.691
+ Argon      -0.000 -7.209 -8.252-10.774-13.223-16.956
+ Potassium  -1.543 -0.013-10.017-11.611-13.262-17.068
+ Calcium    -0.830 -0.070 -5.656-11.870-13.945-17.152
+ Titanium   -3.075 -0.000 -6.406 -9.704-11.796-16.680
+ Vanadium   -0.185 -0.460 -7.945-10.104-11.481-13.708
+ Chromium   -0.120 -0.617 -4.584-10.229-11.681-13.976-18.236
+ Manganese  -3.071 -0.000 -4.150-10.311-11.832-14.177-18.696
+ Iron       -3.325 -0.000 -4.555-10.135-12.285-14.737-19.022
+ Cobalt     -0.041 -1.048 -7.673-10.160-11.907-14.926
+ Nickel     -3.025 -0.000 -8.101-10.234-12.290-15.124
+ Copper     -0.106 -0.663 -8.067-10.253-12.547-15.401
+ Zinc       -0.002 -2.449 -8.585-10.229-13.136-16.189
+
+               1      2      3      4      5      6      7      8      9     10     11     12     13     14     15     16     17
+
+ Hydrogen    3.837  3.888  3.830 (H2)                  Log10 Mean Temperature (over volume)
+ Helium      3.837  4.450  4.816
+ Lithium     3.835  3.838  4.847  4.891
+ Boron       3.836  3.855  4.604  4.756
+ Carbon      3.837  3.908  4.554  4.838  4.875
+ Nitrogen    3.837  3.879  4.572  4.834  4.876
+ Oxygen      3.837  3.885  4.697  4.838  4.878
+ Fluorine    3.838  4.376  4.703  4.849  4.882
+ Neon        3.837  4.427  4.783  4.855  4.884
+ Sodium      3.834  3.838  4.782  4.859  4.893
+ Magnesium   3.836  3.837  4.212  4.862  4.896
+ Aluminium   3.836  3.837  4.488  4.711  4.882
+ Silicon     3.836  3.839  4.332  4.622  4.852
+ Phosphorus  3.836  3.837  4.471  4.756  4.850  4.878
+ Sulphur     3.837  3.843  4.499  4.768  4.851  4.879
+ Chlorine    3.835  3.837  4.491  4.779  4.852  4.878
+ Argon       3.837  4.303  4.422  4.750  4.842  4.878
+ Potassium   3.834  3.838  4.647  4.812  4.863  4.883
+ Calcium     3.835  3.838  4.400  4.825  4.870  4.886
+ Titanium    3.835  3.837  4.343  4.624  4.821  4.878
+ Vanadium    3.835  3.840  4.368  4.648  4.808  4.861
+ Chromium    3.835  3.842  4.038  4.670  4.819  4.869  4.891
+ Manganese   3.835  3.837  4.030  4.684  4.826  4.871  4.896
+ Iron        3.835  3.837  4.120  4.678  4.840  4.875  4.898
+ Cobalt      3.836  3.844  4.366  4.673  4.826  4.874
+ Nickel      3.836  3.837  4.379  4.688  4.840  4.876
+ Copper      3.836  3.841  4.376  4.694  4.845  4.878
+ Zinc        3.836  3.869  4.428  4.694  4.852  4.880
+
+               1      2      3      4      5      6      7      8      9     10     11     12     13     14     15     16     17
+
+ Hydrogen    3.832  3.861  3.827 (H2)                  Log10 Mean Temperature (over area)
+ Helium      3.832  4.423  4.812
+ Lithium     3.830  3.832  4.845  4.891
+ Boron       3.831  3.846  4.597  4.750
+ Carbon      3.832  3.879  4.526  4.835  4.874
+ Nitrogen    3.832  3.858  4.539  4.831  4.876
+ Oxygen      3.832  3.861  4.686  4.835  4.877
+ Fluorine    3.832  4.362  4.691  4.847  4.882
+ Neon        3.832  4.406  4.777  4.854  4.884
+ Sodium      3.830  3.832  4.776  4.857  4.893
+ Magnesium   3.831  3.832  4.012  4.861  4.896
+ Aluminium   3.831  3.832  4.476  4.700  4.882
+ Silicon     3.832  3.832  4.257  4.593  4.850
+ Phosphorus  3.831  3.832  4.451  4.747  4.848  4.877
+ Sulphur     3.832  3.832  4.478  4.758  4.849  4.879
+ Chlorine    3.831  3.832  4.471  4.773  4.850  4.878
+ Argon       3.832  4.293  4.404  4.743  4.840  4.878
+ Potassium   3.830  3.832  4.636  4.808  4.862  4.883
+ Calcium     3.830  3.832  4.334  4.822  4.869  4.886
+ Titanium    3.831  3.832  4.326  4.610  4.818  4.878
+ Vanadium    3.831  3.834  4.356  4.638  4.804  4.860
+ Chromium    3.831  3.835  3.971  4.660  4.816  4.868  4.891
+ Manganese   3.831  3.832  3.943  4.675  4.823  4.870  4.896
+ Iron        3.831  3.832  4.016  4.667  4.837  4.875  4.898
+ Cobalt      3.831  3.837  4.353  4.662  4.823  4.873
+ Nickel      3.831  3.832  4.367  4.678  4.838  4.876
+ Copper      3.832  3.833  4.364  4.683  4.843  4.877
+ Zinc        3.832  3.861  4.418  4.683  4.850  4.880
+
+               1      2      3      4      5      6      7      8      9     10     11     12     13     14     15     16     17
+
+ Hydrogen    3.826  3.840  3.824 (H2)                  Log10 Mean Temperature (over radius)
+ Helium      3.826  4.399  4.808
+ Lithium     3.823  3.827  4.843  4.891
+ Boron       3.826  3.834  4.590  4.743
+ Carbon      3.827  3.848  4.501  4.832  4.874
+ Nitrogen    3.826  3.840  4.508  4.828  4.876
+ Oxygen      3.826  3.841  4.675  4.832  4.877
+ Fluorine    3.827  4.350  4.680  4.845  4.882
+ Neon        3.826  4.388  4.771  4.852  4.884
+ Sodium      3.825  3.827  4.771  4.856  4.893
+ Magnesium   3.826  3.826  3.873  4.860  4.896
+ Aluminium   3.826  3.826  4.464  4.689  4.881
+ Silicon     3.827  3.826  4.122  4.564  4.849
+ Phosphorus  3.826  3.826  4.432  4.737  4.846  4.877
+ Sulphur     3.826  3.825  4.458  4.746  4.847  4.878
+ Chlorine    3.827  3.826  4.452  4.766  4.848  4.878
+ Argon       3.826  4.273  4.388  4.735  4.838  4.877
+ Potassium   3.825  3.826  4.625  4.805  4.861  4.883
+ Calcium     3.824  3.827  4.191  4.818  4.868  4.885
+ Titanium    3.826  3.826  4.282  4.596  4.814  4.877
+ Vanadium    3.825  3.828  4.345  4.628  4.801  4.859
+ Chromium    3.826  3.828  3.908  4.651  4.813  4.867  4.891
+ Manganese   3.826  3.826  3.871  4.666  4.820  4.870  4.896
+ Iron        3.826  3.826  3.907  4.655  4.835  4.874  4.898
+ Cobalt      3.826  3.829  4.341  4.652  4.820  4.873
+ Nickel      3.826  3.826  4.356  4.667  4.836  4.875
+ Copper      3.826  3.827  4.353  4.672  4.841  4.877
+ Zinc        3.826  3.845  4.409  4.672  4.848  4.880
+
+               1      2      3      4      5      6      7      8      9     10     11     12     13     14     15     16     17
+
+ Hydrogen    3.834  3.848  3.829 (H2)          Log10 Mean Temperature (over volume*electron density)
+ Helium      3.834  4.328  4.786
+ Lithium     3.832  3.834  4.837  4.891
+ Boron       3.833  3.846  4.554  4.718
+ Carbon      3.834  3.854  4.410  4.819  4.872
+ Nitrogen    3.834  3.849  4.395  4.814  4.874
+ Oxygen      3.834  3.849  4.628  4.820  4.876
+ Fluorine    3.834  4.303  4.634  4.838  4.881
+ Neon        3.834  4.326  4.744  4.847  4.884
+ Sodium      3.832  3.834  4.746  4.852  4.893
+ Magnesium   3.833  3.834  3.844  4.856  4.895
+ Aluminium   3.833  3.834  4.410  4.644  4.881
+ Silicon     3.834  3.834  3.886  4.448  4.842
+ Phosphorus  3.833  3.834  4.365  4.689  4.839  4.876
+ Sulphur     3.834  3.834  4.388  4.677  4.840  4.878
+ Chlorine    3.833  3.834  4.385  4.734  4.842  4.877
+ Argon       3.834  4.187  4.330  4.702  4.829  4.877
+ Potassium   3.832  3.834  4.579  4.788  4.858  4.882
+ Calcium     3.832  3.834  3.900  4.803  4.866  4.885
+ Titanium    3.833  3.834  4.021  4.540  4.798  4.876
+ Vanadium    3.833  3.836  4.299  4.585  4.785  4.855
+ Chromium    3.833  3.837  3.864  4.611  4.799  4.865  4.891
+ Manganese   3.833  3.834  3.853  4.628  4.807  4.868  4.896
+ Iron        3.833  3.834  3.856  4.609  4.825  4.873  4.898
+ Cobalt      3.833  3.838  4.248  4.609  4.805  4.871
+ Nickel      3.833  3.834  4.313  4.624  4.826  4.874
+ Copper      3.834  3.835  4.309  4.629  4.833  4.876
+ Zinc        3.834  3.858  4.368  4.627  4.841  4.879
+
+               1      2      3      4      5      6      7      8      9     10     11     12     13     14     15     16     17
+
+ Hydrogen    3.830  3.840  3.826 (H2)          Log10 Mean Temperature (over area*electron density)
+ Helium      3.830  4.319  4.779
+ Lithium     3.827  3.830  4.835  4.891
+ Boron       3.829  3.838  4.545  4.712
+ Carbon      3.830  3.843  4.397  4.815  4.872
+ Nitrogen    3.830  3.840  4.379  4.809  4.874
+ Oxygen      3.830  3.840  4.618  4.815  4.875
+ Fluorine    3.830  4.296  4.624  4.835  4.881
+ Neon        3.830  4.318  4.736  4.845  4.883
+ Sodium      3.828  3.830  4.739  4.850  4.893
+ Magnesium   3.829  3.830  3.836  4.855  4.895
+ Aluminium   3.829  3.830  4.399  4.633  4.881
+ Silicon     3.830  3.829  3.859  4.429  4.839
+ Phosphorus  3.829  3.830  4.356  4.674  4.836  4.875
+ Sulphur     3.830  3.828  4.377  4.653  4.838  4.877
+ Chlorine    3.828  3.830  4.375  4.725  4.840  4.876
+ Argon       3.830  4.046  4.322  4.693  4.826  4.876
+ Potassium   3.828  3.830  4.569  4.783  4.857  4.882
+ Calcium     3.828  3.830  3.859  4.798  4.865  4.885
+ Titanium    3.829  3.830  3.917  4.529  4.793  4.876
+ Vanadium    3.829  3.831  4.284  4.575  4.780  4.854
+ Chromium    3.829  3.832  3.854  4.602  4.795  4.864  4.891
+ Manganese   3.829  3.830  3.843  4.619  4.803  4.867  4.896
+ Iron        3.829  3.830  3.845  4.598  4.822  4.872  4.898
+ Cobalt      3.829  3.832  4.200  4.599  4.800  4.871
+ Nickel      3.829  3.830  4.307  4.614  4.823  4.873
+ Copper      3.830  3.830  4.303  4.619  4.830  4.875
+ Zinc        3.830  3.848  4.362  4.617  4.838  4.879
+
+               1      2      3      4      5      6      7      8      9     10     11     12     13     14     15     16     17
+
+ Hydrogen    3.825  3.830  3.823 (H2)          Log10 Mean Temperature (over radius*electron density)
+ Helium      3.825  4.312  4.771
+ Lithium     3.822  3.825  4.832  4.891
+ Boron       3.825  3.829  4.535  4.705
+ Carbon      3.825  3.831  4.385  4.810  4.871
+ Nitrogen    3.825  3.831  4.366  4.804  4.873
+ Oxygen      3.825  3.831  4.607  4.811  4.875
+ Fluorine    3.825  4.282  4.613  4.832  4.881
+ Neon        3.825  4.312  4.727  4.844  4.883
+ Sodium      3.824  3.825  4.731  4.849  4.893
+ Magnesium   3.825  3.825  3.828  4.853  4.895
+ Aluminium   3.824  3.825  4.388  4.623  4.881
+ Silicon     3.826  3.824  3.837  4.413  4.837
+ Phosphorus  3.824  3.825  4.347  4.659  4.834  4.875
+ Sulphur     3.825  3.823  4.368  4.628  4.835  4.877
+ Chlorine    3.824  3.825  4.366  4.715  4.838  4.876
+ Argon       3.825  3.874  4.315  4.684  4.823  4.876
+ Potassium   3.824  3.825  4.559  4.778  4.856  4.882
+ Calcium     3.823  3.825  3.835  4.792  4.864  4.885
+ Titanium    3.824  3.825  3.850  4.518  4.788  4.876
+ Vanadium    3.824  3.826  4.237  4.565  4.775  4.853
+ Chromium    3.825  3.826  3.841  4.592  4.790  4.863  4.891
+ Manganese   3.824  3.825  3.832  4.610  4.799  4.866  4.896
+ Iron        3.824  3.825  3.833  4.588  4.819  4.872  4.898
+ Cobalt      3.825  3.827  4.103  4.590  4.795  4.870
+ Nickel      3.824  3.825  4.302  4.605  4.819  4.873
+ Copper      3.825  3.825  4.297  4.610  4.827  4.875
+ Zinc        3.825  3.833  4.355  4.607  4.836  4.878
+
+               1      2      3      4      5      6      7      8      9     10     11     12     13     14     15     16     17
+- nugget in hydrostatic equilibrium  
+
+---------------Convergence statistics---------------
+      2.25 mean iterations/state convergence
+      2.87 mean cx acceleration loops/iteration
+      1.04 mean iso convergence loops/ion solve
+      1.07 mean steps/chemistry solve
+      1.09 mean step length searches/chemistry step
+----------------------------------------------------
+
+ Cloudy ends: 1105 zones, 3 iterations, 9 cautions. (single thread) ExecTime(s) 2028.66
+ [Stop in cdMain at maincl.cpp:593, Cloudy exited OK]

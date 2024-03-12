@@ -1,0 +1,33 @@
+#this is a cloudy script for a nugget in hydro equil
+#-----------------------------------
+title - nugget in hydrostatic equilibrium
+#-------------------------------
+hextra -8.5 density
+CMB
+#--------------------
+sphere
+radius 0 10
+set dr 6
+hden 15.0
+#-----------------------------
+#composition
+abundances "ISM.abn" no grains
+#---------------------------
+constant pressure
+set pressure convergence 0.01
+set pressure ionize 20000
+gravity spherical
+gravity external 9.9e19 0.1 3
+#------------------
+stop temperature 4.9 exceeds
+iterate 3
+#--------------
+stop zone 10000
+print last iteration
+save continuum "m.con" units micron last
+save continuum "r.con" last
+save overview ".ovr" last
+save pressure ".prs" last
+save line list "line.txt" "LineList.dat"
+luminosity 0.0001 linear 
+blackbody t = 0.0001 K linear
