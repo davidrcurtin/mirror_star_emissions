@@ -1,0 +1,15 @@
+#!/bin/bash
+
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=40
+#SBATCH --job-name RunNumber1
+#SBATCH --time=24:00:00
+#SBATCH --output=scan%j.txt
+
+export OMP_NUM_THREADS=1
+DIR=$1
+
+module load NiaEnv/2019b gnu-parallel
+module load perl
+
+parallel --joblog slurm-$SLURM_JOBID.log "cd PATH_TO_SUBMITJOB.SH && ./SubmitCloudy.sh Nugget{} $DIR Nugget{}" ::: {1..NUMBER_OF_INSCRIPTS}
