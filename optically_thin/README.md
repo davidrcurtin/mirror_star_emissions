@@ -1,4 +1,4 @@
-This is the public repository for "Electromagnetic Signatures of Mirror Stars" by Isabella Armstrong, Berkin Gurbuz, David Curtin, Christopher D. Matzner.
+This is the public repository for "Electromagnetic Signatures of Mirror Stars" by Isabella Armstrong, Berkin Gurbuz, David Curtin, Christopher D. Matzner. (https://arxiv.org/abs/2311.18086)
 
 For further questions regarding the following, please contact either of the first authors by email:\
 Berkin Gurbuz (berkin.gurbuz@mail.utoronto.ca, berkingurbuz@gmail.com)\
@@ -27,7 +27,7 @@ Where (X) is the 'nugget number', aligned with rows of the properties master fil
 Do note that the spectra figures given here are not complete, and are instead focused on visible frequency. If you need the full spectrum of the nugget, please make use of the provided Cloudy output continuum file (.con), as described below.
 
 #Cloudy Files#\
-We provide our .con continuum, .out output, .ovr overview, line.txt line ratios, and .prs pressure files directly as obtained by Cloudy. Additionally, we provide our .in input cards for anybody wishing to replicate calculations of our exact nuggets using a newer version of Cloudy, or otherwise, themselves. We recommend anybody intending to work directly with Cloudy files to read Cloudy's guide document "Hazy1", which can be found on Cloudy's official page: https://gitlab.nublado.org/cloudy/cloudy/-/wikis/home. Otherwise, you can see the section below, where we define each column of each file that we make use of, and how they can be converted for my practical calculations.
+We provide our .con continuum, .out output, .ovr overview, line.txt line ratios, and .prs pressure files directly as obtained by Cloudy. Additionally, we provide our .in input cards for anybody wishing to replicate calculations of our exact nuggets using a newer version of Cloudy, or otherwise, themselves. We recommend anybody intending to work directly with Cloudy files to read Cloudy's guide document "Hazy1", which can be found on Cloudy's official page: https://gitlab.nublado.org/cloudy/cloudy/-/wikis/home. Otherwise, you can see the section below, where we define each column of each file that we make use of, and how they can be converted for more practical calculations.
 
 #Replicating Our Results#\
 Here we give an in-depth overview of recreating our results. We begin by introducing Cloudy's input cards, how we set them up, how we can 'hack' them to replicate the physical conditions of a nugget in hydrostatic equilibrium that is heated by the dark mirror star, and how we iteratively run them. Then, we go over defining any necessary outputs from Cloudy, their units and 'cases' based on our input cards, and how we convert them to be used in our calculations of nugget properties. By the end of this section, you should be able to create your Cloudy input cards, run Cloudy over the phase space to replicate our data and follow our conversion methods to recreate the figures of our paper.
