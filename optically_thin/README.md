@@ -19,6 +19,8 @@ H) Log(Radius) - (cm, cutoff) Radius of the nugget\
 I Through S) Log(Line Emission) - Energy of line emissions\
 T through V) Log(Line Ratio) - Key line ratios
 
+Making use of the "Plotted" and "Interpolated" propety lines, which utilize our physical cutoffs as described in the paper, you can reproduce figure 3.
+
 #Spectra and Profile#\
 The figures from spectra and profile of each nugget following the naming convention:\
 Nugget(X)_Xi(Y)_Mass(Z)_T.pdf and Nugget(X)_Xi(Y)_Mass(Z)_Rho.pdf\
