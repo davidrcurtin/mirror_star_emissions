@@ -10,14 +10,16 @@ Here we provide all files for you to replicate our results, including data files
 The properties file gives the following data on each nugget per column\
 A) log(Xi) - Please see the paper for Xi's definition as the heating rate\
 B) Log(Rho) - This is the core density (g/cm^3) of the nugget\
-C) Log(Lumi) - Luminosity (Erg/s) of the nugget\
-D) Log(Mass) - Mass (Solar Masses)\
+C) Log(Lumi) - Luminosity (L_Sun) of the nugget\
+D) Log(Mass) - Mass (grams)\
 E) Log(Temp) - Core temperature (K) of the nugget\
 F) Gaia magnitude G\
 G) Gaia G_bp - Grp color\
-H) Log(Radius) - (cutoff) Radius of the nugget\
+H) Log(Radius) - (cm, cutoff) Radius of the nugget\
 I Through S) Log(Line Emission) - Energy of line emissions\
 T through V) Log(Line Ratio) - Key line ratios
+
+Making use of the "Plotted" and "Interpolated" propety lines, which utilize our physical cutoffs as described in the paper, you can reproduce figure 3.
 
 #Spectra and Profile#\
 The figures from spectra and profile of each nugget following the naming convention:\
