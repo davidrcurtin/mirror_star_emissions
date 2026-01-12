@@ -19,7 +19,7 @@ L_ratio_error   = 0.001
 solver_tol      = 1e-5 
 print(f'Trying to find {len(rho_c_MS_fracs) * len(xis) * len(T_cs)} nuggets. At {approx_sec_p_nug}s per nugget, this will take {len(rho_c_MS_fracs) * len(xis) * len(T_cs) * approx_sec_p_nug /60:.2f} minutes.', flush=True)
 
-# Make the nuggets (Will take a long time)
+# Make the nuggets (Will take a long time, order 100 hours)
 start = timer()
 nuggets = loop_bisection(rho_c_MS_fracs, xis, T_cs, L_ratio_error, solver_tol=solver_tol)
 print(f'Took {(timer()-start)/60:.2f} minutes to generate data\n', flush=True)
