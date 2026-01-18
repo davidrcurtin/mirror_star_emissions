@@ -9,7 +9,7 @@ custom_cmap = mpl.colors.ListedColormap(['#0E0880', '#2518F1', '#3352FF', '#54B2
 custom_cmap.set_extremes(over= 'k')
 
 
-def plot_nugget_paper(nugget:Nugget, plotpath = None, figsize=(4.5,6.4)):
+def plot_nugget_paper(nugget:Nugget, plotpath = None, figsize=(4.5,6.3)):
     '''Create the plot used in the paper for one nugget: profiles of T, rho, Prad/Pgas. 
     If plotpath is not provided, plot will be shown, otherwise plot will be saved to the given path.'''
 
@@ -24,7 +24,7 @@ def plot_nugget_paper(nugget:Nugget, plotpath = None, figsize=(4.5,6.4)):
     L_heating = nugget.L_heat()
     convective_tag = nugget.convective_tag()
 
-    fig, axs = plt.subplots(ncols=1, nrows=3, sharex=True, figsize=figsize, dpi=400, gridspec_kw={'hspace': 0})
+    fig, axs = plt.subplots(ncols=1, nrows=3, sharex=True, figsize=figsize, dpi=300, gridspec_kw={'hspace': 0})
 
     # T plot
     ax = axs[0]
@@ -66,14 +66,14 @@ def plot_nugget_paper(nugget:Nugget, plotpath = None, figsize=(4.5,6.4)):
     xi_title_piece = rf'$\xi = 10^'+r'{'+f'{xi_exp}'+ r'}$, '
     rho_title_piece = r'$\rho_{\rm{core}} = ' + f'{rho_c_MS_frac}' + r'\rho_{\rm{core},\odot}$' +'\n'
     Lphoto_title_piece = r'$\mathcal{L}_{\rm{photo}}='  rf'{L_mantissa:.2f}\cdot 10^'+r'{'+f'{L_exp}'+ r'}\rm{L_\odot}$,'
-    Lratio_title_piece = r'$\mathbf{L}=' +rf'{L_photo/L_heating:.4f}$'+'\n'
+    Lratio_title_piece = '' #r'$\mathbf{L}=' +rf'{L_photo/L_heating:.4f}$'+'\n' # Not used in paper anymore
     M_title_piece = r'$\rm{M_{nugget}}=' + rf'{M_mantissa:.2f}\cdot 10^'+r'{'+f'{M_exp}'+ r'} \rm{kg}$'
     title = xi_title_piece + rho_title_piece + Lphoto_title_piece + Lratio_title_piece + M_title_piece
     axs[0].set_title(title)
     
     plt.tight_layout()
     if plotpath is not None:
-        plt.savefig(plotpath)
+        plt.savefig(plotpath,bbox_inches = "tight")
     else: plt.show()
     plt.close()
 
@@ -105,7 +105,7 @@ def plot_inputspace(nuggets: list[Nugget], plotpath = None, figsize=(5,4), cbar_
 
     plt.tight_layout()
     if plotpath is not None:
-        plt.savefig(plotpath)
+        plt.savefig(plotpath,bbox_inches = "tight")
 
 def plot_paramspace(contour_dict: dict, cmaps = [custom_cmap]*6, 
                     cbar_ranges = [(-10, 1), (0, 7+1/3), (0, 7+1/3), (0, 7+1/3), (-18,7+2/3), (0, 7+1/3)], 
@@ -147,7 +147,7 @@ def plot_paramspace(contour_dict: dict, cmaps = [custom_cmap]*6,
     data = reformat_contour(contour_dict, [1,2,5,4,3,13], modifiers=modifiers)
 
     col_labels = [r'$\log_{10}(\rho_c) [g/cm^3]$', r'$\log_{10}(T_c) [K]$', r'$\log_{10}(T_{photo}) [K]$', r'$\log_{10}(R_{photo}) [km]$', r'$\log_{10}(L_{photo}/L_{sun})$', r'$\log_{10}(g_{photo}) [cm/s^2]$']
-    thin_strings=['Blank', 'T_c', 'Blank', 'R', 'L', 'Blank']
+    thin_strings=['Blank', 'T_c', 'T_c', 'R', 'L', 'Blank']
 
     thin_data_trim, thin_data_interp = load_thin_data()
     for rho_c_MS in thin_data_trim.keys():
@@ -219,4 +219,4 @@ def plot_paramspace(contour_dict: dict, cmaps = [custom_cmap]*6,
     fig.supylabel(r"$\log (M_{\mathrm{nugget}}/g)$", fontsize='xx-large')
 
     if plotpath is not None:
-        plt.savefig(plotpath, pad_inches=0.1)
+        plt.savefig(plotpath, pad_inches=0.1, bbox_inches = "tight")
