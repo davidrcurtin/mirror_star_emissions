@@ -21,7 +21,7 @@ a_rad = 4 * sigma / c
 
 
 # Import cloudy abundances to use
-cloudy_data = np.genfromtxt('data/Cloudy ISM Abundances.txt', comments='#', skip_header=3,skip_footer=24, usecols=(1,))
+cloudy_data = np.genfromtxt('data/Cloudy_ISM_Abundances.txt', comments='#', skip_header=3,skip_footer=24, usecols=(1,))
 number_fractions = cloudy_data/sum(cloudy_data)
 
 # Weights from https://iupac.qmul.ac.uk/AtWt/
@@ -151,8 +151,6 @@ def tau_capture_wd(M, R, rho_c_MS, r_H = 1):
 
 # Kippenhhan & weigert pg 124 eq 13.12/13.15
 def nabla_ad(beta): # = (dlnT/dlnP)_ad
-    if beta > 1:
-        print('beta > 1??')
     term = (1-beta) * (4+beta)
     num = 1 + (term/(beta**2))
     denom = 2.5 + 4*(term/(beta**2))
