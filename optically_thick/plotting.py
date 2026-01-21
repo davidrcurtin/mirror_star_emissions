@@ -112,7 +112,7 @@ def plot_paramspace(contour_dict: dict, cmaps = [custom_cmap]*6,
                     cbar_ticks = [np.linspace(-18, -3, 6), [0,2,4,6], [0,2,4,6], [0,2,4,6], [-18, -11, -4, 3], [0,2,4,6]],
                     plotpath = None):
     '''
-    :contour_dict: dictionary of nugget data as given by mirrorstarmodule.convert_dictionary()
+    :contour_dict: dictionary of nugget data as given by module.convert_dictionary()
     :cmaps: list of colormaps to be passed to the scatter and colorbar calls in each column ex. ['viridis', 'seismic', colormap_object, ...]
     :cbar_ranges: list of 2-tuples of the endpoints of each colorbar
     :cbar_ticks: list of lists, each specifying the tick locations on a colorbar'''
