@@ -443,34 +443,39 @@ def load_thin_data() -> tuple[dict,dict]:
     The first is the actual cloudy solutions, the second is the interpolated points.'''
     dictionary_cut, dictionary_interpolated = {}, {}
     for rho_c in [0.01, 0.1, 1, 10, 100]:
-        data_strings_cut = np.genfromtxt('data/ThinData/Cut/' + str(rho_c) + 'PlottedNuggetProperties.csv',
+        data_strings_cut = np.genfromtxt(f'../optically_thin/{str(rho_c)}RhoDM/{str(rho_c)}PlottedNuggetProperties.csv',
                                       skip_header=1, delimiter=',', unpack = True, dtype=str)
-        data_strings_interpolated = np.genfromtxt('data/ThinData/Interpolated/' + str(rho_c) + 'InterpolatedNuggets.csv',
+        data_strings_interpolated = np.genfromtxt(f'../optically_thin/{str(rho_c)}RhoDM/{str(rho_c)}InterpolatedNuggets.csv',
                                       skip_header=1, delimiter=',', unpack = True, dtype=str)
         data = []
         for col in data_strings_cut:
             data.append(np.array([np.float64(value.strip('"')) for value in col]))
         
-        dictionary_cut[rho_c] = {
+        cut_dict = {
             'xi': np.power(10, data[0]), 
-            'M_nugget': np.power(10, data[1]), # grams
-            'T_c': np.power(10, data[2]), #K
-            'R': np.power(10, data[3])/100/1000, # cm --> km
-            'L': np.power(10, data[4]), # L_sol
-            'G_bp-G_rp': data[7],
+            'rho_c': np.power(10, data[1]), # g/cm^3
+            'M_nugget': np.power(10, data[2]), # grams
+            'T_c': np.power(10, data[3]), #K
+            'R': np.power(10, data[4])/100/1000, # cm --> km
+            'L': np.power(10, data[5]), # L_sol
         }
+        cut_dict['g'] = g_MS(rho_c*rho_c_sun, cut_dict['R']/1000) + g_self(cut_dict['M_nugget']/1000,cut_dict['R']/1000)
+        dictionary_cut[rho_c] = cut_dict
+
 
         data = []
         for col in data_strings_interpolated:
             data.append(np.array([np.float64(value.strip('"')) for value in col]))
 
-        dictionary_interpolated[rho_c] = {
+        interp_dict = {
             'xi': np.power(10, data[0]), 
-            'M_nugget': np.power(10, data[1]), # grams
-            'T_c': np.power(10, data[2]), #K
-            'R': np.power(10, data[3])/100/1000, # cm --> km
-            'L': np.power(10, data[4]), # L_sol
-            'G_bp-G_rp': data[7],
+            'rho_c': data[1], # g/cm^3 #interpolated data has rho_c saved as not log
+            'M_nugget': np.power(10, data[2]), # grams
+            'T_c': np.power(10, data[3]), #K
+            'R': np.power(10, data[4])/100/1000, # cm --> km
+            'L': np.power(10, data[5]), # L_sol
         }
+        interp_dict['g'] = g_MS(rho_c*rho_c_sun, interp_dict['R']/1000) + g_self(interp_dict['M_nugget']/1000,interp_dict['R']/1000)*100 # m/s^2 --> cm/s^2
+        dictionary_interpolated[rho_c] = interp_dict
         
     return dictionary_cut, dictionary_interpolated

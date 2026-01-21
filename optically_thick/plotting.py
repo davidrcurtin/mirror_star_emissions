@@ -147,7 +147,7 @@ def plot_paramspace(contour_dict: dict, cmaps = [custom_cmap]*6,
     data = reformat_contour(contour_dict, [1,2,5,4,3,13], modifiers=modifiers)
 
     col_labels = [r'$\log_{10}(\rho_c) [g/cm^3]$', r'$\log_{10}(T_c) [K]$', r'$\log_{10}(T_{photo}) [K]$', r'$\log_{10}(R_{photo}) [km]$', r'$\log_{10}(L_{photo}/L_{sun})$', r'$\log_{10}(g_{photo}) [cm/s^2]$']
-    thin_strings=['Blank', 'T_c', 'T_c', 'R', 'L', 'Blank']
+    thin_strings=['rho_c', 'T_c', 'T_c', 'R', 'L', 'g']
 
     thin_data_trim, thin_data_interp = load_thin_data()
     for rho_c_MS in thin_data_trim.keys():
