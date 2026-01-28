@@ -1,5 +1,5 @@
 import numpy as np
-from module import save_nugget_file, save_dictionary, loop_bisection, convert_dictionary
+from module import save_nugget_file, save_dictionary, loop_bisection, convert_dictionary, trim_dictionary
 from plotting import plot_paramspace
 from physics import L_sun
 import os
@@ -34,15 +34,7 @@ save_dictionary(dictionary_path, contour_dict)
 print(f'NOTE: A file has been created containing a dictionary of nugget data at: \n    {dictionary_path}\n    With file size {os.path.getsize(dictionary_path)/1024/1024:.3f}MB\n')
 
 # Create the parameter space plot as shown in paper, first trimming it
-contour_dict_trimmed = {}
-for rho_c_MS_frac, data in contour_dict.items():
-    for contour in data: 
-        condition = (10**contour[12] > 10) & (10**contour[3] < 1e7*L_sun)
-        contour_trimmed = [property[condition] for property in contour]
-
-        if rho_c_MS_frac not in contour_dict_trimmed:
-            contour_dict_trimmed[rho_c_MS_frac] = []
-        contour_dict_trimmed[rho_c_MS_frac].append(contour_trimmed)
+contour_dict_trimmed = trim_dictionary(contour_dict)
 
 # Plot it
 plot_paramspace(contour_dict_trimmed, plotpath=plot_path)

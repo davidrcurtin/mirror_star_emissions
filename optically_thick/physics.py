@@ -4,10 +4,11 @@ from scipy.interpolate import CloughTocher2DInterpolator
 G = 6.674 *(10**(-11))
 c = 299792458 # m/s
 h_bar = 1.054571817*(10**(-34)) # J s
-h = 6.62607015e-34
+h = h_bar * 2 * np.pi
 m_hydrogen = 1.6735575*(10**(-27)) #kg
 m_e = 9.1093837139e-31
 m_p = 1.67262192e-27
+r_bohr =  5.29177210544e-11
 
 k_b = 1.38 * (10**(-23)) # J/K
 sigma = 5.670374419 * (10**(-8)) # Stefan-Boltzmann constant 
@@ -42,6 +43,9 @@ def g_MS(rho_c_MS, r):
 
 def g_self(m, r):
     return G * m * (r**(-2))
+
+def M_MS(rho_c_MS, r):
+    return (4/3) * np.pi * r**3 * rho_c_MS
 
 def hminusopacity(rho, T):
     return 0.1 * np.sqrt(rho/10) * np.power(T/3250, 9) #in m^2/kg

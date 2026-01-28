@@ -427,6 +427,83 @@ def convert_dictionary(nuggets: list[Nugget]):
 
     return contour_dict
 
+def convert_dictionary_list(data: list):
+    '''Converts a 2d list with rows of nugget properties into a dictionary of the form used by some other functions.\n
+    Each entry in data is a list (rho_c_MS_frac, xi, log_rho_c, log_T_c, log_L_heating, log_R_photo, log_T_photo, log_rho_photo, log_M_photo, log_r_radiative, log(L_photo/L_heating), log(r[-1]), log(m[-1]), log(tau(0)), log_g_photo) \n
+    The returned dictionary has keys of rho_c_MS_frac, with values being a list of 'contours' for that rho_c_MS with a single xi. 
+    Here a contour is a list of properties (xis, log_rho_c_cgs, log_T_c, log_L_heating, log_R_photo, log_T_photo, log_rho_photo, log_M_photo, log_rad_radius, log_L_ratio, log_R_max, log_M_max, log_tau_total, log_g_photo) of the nuggets in the contour.
+    '''
+
+    def contour_from_props(xi, props_list: list[Nugget]):
+        properties = [[props[2]-3, *props[3:]] for props in props_list]
+        return xi * np.ones(len(props_list)), *np.transpose(properties)
+
+    nugget_dict = {}
+    for nugget_props in data:
+        rho_c_MS_frac = nugget_props[0]
+        if rho_c_MS_frac not in nugget_dict:
+            nugget_dict[rho_c_MS_frac] = {}
+
+        xi = nugget_props[1]
+        if xi not in nugget_dict[rho_c_MS_frac]:
+            nugget_dict[rho_c_MS_frac][xi] = []
+
+        nugget_dict[rho_c_MS_frac][xi].append(nugget_props)
+    
+    contour_dict = {}
+    for rho_c_MS_frac, contours in nugget_dict.items():
+        if rho_c_MS_frac not in contour_dict:
+            contour_dict[rho_c_MS_frac] = []
+
+        for xi, contour in contours.items():
+            contour_dict[rho_c_MS_frac].append(contour_from_props(xi, contour))
+
+    return contour_dict
+
+def unpack_dictionary(contour_dict):
+    '''
+    Returns a list of rows, each row corresponding to a single nugget and containing the properties: \n
+    (rho_c_MS_frac, xi, log_rho_c, log_T_c, log_L_heating, log_R_photo, log_T_photo, log_rho_photo, log_M_photo, log_r_radiative, log(L_photo/L_heating), log(r[-1]), log(m[-1]), log(tau(0)), log_g_photo)
+
+    :contour_dict: Dictionary of the form returned by convert_dictionary
+    '''
+    rows = []
+    for rho_c_MS_frac, contours in contour_dict.items():
+        for contour in contours:
+            xis, log_rho_c_cgs, log_T_c, log_L_heating, log_R_photo, log_T_photo, log_rho_photo, log_M_photo, log_rad_radius, log_L_ratio, log_R_max, log_M_max, log_tau_total, log_g_photo = contour
+            rows.extend(np.transpose([
+                np.full_like(xis, rho_c_MS_frac), 
+                xis, log_rho_c_cgs+3,
+                log_T_c, log_L_heating, log_R_photo, log_T_photo, log_rho_photo, log_M_photo, log_rad_radius, log_L_ratio, log_R_max, log_M_max, log_tau_total, log_g_photo
+                ]))
+    return np.array(rows)
+
+def trim_dictionary(contour_dict, tau_lim = 10, L_lim = L_sun*1e7, M_lim = 1e29, M_MS_ratio_lim = 0.1):
+    '''
+    Takes a contour dictionary, as returned by convert_dictionary(), and removes nuggets that fail to meet conditions defined by the parameters:
+     :tau_lim: Nuggets with tau(0) < tau_lim are removed
+     :L_lim: Nuggets with L_photo > L_lim are removed (J/s)
+     :M_lim: Nuggets with M_photo > M_lim are removed (kg)
+     :M_MS_ratio_lim: Nuggets with M_photo > M_MS_ratio_lim * (4/3)pi r_photo^3 * rho_c_MS are removed 
+     '''
+    contour_dict_trimmed = {}
+    for rho_c_MS_frac, data in contour_dict.items():
+        for contour in data: 
+            L_nugget    = 10**contour[3] 
+            R_nugget    = 10**contour[4]
+            M_nugget    = 10**contour[7]
+            tau_nugget  = 10**contour[12]
+
+            M_MS_ratio = M_nugget/M_MS(rho_c_MS_frac*rho_c_sun, R_nugget)
+            condition = (tau_nugget > tau_lim) & (L_nugget < L_lim) & (M_nugget < M_lim) & (M_MS_ratio < M_MS_ratio_lim)
+            contour_trimmed = [property[condition] for property in contour]
+
+            if rho_c_MS_frac not in contour_dict_trimmed:
+                contour_dict_trimmed[rho_c_MS_frac] = []
+            contour_dict_trimmed[rho_c_MS_frac].append(contour_trimmed)
+    return contour_dict_trimmed
+
+
 def save_dictionary(filepath: str, contour_dict: dict):
     '''Save a dictionary (of the form given by convert_dictionary) as a json file at filepath'''
     with open(filepath, 'w') as file:
