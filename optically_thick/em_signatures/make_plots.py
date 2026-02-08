@@ -4,7 +4,7 @@
 Reproducible plot generator for EM signatures/mirror-star contours.
 
 Recommended usage:
-  python em_signatures/make_plots.py --data-root em_signatures/data_bundle --plots-root em_signatures/plots
+  python em_signatures/make_plots.py --data-root em_signatures/data --plots-root em_signatures/plots
 
 Inputs expected under --data-root:
   grids/grid_mh.txt
@@ -37,14 +37,13 @@ import argparse
 import json
 from pathlib import Path
 
-#SPECTRA_ROOT_OVERRIDE = Path(r"C:\Users\Bong Cabral\Documents\UofT\Winter 2025\Mirror Stars")  # this folder contains set2/
-
 from typing import Dict, List, Tuple
 
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.lines as mlines
+import matplotlib as mpl
 from matplotlib.lines import Line2D
 from matplotlib.patches import Rectangle
 from scipy.interpolate import interpn
@@ -53,7 +52,25 @@ from scipy.optimize import curve_fit, fsolve
 # Local modules
 from stellar_parameters import GridOfStellarParameters
 from model_spectra_data import ReadData
-from mirrorstarmodule import load_nugget_file
+
+from mpl_toolkits.axes_grid1.inset_locator import inset_axes
+
+
+import importlib.util
+import sys
+from pathlib import Path as _Path
+_module_path = _Path(__file__).resolve().parents[1] / "module.py"
+spec = importlib.util.spec_from_file_location("module", str(_module_path))
+_module = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(_module)
+sys.modules['module'] = _module
+load_nugget_file = _module.load_nugget_file
+
+_plot_path = _Path(__file__).resolve().parents[1] / "plotting.py"
+spec_plot = importlib.util.spec_from_file_location("repo_plotting", str(_plot_path))
+_plot_mod = importlib.util.module_from_spec(spec_plot)
+spec_plot.loader.exec_module(_plot_mod)
+custom_cmap = _plot_mod.custom_cmap
 
 
 # Plot style
@@ -85,11 +102,17 @@ def ensure_dir(p: Path) -> None:
 
 
 def format_rho(rho: float) -> str:
-    if rho == 1e-5:
-        return "10^{-5}"
-    if rho == 1e5:
-        return "10^{5}"
-    return str(rho)
+    # Return a mathtext-ready string so legend renders exponents correctly.
+    # Use isclose to avoid float equality pitfalls.
+    if np.isclose(rho, 1e-5):
+        return r"10^{-5}"
+    if np.isclose(rho, 1e5):
+        return r"10^{5}"
+    # For round/simple values prefer integer-like formatting, otherwise use
+    # a compact decimal representation.
+    if np.isclose(rho, round(rho)):
+        return fr"{int(round(rho))}"
+    return fr"{rho:g}"
 
 def invert_teff_to_color(teff_array: np.ndarray) -> np.ndarray:
     """
@@ -257,7 +280,8 @@ def process_spectra_examples(
     """
     Reproduces the "interpolated vs nearest model" plot(s) for the example nuggets.
     """
-    nuggets_dir = data_root / "nuggets"
+    # Use nuggets from the repository `profiles/` directory under optically_thick
+    nuggets_dir = Path(__file__).resolve().parents[1] / "profiles"
     grids_dir = data_root / "grids"
     # Spectra root can be supplied explicitly (CLI); otherwise default to <data-root>/spectra.
     spectra_root = spectra_root or (data_root / "spectra")
@@ -273,10 +297,11 @@ def process_spectra_examples(
         )
 
 
-    nugget_files = [nuggets_dir / "radiative_ex.nugget", nuggets_dir / "convective_ex.nugget"]
+    # Expect convective.nugget and radiative.nugget in the `profiles/` folder
+    nugget_files = [nuggets_dir / "convective.nugget", nuggets_dir / "radiative.nugget"]
     for f in nugget_files:
         if not f.exists():
-            raise FileNotFoundError(f"Missing nugget file: {f}")
+            raise FileNotFoundError(f"Missing nugget file in profiles/: {f}")
 
     nuggets = [load_nugget_file(str(f)) for f in nugget_files]
 
@@ -284,19 +309,17 @@ def process_spectra_examples(
     ensure_dir(out_folder)
 
     for nug in nuggets:
-        if not getattr(nug, "has_photosphere", False):
+        if not (hasattr(nug, "has_photosphere") and nug.has_photosphere()):
             continue
 
-        teff_input = float(nug.T_photo)
-        R_input_m = float(nug.R_photo)   # assume meters
-        xi_input = float(nug.xi)
-        rho_c_input = float(nug.rho_c)   # g/cm^3
-        T_c_input = float(nug.T_c)
+        teff_input = float(nug.T_photo())
+        R_input_m = float(nug.r_photo())   # assume meters
+        xi_input = float(nug.xi())
+        rho_c_input = float(nug.rho_c())
+        T_c_input = float(nug.T_c())
 
-        # Surface gravity
-        # Use rho_c_sun
-        g_cgs = G * rho_c_sun * (4.0 / 3.0) * np.pi * (R_input_m * 100.0)
-        logg_input = float(np.log10(g_cgs))
+        # Surface gravity: use precomputed gravity from the nugget (log10 in cgs)
+        logg_input = float(nug.log_g_photo(cgs=True))
 
         # Interpolate spectra
         grid = Grid(mh_input, teff_input, logg_input, set_type, grids_dir=grids_dir, spectra_root=spectra_root)
@@ -384,10 +407,7 @@ def combined_plot(
         T_photo = 10 ** arrays[5]  # K
         R_m = 10 ** arrays[4]      # m
         L_W = 10 ** arrays[3]      # W
-
-        rho_c = rho_frac * rho_c_sun
-        g_surface = G * rho_c * (4.0 / 3.0) * np.pi * R_m * 100.0
-        logg = np.log10(g_surface)
+        logg = arrays[13] + 2  # g_photo from contour_dict is log10(m/s^2), convert to cm/s^2 by adding log10(100)
 
         ax.scatter(T_photo, logg, color=color, s=20)
 
@@ -396,9 +416,11 @@ def combined_plot(
         Tmin_points.append((np.log10(T_photo[min_idx]), logg[min_idx]))
         Tmax_points.append((np.log10(T_photo[max_idx]), logg[max_idx]))
 
+        # Legend entry: show only the numeric core-density label next to the
+        # colored marker; the full legend title is added later.
         density_handles.append(
             Line2D([0], [0], marker="o", color="w",
-                   label=fr"$\rho_{{c}}/\rho_{{\odot}}={format_rho(rho_frac)}$",
+                   label=rf"${format_rho(rho_frac)}$",
                    markerfacecolor=color, markersize=10)
         )
 
@@ -434,15 +456,14 @@ def combined_plot(
     lo_exp = int(round(lo))
     hi_exp = int(round(hi))
 
-    ax.set_title(
-        "Surface Gravity vs Temperature\n"
-        r"for Different $\rho_c/\rho_\odot$ "
-        rf"(${pow10_tex(lo_exp)} < L/L_\odot < {pow10_tex(hi_exp)}$)"
-    )
-    
-    # legend for rho
-    rho_legend = ax.legend(handles=density_handles, title="Core Density", loc="upper left", frameon=True)
-    rho_legend.get_frame().set_alpha(0.5)
+    lumi_text = rf"$\log_{{10}}(L/L_\odot) \in [{lo_exp},\,{hi_exp}]$"
+    ax.text(0.99, 0.35, lumi_text, transform=ax.transAxes, ha="right", va="top",
+        fontsize=13, bbox=dict(facecolor="white", alpha=0.7, edgecolor="none"))
+
+    rho_title = r"Mirror star core density $\rho_{\mathrm{core}}/\rho_{\mathrm{core},\odot}$"
+    rho_legend = ax.legend(handles=density_handles, title=rho_title, loc="upper left",
+                frameon=True, bbox_to_anchor=(0.02, 0.98), ncol=3, fontsize=11)
+    rho_legend.get_frame().set_alpha(0.6)
     ax.add_artist(rho_legend)
 
     # Analytic luminosity contours (restricted between boundary lines)
@@ -480,12 +501,16 @@ def combined_plot(
     handles.append(contour_proxy)
     labels.append(r"$\log_{10}(L/L_\odot)$ contours" + "\n" + r"for $\rho_c/\rho_\odot = 1$")
 
-    star_legend = ax.legend(handles, labels, title="Legend", loc="lower right", ncol=2, frameon=True)
-    star_legend.get_frame().set_alpha(0.5)
+    star_legend = ax.legend(handles, labels, title="Legend", loc="lower right", ncol=2, frameon=True, fontsize=11)
+    star_legend.get_frame().set_alpha(0.6)
+    try:
+        star_legend.get_title().set_fontsize(10)
+    except Exception:
+        pass
     ax.add_artist(star_legend)
 
     plt.grid(True, which="both", linestyle="--", alpha=0.5)
-    plt.tight_layout()
+    plt.tight_layout(rect=[0.08, 0, 1, 0.90])
     outpath = plots_root / "logg_T" / filename
     plt.savefig(outpath, dpi=300, bbox_inches="tight")
     plt.close()
@@ -555,28 +580,33 @@ def stacked_hr_plots(
         m_photo_kg = 10 ** arrays[7]
         L_W = 10 ** arrays[3]
         xi = arrays[0]
+        logg = arrays[13] + 2  # g_photo from contour_dict is log10(m/s^2), convert to cm/s^2 by adding log10(100)
 
-        rho_c = rho_frac * rho_c_sun
-        g_surface = G * rho_c * (4.0 / 3.0) * np.pi * R_m * 100.0
-        logg = np.log10(g_surface)
         M_G = 4.83 - 2.5 * np.log10(L_W / L_sun_W)
 
         colors_hr = invert_teff_to_color(T_photo)
         logmass = np.log10(m_photo_kg * 1000.0)  # kg -> g
         logxi = np.log10(xi)
 
-        # Col 1: color=logg
-        sc1 = ax1.scatter(colors_hr, M_G, c=logg, cmap="turbo", vmin=0, vmax=9, s=10, zorder=3)
+        # Col 1: color=logg (use discrete custom_cmap)
+        Ncol = custom_cmap.N
+        #norm1 = mpl.colors.BoundaryNorm(np.linspace(0, 9, Ncol + 1), Ncol)
+        norm1 = mpl.colors.Normalize(0, 7+1/3)
+        sc1 = ax1.scatter(colors_hr, M_G, c=logg, cmap=custom_cmap, norm=norm1, s=10, zorder=3)
         ax1.hexbin(bp_rp, m_g, gridsize=150, cmap="viridis", bins="log", zorder=1)
         ax1.annotate(rf"$\rho_c={format_rho(rho_frac)}\,\rho_\odot$", xy=(-0.1, 0.5),
-                     xycoords="axes fraction", fontweight="bold", ha="right", va="center", rotation=90)
+                     xycoords="axes fraction", ha="right", va="center", rotation=90)
 
-        # Col 2: color=logmass
-        sc2 = ax2.scatter(colors_hr, M_G, c=logmass, cmap="plasma", vmin=11, vmax=32, s=10, zorder=3)
+        # Col 2: color=logmass (discrete custom_cmap)
+        #norm2 = mpl.colors.BoundaryNorm(np.linspace(11, 32, Ncol + 1), Ncol)
+        norm2 = mpl.colors.Normalize(11, 33)
+        sc2 = ax2.scatter(colors_hr, M_G, c=logmass, cmap=custom_cmap, norm=norm2, s=10, zorder=3)
         ax2.hexbin(bp_rp, m_g, gridsize=150, cmap="viridis", bins="log", zorder=1)
 
-        # Col 3: color=logxi
-        sc3 = ax3.scatter(colors_hr, M_G, c=logxi, cmap="cividis", vmin=-26, vmax=-16, s=10, zorder=3)
+        # Col 3: color=logxi (discrete custom_cmap)
+        #norm3 = mpl.colors.BoundaryNorm(np.linspace(-26, -16, Ncol + 1), Ncol)
+        norm3 = mpl.colors.Normalize(-26, -15)
+        sc3 = ax3.scatter(colors_hr, M_G, c=logxi, cmap=custom_cmap, norm=norm3, s=10, zorder=3)
         ax3.hexbin(bp_rp, m_g, gridsize=150, cmap="viridis", bins="log", zorder=1)
 
         for ax in (ax1, ax2, ax3):
@@ -585,15 +615,24 @@ def stacked_hr_plots(
             ax.set_xlim(-1, 5.5)
             ax.set_ylim(28.5, -5)
 
-    # Shared colorbars
+    # Shared discrete colorbars using the repo's custom_cmap with nice integer ticks
     cbar_ax1 = fig.add_axes([0.125, 0.93, 0.22, 0.01])
-    fig.colorbar(sc1, cax=cbar_ax1, orientation="horizontal").set_label(r"log$_{10}(g$ [cm/s$^2$])")
+    sm1 = mpl.cm.ScalarMappable(norm=norm1, cmap=custom_cmap)
+    #bins1 = np.linspace(0, 9, Ncol + 1)
+    cb1 = fig.colorbar(sm1, cax=cbar_ax1, orientation="horizontal", ticks=[0, 2, 4, 6], extend="max")
+    cb1.set_label(r"log$_{10}(g$ [cm/s$^2$])")
 
     cbar_ax2 = fig.add_axes([0.425, 0.93, 0.22, 0.01])
-    fig.colorbar(sc2, cax=cbar_ax2, orientation="horizontal").set_label(r"log$_{10}(M$ [g])")
+    sm2 = mpl.cm.ScalarMappable(norm=norm2, cmap=custom_cmap)
+    #bins2 = np.linspace(11, 32, Ncol + 1)
+    cb2 = fig.colorbar(sm2, cax=cbar_ax2, orientation="horizontal", ticks=[13, 17, 21, 25, 29, 33], extend="max")
+    cb2.set_label(r"log$_{10}(M$ [g])")
 
     cbar_ax3 = fig.add_axes([0.7, 0.93, 0.22, 0.01])
-    fig.colorbar(sc3, cax=cbar_ax3, orientation="horizontal").set_label(r"log$_{10}(\xi)$")
+    sm3 = mpl.cm.ScalarMappable(norm=norm3, cmap=custom_cmap)
+    #bins3 = np.linspace(-26, -16, Ncol + 1)
+    cb3 = fig.colorbar(sm3, cax=cbar_ax3, orientation="horizontal", ticks=[-26, -22, -18, -16], extend="max")
+    cb3.set_label(r"log$_{10}(\xi)$")
 
     fig.text(0.5, 0.04, r"$G_{\rm BP}-G_{\rm RP}$", ha="center")
     fig.text(0.04, 0.5, r"$M_G$", va="center", rotation="vertical")
@@ -615,7 +654,7 @@ def stacked_hr_plots_3d(
       - Gaia observed stars with logg_gspphot (from cache)
       - Gaia WD catalog with logg_H (from cache)
 
-    Writes: plots_root/HR/stacked_HR_singlecol_3D.png
+    Writes: plots_root/HR/stacked_HR_3D.png
     """
     # load caches (must exist)
     gaia_fp = gaia_cache_dir / "gaia_observed_hr_logg.csv"
@@ -641,15 +680,16 @@ def stacked_hr_plots_3d(
     ensure_dir(plot_folder)
 
     n = len(rho_fracs)
-    fig, axes = plt.subplots(
-        nrows=n, ncols=1,
-        figsize=(10, 7 * n),
-        subplot_kw={"projection": "3d"},
-    )
-    if n == 1:
-        axes = [axes]
-
-    for ax, rho_frac in zip(axes, rho_fracs):
+    nrows, ncols = 3, 3
+    fig = plt.figure(figsize=(25, 20), dpi=300)
+    
+    plot_positions = [(0, 0), (0, 1), (0, 2), (1, 0), (1, 1), (1, 2), (2, 1)]  # 7 plots
+    axes_list = []
+    for row, col in plot_positions:
+        ax = fig.add_subplot(nrows, ncols, row * ncols + col + 1, projection="3d")
+        axes_list.append(ax)
+        
+    for ax_idx, (ax, rho_frac) in enumerate(zip(axes_list, rho_fracs)):
         data = contour_dict_trimmed[rho_frac]
         properties = [[] for _ in data[0]]
 
@@ -665,11 +705,7 @@ def stacked_hr_plots_3d(
         T_photo = 10 ** arrays[5]   # K
         R_m = 10 ** arrays[4]       # m
         L_W = 10 ** arrays[3]       # W
-
-        # logg
-        rho_c = rho_frac * rho_c_sun
-        g_surface = G * rho_c * (4.0 / 3.0) * np.pi * R_m * 100.0
-        logg_model = np.log10(g_surface)
+        logg_model = arrays[13] + 2  # g_photo from contour_dict is log10(m/s^2), convert to cm/s^2 by adding log10(100)
 
         M_G_model = 4.83 - 2.5 * np.log10(L_W / L_sun_W)
         colors_hr = invert_teff_to_color(T_photo)
@@ -679,17 +715,20 @@ def stacked_hr_plots_3d(
         y_all = np.concatenate([M_G_model, m_g, M_G_wd])
         z_all = np.concatenate([logg_model, logg_gaia, logg_wd])
 
+        # Discrete 3D scatter using the repository custom_cmap
+        Ncol = custom_cmap.N
+        #norm_main = mpl.colors.BoundaryNorm(np.linspace(0, 9, Ncol + 1), Ncol)
+        norm_main = mpl.colors.Normalize(0, 7+1/3)
         sc = ax.scatter(
             x_all, y_all, z_all,
-            c=z_all, cmap="turbo",
-            s=6, vmin=0, vmax=9
+            c=z_all, cmap=custom_cmap, norm=norm_main,
+            s=6
         )
 
         # "Legs" + shadows
-        step_model = 10
-        step_gaia = 1000
+        step_model = 50
+        step_gaia = 5000
         z_shadow_plane = 0.0
-
         # Gaia legs
         for i in range(0, len(bp_rp), step_gaia):
             x, y, z = bp_rp[i], m_g[i], logg_gaia[i]
@@ -710,7 +749,6 @@ def stacked_hr_plots_3d(
             ax.plot([x, x], [y, y], [z_shadow_plane, z],
                     color="gray", alpha=0.25, linewidth=0.4, zorder=1)
         ax.scatter(bp_rp_wd, M_G_wd, z_shadow_plane, color="gray", s=2, alpha=0.15, zorder=1)
-
         # Labels/orientation
         ax.set_xlabel(r"$G_{\rm BP} - G_{\rm RP}$", labelpad=10)
         ax.set_ylabel(r"$M_G$", labelpad=10)
@@ -720,8 +758,8 @@ def stacked_hr_plots_3d(
         ax.view_init(elev=25, azim=-30)
         ax.set_xlim(-1, 5.5)
         ax.set_ylim(28.5, -5)
+        ax.set_zticks([0, 5, 10])
 
-        # left-side rho annotation
         ax.text2D(
             -0.06, 0.5, rf"$\rho_c = {format_rho(rho_frac)}\,\rho_\odot$",
             transform=ax.transAxes,
@@ -729,14 +767,34 @@ def stacked_hr_plots_3d(
             ha="right", va="center",
             rotation=90,
         )
+    
 
-    # Shared colorbar
-    cbar_ax = fig.add_axes([0.18, 0.93, 0.64, 0.01])
-    cb = fig.colorbar(sc, cax=cbar_ax, orientation="horizontal")
+    cbar_slot = fig.add_subplot(nrows, ncols, 2 * ncols + 0 + 1)
+    cbar_slot.set_axis_off() 
+
+    cbar_ax = inset_axes(
+        cbar_slot,
+        width="95%",  
+        height="12%",  
+        loc="lower left",
+        borderpad=0.6,
+    )
+
+    sm_main = mpl.cm.ScalarMappable(norm=norm_main, cmap=custom_cmap)
+    cb = fig.colorbar(
+        sm_main,
+        cax=cbar_ax,
+        orientation="horizontal",
+        ticks=[0, 2, 4, 6],
+        extend="max"
+    )
+
     cb.set_label(r"log$_{10}(g$ [cm/s$^2$])", labelpad=2)
+    cb.ax.tick_params(labelsize=20, pad=1)
+    cb.ax.xaxis.set_label_position("bottom")
 
-    plt.subplots_adjust(left=0.08, right=0.92, top=0.92, bottom=0.15, hspace=0.15)
-    plt.savefig(plot_folder / "stacked_HR_singlecol_3D.png", dpi=300, bbox_inches="tight")
+    plt.subplots_adjust(left=0.05, right=0.85, top=0.95, bottom=0.1, hspace=0.2, wspace=0.1)
+    plt.savefig(plot_folder / "stacked_HR_3D.png", dpi=300, bbox_inches="tight", pad_inches=0.45)
     plt.close()
 
 
@@ -768,6 +826,7 @@ def main():
     parser.add_argument("--skip-spectra-examples", action="store_true")
     parser.add_argument("--skip-loggT", action="store_true")
     parser.add_argument("--skip-hr", action="store_true")
+    parser.add_argument("--skip-hr-3d", action="store_true")
     args = parser.parse_args()
 
     data_root = Path(args.data_root).expanduser().resolve()
@@ -780,17 +839,13 @@ def main():
         spectra_root = Path(args.spectra_root).expanduser().resolve()
 
     # Data subdirs
-    contours_dir = data_root / "contours"
     gaia_cache_dir = data_root / "gaia_cache"
 
     # Keep as defaults but read from data_root
     rho_arr = [1e-5, 0.01, 0.1, 1, 10, 100, 1e5]
 
-    # Find contour file
-    contour_candidates = list(contours_dir.glob("contours_new__rho_c_MS*"))
-    if len(contour_candidates) == 0:
-        raise FileNotFoundError(f"No contour file found in {contours_dir} matching contours_new__rho_c_MS*")
-    contour_path = contour_candidates[0]
+    # Load contour file from paramspace
+    contour_path = Path(__file__).parent.parent / "paramspace" / "contour_dict.json"
 
     contour_dict = load_contours(contour_path)
     contour_dict_trimmed = trim_contours_tau(contour_dict, tau_min=10.0)
@@ -826,6 +881,8 @@ def main():
             plots_root=plots_root,
             gaia_cache_dir=gaia_cache_dir,
         )
+    
+    if not args.skip_hr_3d:
         stacked_hr_plots_3d(contour_dict_trimmed, rho_arr, plots_root, gaia_cache_dir)
 
     print(f"Done. Plots written under: {plots_root}")
