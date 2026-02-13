@@ -593,7 +593,7 @@ def stacked_hr_plots(
         #norm1 = mpl.colors.BoundaryNorm(np.linspace(0, 9, Ncol + 1), Ncol)
         norm1 = mpl.colors.Normalize(0, 7+1/3)
         sc1 = ax1.scatter(colors_hr, M_G, c=logg, cmap=custom_cmap, norm=norm1, s=10, zorder=3)
-        ax1.hexbin(bp_rp, m_g, gridsize=150, cmap="viridis", bins="log", zorder=1)
+        ax1.hexbin(bp_rp, m_g, gridsize=150, cmap="Greys", bins="log", zorder=1, alpha=1)
         ax1.annotate(rf"$\rho_c={format_rho(rho_frac)}\,\rho_\odot$", xy=(-0.1, 0.5),
                      xycoords="axes fraction", ha="right", va="center", rotation=90)
 
@@ -601,13 +601,13 @@ def stacked_hr_plots(
         #norm2 = mpl.colors.BoundaryNorm(np.linspace(11, 32, Ncol + 1), Ncol)
         norm2 = mpl.colors.Normalize(11, 33)
         sc2 = ax2.scatter(colors_hr, M_G, c=logmass, cmap=custom_cmap, norm=norm2, s=10, zorder=3)
-        ax2.hexbin(bp_rp, m_g, gridsize=150, cmap="viridis", bins="log", zorder=1)
+        ax2.hexbin(bp_rp, m_g, gridsize=150, cmap="Greys", bins="log", zorder=1, alpha=1)
 
         # Col 3: color=logxi (discrete custom_cmap)
         #norm3 = mpl.colors.BoundaryNorm(np.linspace(-26, -16, Ncol + 1), Ncol)
         norm3 = mpl.colors.Normalize(-26, -15)
         sc3 = ax3.scatter(colors_hr, M_G, c=logxi, cmap=custom_cmap, norm=norm3, s=10, zorder=3)
-        ax3.hexbin(bp_rp, m_g, gridsize=150, cmap="viridis", bins="log", zorder=1)
+        ax3.hexbin(bp_rp, m_g, gridsize=150, cmap="Greys", bins="log", zorder=1, alpha=1)
 
         for ax in (ax1, ax2, ax3):
             ax.invert_yaxis()
