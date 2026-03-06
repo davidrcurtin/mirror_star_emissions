@@ -9,7 +9,7 @@ custom_cmap = mpl.colors.ListedColormap(['#0E0880', '#2518F1', '#3352FF', '#54B2
 custom_cmap.set_extremes(over= 'k')
 
 
-def plot_nugget_paper(nugget:Nugget, plotpath = None, figsize=(4.5,6.3)):
+def plot_nugget_paper(nugget:Nugget, plotpath = None, figsize=(4.5,6.3), plot_Prad_Pgas=True):
     '''Create the plot used in the paper for one nugget: profiles of T, rho, Prad/Pgas. 
     If plotpath is not provided, plot will be shown, otherwise plot will be saved to the given path.'''
 
@@ -24,7 +24,7 @@ def plot_nugget_paper(nugget:Nugget, plotpath = None, figsize=(4.5,6.3)):
     L_heating = nugget.L_heat()
     convective_tag = nugget.convective_tag()
 
-    fig, axs = plt.subplots(ncols=1, nrows=3, sharex=True, figsize=figsize, dpi=300, gridspec_kw={'hspace': 0})
+    fig, axs = plt.subplots(ncols=1, nrows=3 if plot_Prad_Pgas else 2, sharex=True, figsize=figsize, dpi=300, gridspec_kw={'hspace': 0})
 
     # T plot
     ax = axs[0]
@@ -50,12 +50,13 @@ def plot_nugget_paper(nugget:Nugget, plotpath = None, figsize=(4.5,6.3)):
     ax.set_ylabel(r'$\rho\ \rm[g/cm^3]$')
     ax.set_xlabel(r'$r\ \rm[km]$')
 
-    # prad/pgas plot
-    ax = axs[2]
-    ax.scatter(r, physics.P_gas(T, nugget.rho())/nugget.P_rad(), c = -1.0*convective_tag, s= 1, cmap='flag', label = 'Convective')
-    ax.axvline(r_photo, c = 'blue', linestyle = '--', label = 'Photosphere')
-    ax.set_ylabel(r'$P_{\rm{gas}}/P_{\rm rad}$')
-    ax.set_xlabel(r'$r\ \rm[km]$')
+    if plot_Prad_Pgas:
+        # prad/pgas plot
+        ax = axs[2]
+        ax.scatter(r, physics.P_gas(T, nugget.rho())/nugget.P_rad(), c = -1.0*convective_tag, s= 1, cmap='flag', label = 'Convective')
+        ax.axvline(r_photo, c = 'blue', linestyle = '--', label = 'Photosphere')
+        ax.set_ylabel(r'$P_{\rm{gas}}/P_{\rm rad}$')
+        ax.set_xlabel(r'$r\ \rm[km]$')
 
     xi_exp = int(np.floor(np.log10(abs(xi))))
     xi_mantissa = xi/10**xi_exp
