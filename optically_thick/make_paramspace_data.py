@@ -10,7 +10,7 @@ output_path = 'paramspace_test'
 # Set parameters
 rho_c_MS_fracs  = [1e-5, 0.01, 0.1, 1.0, 10.0, 100.0, 1e5]
 xis             = np.logspace(-26, -16, 21)
-T_cs            = np.logspace(2,8, 60)
+T_cs            = np.logspace(2,8, 70)
 L_ratio_error   = 0.001
 solver_tol      = 1e-5 
 
