@@ -9,7 +9,7 @@ custom_cmap = mpl.colors.ListedColormap(['#0E0880', '#2518F1', '#3352FF', '#54B2
 custom_cmap.set_extremes(over= 'k')
 
 
-def plot_nugget_paper(nugget:Nugget, plotpath = None, figsize=(4.5,6.3), plot_Prad_Pgas=True):
+def plot_nugget_paper(nugget:Nugget, plotpath = None, figsize=(4.5,6.3), plot_Pgas_Prad=True):
     '''Create the plot used in the paper for one nugget: profiles of T, rho, Prad/Pgas. 
     If plotpath is not provided, plot will be shown, otherwise plot will be saved to the given path.'''
 
@@ -24,7 +24,7 @@ def plot_nugget_paper(nugget:Nugget, plotpath = None, figsize=(4.5,6.3), plot_Pr
     L_heating = nugget.L_heat()
     convective_tag = nugget.convective_tag()
 
-    fig, axs = plt.subplots(ncols=1, nrows=3 if plot_Prad_Pgas else 2, sharex=True, figsize=figsize, dpi=300, gridspec_kw={'hspace': 0})
+    fig, axs = plt.subplots(ncols=1, nrows=3 if plot_Pgas_Prad else 2, sharex=True, figsize=figsize, dpi=400, gridspec_kw={'hspace': 0})
 
     # T plot
     ax = axs[0]
@@ -37,7 +37,7 @@ def plot_nugget_paper(nugget:Nugget, plotpath = None, figsize=(4.5,6.3), plot_Pr
     ax.set_xlabel(r'$r\ \rm[km]$')
 
     # Make legend with size of markers all large
-    lgnd = ax.legend(loc="upper right")
+    lgnd = ax.legend(loc="upper right", framealpha = 1)
     for handle in lgnd.legend_handles[:2]:
         handle.set_sizes([20.0])
 
@@ -50,7 +50,7 @@ def plot_nugget_paper(nugget:Nugget, plotpath = None, figsize=(4.5,6.3), plot_Pr
     ax.set_ylabel(r'$\rho\ \rm[g/cm^3]$')
     ax.set_xlabel(r'$r\ \rm[km]$')
 
-    if plot_Prad_Pgas:
+    if plot_Pgas_Prad:
         # prad/pgas plot
         ax = axs[2]
         ax.scatter(r, physics.P_gas(T, nugget.rho())/nugget.P_rad(), c = -1.0*convective_tag, s= 1, cmap='flag', label = 'Convective')

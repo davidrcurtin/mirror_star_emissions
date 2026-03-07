@@ -1,3 +1,4 @@
+import os
 import numpy as np
 from scipy.interpolate import CloughTocher2DInterpolator
 
@@ -22,7 +23,8 @@ a_rad = 4 * sigma / c
 
 
 # Import cloudy abundances to use
-cloudy_data = np.genfromtxt('data/Cloudy_ISM_Abundances.txt', comments='#', skip_header=3,skip_footer=24, usecols=(1,))
+ISM_abundances_path = os.path.join(os.path.dirname(__file__), 'data', 'Cloudy_ISM_Abundances.txt')
+cloudy_data = np.genfromtxt(ISM_abundances_path, comments='#', skip_header=3,skip_footer=24, usecols=(1,))
 number_fractions = cloudy_data/sum(cloudy_data)
 
 # Weights from https://iupac.qmul.ac.uk/AtWt/
@@ -93,7 +95,8 @@ def kappa_old(T, rho):
     return result
 
 # Import Freedman Opacity table and make an interpolator from it
-T_freedman, rho_freedman, kap_freedman = np.loadtxt('data/freedman_opacities_2014_[M_H]=0.txt', skiprows=38, unpack=True, usecols = (0,2,3))
+freedman_opacities_path = os.path.join(os.path.dirname(__file__), 'data', 'freedman_opacities_2014_[M_H]=0.txt')
+T_freedman, rho_freedman, kap_freedman = np.loadtxt(freedman_opacities_path, skiprows=38, unpack=True, usecols = (0,2,3))
 kappa_interpolator_freedman = CloughTocher2DInterpolator(list(zip(np.log10(rho_freedman*1000), np.log10(T_freedman))), np.log10(kap_freedman/10))
 del T_freedman, rho_freedman, kap_freedman
 def kappa_freedman(T, rho):
