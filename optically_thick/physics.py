@@ -53,10 +53,12 @@ def hminusopacity(rho, T):
     return 0.1 * np.sqrt(rho/10) * np.power(T/3250, 9) #in m^2/kg
 
 def freefreeopacity(rho,T):
-    return (X + Y) * (1 + X) * (rho/1000) * np.power(2.87 * (10**6) / T, 3.5) *0.1 #in m^2/kg
+    return 4e22*(X+Y)*(1+X) * (rho/1000) * (T**-3.5) * 0.1  #in m^2/kg
+    # return (X + Y) * (1 + X) * (rho/1000) * np.power(2.87 * (10**6) / T, 3.5) *0.1 # old formula
 
 def boundfreeopacity(rho,T):
-    return (Z/0.02) * (1 + (X/7)) * (rho/1000) * np.power(6.22 * (10**6) / T, 3.5) *0.1 #in m^2/kg
+    return 4e25 * Z * (1+X) * (rho/1000) * (T**-3.5) * 0.1  #in m^2/kg
+    # return (Z/0.02) * (1 + (X/7)) * (rho/1000) * np.power(6.22 * (10**6) / T, 3.5) # old formula
 
 def electron_scattering_opacity():
     return (1+X)*0.02 # 1cm^2/g=0.1m^2/kg 

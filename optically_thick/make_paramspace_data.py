@@ -1,15 +1,12 @@
 import numpy as np
-from module import save_nugget_file, save_dictionary, loop_bisection, convert_dictionary, trim_dictionary
+from module import bisection, save_nugget_file, save_dictionary, loop_bisection, convert_dictionary, trim_dictionary
 from plotting import plot_paramspace
 from physics import L_sun
 import os
-from timeit import default_timer as timer
+import timeit
 
-# Script inputs
-nugget_list_path = 'paramspace/all_nuggets.nuggets'
-dictionary_path  = 'paramspace/contour_dict.json'
-plot_path        = 'paramspace/full_paramspace.png'
-approx_sec_p_nug = 12
+# Path of folder containing script outputs (relative to this file's location) 
+output_path = 'paramspace_test'
 
 # Set parameters
 rho_c_MS_fracs  = [1e-5, 0.01, 0.1, 1.0, 10.0, 100.0, 1e5]
@@ -17,12 +14,24 @@ xis             = np.logspace(-26, -16, 21)
 T_cs            = np.logspace(2,8, 60)
 L_ratio_error   = 0.001
 solver_tol      = 1e-5 
-print(f'Trying to find {len(rho_c_MS_fracs) * len(xis) * len(T_cs)} nuggets. At {approx_sec_p_nug}s per nugget, this will take {len(rho_c_MS_fracs) * len(xis) * len(T_cs) * approx_sec_p_nug /60:.2f} minutes.', flush=True)
 
+# Approximate runtime
+def test():
+    bisection(rho_c_MS_fracs[0], xis[0], T_cs[0], L_ratio_error, solver_tol=solver_tol)
+approx_sec_p_nug = timeit.timeit(test, number=1, setup='gc.enable()')
+print(f'Trying to find {len(rho_c_MS_fracs) * len(xis) * len(T_cs)} nuggets. At {approx_sec_p_nug:.1f}s per nugget, this will take {len(rho_c_MS_fracs) * len(xis) * len(T_cs) * approx_sec_p_nug /60:.2f} minutes.', flush=True)
+
+# Manipulate paths to be usable
+output_path = os.path.join(os.path.dirname(__file__), output_path)
+os.makedirs(output_path, exist_ok=True)
+nugget_list_path = os.path.join(output_path, 'all_nuggets.nuggets')
+dictionary_path  = os.path.join(output_path, 'paramspace','contour_dict.json')
+plot_path        = os.path.join(output_path, 'paramspace','full_paramspace.png')
+ 
 # Make the nuggets (Will take a long time, order 100 hours)
-start = timer()
+start = timeit.default_timer()
 nuggets = loop_bisection(rho_c_MS_fracs, xis, T_cs, L_ratio_error, solver_tol=solver_tol)
-print(f'Took {(timer()-start)/60:.2f} minutes to generate data\n', flush=True)
+print(f'Took {(timeit.default_timer()-start)/60:.2f} minutes to generate data\n', flush=True)
 
 # Save all the nuggets to one (large) file
 save_nugget_file(nugget_list_path, nuggets)
