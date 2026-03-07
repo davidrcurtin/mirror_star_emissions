@@ -515,15 +515,60 @@ def load_dictionary(filepath: str):
         contour_dict = {float(key): [[np.array(prop) for prop in contour] for contour in value] for key, value in json.load(file).items()}
     return contour_dict
 
+def interpolate_paramspace(contour_dict, log_M_atol=0.4):
+    '''Interpolate points of the nugget xi, M parameter space at each xi and in gaps of log_M larger than log_M_atol. '''
+    interp_data = []
+
+    data = unpack_dictionary(contour_dict)
+
+    for rho_c_MS_frac in contour_dict.keys():
+        nuggets = data[data[:, 0] == rho_c_MS_frac]
+        log_xis = np.log10(nuggets[:, 1])
+        log_Ms  = nuggets[:, 8]
+
+        
+        xi_vals = np.unique(np.log10(nuggets[:, 1]))
+        log_M_vals = np.linspace(min(log_Ms), max(log_Ms), 20)
+
+        interp_xi, interp_log_M = np.meshgrid(xi_vals, log_M_vals, indexing = 'ij')
+
+        interpolated_props = []
+        for i in range(2,15):
+            if i == 8: continue
+            prop = nuggets[:, i]
+
+            interpolated_props.append(scipy.interpolate.griddata((log_xis, log_Ms), prop, (interp_xi, interp_log_M)))
+        interpolated_props = np.reshape(interpolated_props, (len(interpolated_props), -1))
+
+        for i, (log_xi_interp, log_M_interp) in enumerate(zip(np.ravel(interp_xi), np.ravel(interp_log_M))):
+            if not np.any(np.isnan(interpolated_props[:,i])):
+                log_Ms_at_xi = log_Ms[log_xis == log_xi_interp]
+                nearby = np.any(np.isclose(np.full_like(log_Ms_at_xi, log_M_interp), log_Ms_at_xi, rtol=0, atol=log_M_atol))
+                if not nearby:
+                    interp_data.append([
+                        rho_c_MS_frac,
+                        10**log_xi_interp,
+                        *[np.ravel(interpolated_props[j])[i] for j in range(6)],
+                        log_M_interp,
+                        *[np.ravel(interpolated_props[j])[i] for j in range(6, 12)],
+                        ]
+                    )
+
+    return convert_dictionary_list(interp_data)
+
+
 def load_thin_data() -> tuple[dict,dict]:
     '''returns two dictionaries of the form {rho_c_MS_frac: {keys = 'xi', 'M_nugget', 'T_c', 'R', 'L', 'G_bp-G_rp'}}\n
     The first is the actual cloudy solutions, the second is the interpolated points.'''
+    thin_dir_path = os.path.join(os.path.dirname(__file__), '..', 'optically_thin')
     dictionary_cut, dictionary_interpolated = {}, {}
     for rho_c in [0.01, 0.1, 1, 10, 100]:
-        data_strings_cut = np.genfromtxt(f'../optically_thin/{str(rho_c)}RhoDM/{str(rho_c)}PlottedNuggetProperties.csv',
-                                      skip_header=1, delimiter=',', unpack = True, dtype=str)
-        data_strings_interpolated = np.genfromtxt(f'../optically_thin/{str(rho_c)}RhoDM/{str(rho_c)}InterpolatedNuggets.csv',
-                                      skip_header=1, delimiter=',', unpack = True, dtype=str)
+        filtered_data_path = os.path.join(thin_dir_path, f'{str(rho_c)}RhoDM', f'{str(rho_c)}PlottedNuggetProperties.csv')
+        data_strings_cut = np.genfromtxt(filtered_data_path, skip_header=1, delimiter=',', unpack = True, dtype=str)
+
+        interpolated_data_path = os.path.join(thin_dir_path, f'{str(rho_c)}RhoDM', f'{str(rho_c)}InterpolatedNuggets.csv')
+        data_strings_interpolated = np.genfromtxt(interpolated_data_path, skip_header=1, delimiter=',', unpack = True, dtype=str)
+        
         data = []
         for col in data_strings_cut:
             data.append(np.array([np.float64(value.strip('"')) for value in col]))

@@ -142,20 +142,14 @@ def L_heating(rho_c_MS, xi, m):
 def L_blackbody(R, T):
     return 4 * np.pi * (R**2) * (T**4) * sigma
 
+def tau_MS_eff(M, R, rho_c_MS_frac):
+    '''Returns the effective mirror star lifetime in years'''
+    M_grams = M*1000
+    R_km = R/1000
+    return 10**8 * (M_grams/1e22)*((R_km/1e5)**2)*(rho_c_MS_frac**(-1/3))
 
-def tau_capture(M, R, rho_c_MS, M_MS = M_sun):
-    '''Return value is in Myr, 
-    M & M_MS in kg, 
-    R in m, 
-    rho_c_MS in kg/m^3 '''
-    return 65.0 * (M/1e17) * (1e7/R)**2 * (M_sun/M_MS)**(2/3) * (rho_c_sun/rho_c_MS)**(1/3)
-
-def tau_capture_wd(M, R, rho_c_MS, r_H = 1):
-    '''Return value is in Myr, 
-    M & M_MS in kg, 
-    R in m, 
-    rho_c_MS in kg/m^3 '''
-    return 1e2 * (M/1e17) * (1e7/R)**2 * (rho_c_sun/rho_c_MS)**(1/3) * r_H**(4/3)
+def geom_cap_ratio(M, R):
+    return (M/m_hydrogen) * (r_bohr**2) / (R**2)
 
 
 # Kippenhhan & weigert pg 124 eq 13.12/13.15

@@ -1,5 +1,6 @@
-import matplotlib.pyplot as plt
 import matplotlib as mpl
+import matplotlib.pyplot as plt
+import matplotlib.patheffects as patheffects
 from module import Nugget, load_thin_data
 import numpy as np
 import physics
@@ -214,6 +215,168 @@ def plot_paramspace(contour_dict: dict, cmaps = [custom_cmap]*6,
         else:
             rho_c_MS_str = r'$10^{' + f'{int(np.log10(rho_c_MS))}' + r'}$'
         ax.annotate(rho_c_MS_str+r'$\rho_{c,\odot}$', (0.97, 0.88), xycoords='axes fraction', fontsize='x-large', horizontalalignment='right')
+        ax.tick_params(labelleft=True)
+
+    fig.supxlabel(r"$\log \xi$", fontsize='xx-large')
+    fig.supylabel(r"$\log (M_{\mathrm{nugget}}/g)$", fontsize='xx-large')
+
+    if plotpath is not None:
+        plt.savefig(plotpath, pad_inches=0.1, bbox_inches = "tight")
+
+def plot_paramspace_tau(contour_dict: dict, contour_dict_interpolated: dict,
+                    cmaps = [custom_cmap]*6, 
+                    cbar_ranges = [(-10, 1), (0, 7+1/3), (0, 7+1/3), (0, 7+1/3), (-18,7+2/3), (0, 7+1/3)], 
+                    cbar_ticks = [np.linspace(-18, -3, 6), [0,2,4,6], [0,2,4,6], [0,2,4,6], [-18, -11, -4, 3], [0,2,4,6]],
+                    ax_lims = ((-26.5,-14.5),(8.5,35.5)),
+                    plotpath = None, thin=True):
+    '''
+    Plot used in the paper, with interpolated points and contours of tau_MS_eff.
+    :contour_dict: dictionary of nugget data as given by mirrorstarmodule.convert_dictionary()
+    :cmaps: list of colormaps to be passed to the scatter and colorbar calls in each column ex. ['viridis', 'seismic', colormap_object, ...]
+    :cbar_ranges: list of 2-tuples of the endpoints of each colorbar
+    :cbar_ticks: list of lists, each specifying the tick locations on a colorbar'''
+
+    def reformat_contour(contour_dict, columns, modifiers):
+        ''' Returns a dictionary with keys = rho_c_MS_frac, values = (xi, M, properties) where properties is a list of np arrays with the same length as  xi & M, representing the properties given by columns.
+        Columns is a list of indexes for which properties of the contours to include. Note M is in log space along with all the columns by default, and xi is not. \n
+        Ex: [1,2,4] to do just rho_c, T_c, and R\n
+        currently inds correspond to [xis, rho_cs, T_cs, L_heating, R_photos, T_photos, rho_photos, m_photos, r_rads, L_ratios, R_max, M_max, tau_center, g_photo] \n
+        if modifiers is provided, it will apply each element of modifiers to the data in the same index in the columns parameter, doing nothing if the element is None.'''
+        nothing = lambda x : x
+        modifiers = [nothing if modifier is None else modifier for modifier in modifiers]
+
+        data_dict = {}
+        for rho_c_MS_frac, contours in contour_dict.items():
+            contour_data = [[] for i in range(len(columns))]
+            xis = []
+            Ms = []
+            for contour in contours:
+                xis.extend(contour[0])
+                Ms.extend(contour[7])
+                data_ind = 0
+                for i, column_ind in enumerate(columns):
+                    contour_data[data_ind].extend(modifiers[i](contour[column_ind]))
+                    data_ind += 1
+            contour_data = [np.array(property) for property in contour_data]
+            data_dict[rho_c_MS_frac] = (np.array(xis), np.array(Ms), contour_data)
+        return data_dict
+
+    modifiers = [None, None, None, lambda x:x-3, lambda x:np.log10((10**x)/physics.L_sun), lambda x:x+2]
+
+    data = reformat_contour(contour_dict, [1,2,5,4,3,13], modifiers=modifiers)
+    data_interp = reformat_contour(contour_dict_interpolated, [1,2,5,4,3,13], modifiers=modifiers)
+
+    col_labels = [r'$\log_{10}(\rho_c) [g/cm^3]$', r'$\log_{10}(T_c) [K]$', r'$\log_{10}(T_{photo}) [K]$', r'$\log_{10}(R_{photo}) [km]$', r'$\log_{10}(L_{photo}/L_{sun})$', r'$\log_{10}(g_{photo}) [cm/s^2]$']
+    thin_strings=['rho_c', 'T_c', 'T_c', 'R', 'L', 'g']
+
+    thin_data_trim, thin_data_interp = load_thin_data()
+    for rho_c_MS in thin_data_trim.keys():
+        thin_data_trim[rho_c_MS]['xi'] = np.log10(thin_data_trim[rho_c_MS]['xi'])
+        thin_data_trim[rho_c_MS]['M_nugget'] = np.log10(thin_data_trim[rho_c_MS]['M_nugget'])
+            
+        thin_data_interp[rho_c_MS]['xi'] = np.log10(thin_data_interp[rho_c_MS]['xi'])
+        thin_data_interp[rho_c_MS]['M_nugget'] = np.log10(thin_data_interp[rho_c_MS]['M_nugget'])
+
+    rows, cols = len(data.keys()), len(next(iter(data.values()))[2])
+    rho_cores = sorted(data.keys())
+
+    fig, axs = plt.subplots(nrows=rows+1, ncols=cols, figsize=(0.2+cols*2.65, 1.45+rows*2.15), dpi =450,
+                            height_ratios= [0.1]+[1 for i in range(rows)], layout="constrained")
+    ax_list = np.ravel(axs[1:, :])
+    for ax in ax_list[1:]:
+        ax.sharex(ax_list[0])
+        ax.sharey(ax_list[0])
+
+    tau_dict = {}
+    for j, rho_c_MS in enumerate(rho_cores):
+        log_xi = np.log10(np.append(data[rho_c_MS][0], data_interp[rho_c_MS][0]))
+        M_nugget_log_grams = np.append(data[rho_c_MS][1], data_interp[rho_c_MS][1]) + 3
+        R_nugget = 10**(np.append(data[rho_c_MS][2][3], data_interp[rho_c_MS][2][3]))*1000
+
+        tauMSEff = np.log10(physics.tau_MS_eff((10**M_nugget_log_grams)/1000, R_nugget, rho_c_MS))
+        tau_dict[rho_c_MS] = (log_xi, M_nugget_log_grams, tauMSEff)
+
+    if thin:
+        extra_thin_data = {}
+        for rho_c_MS in standard_rho_c_MS:
+            log_xi = np.append(thin_data_trim[rho_c_MS]['xi'], thin_data_interp[rho_c_MS]['xi'])
+            M_nugget_log_grams = np.append(thin_data_trim[rho_c_MS]['M_nugget'],thin_data_interp[rho_c_MS]['M_nugget'])
+            R_nugget_km = np.append(thin_data_trim[rho_c_MS]['R'], thin_data_interp[rho_c_MS]['R'])
+
+            tauMSEff = np.log10(physics.tau_MS_eff((10**M_nugget_log_grams)/1000, R_nugget_km*1000, rho_c_MS))
+            geom_cap = physics.geom_cap_ratio(10**M_nugget_log_grams/1000,R_nugget_km*1000)
+            extra_thin_data[rho_c_MS] = (log_xi, M_nugget_log_grams, tauMSEff, geom_cap)
+
+    # Plot on each subplot
+    for i in range(cols):
+        norm = mpl.colors.Normalize(*cbar_ranges[i])
+        for j, rho_c_MS in enumerate(rho_cores):
+            xi, M, plt_data = np.log10(data[rho_c_MS][0]), data[rho_c_MS][1]+3, data[rho_c_MS][2][i]
+            xi_interp, M_interp, plt_data_interp = np.log10(data_interp[rho_c_MS][0]), data_interp[rho_c_MS][1]+3, data_interp[rho_c_MS][2][i]
+            ax = axs[j+1][i] #Leaving space for the colorbar
+
+            # Plot Thick Data
+            ax.scatter(xi, M, c = plt_data, s = 10, marker = 'o', norm = norm, cmap = cmaps[i])
+            ax.scatter(xi_interp, M_interp, edgecolors = cmaps[i](norm(plt_data_interp)), s = 10, marker = 'o', lw =1.5, facecolors='None')
+
+            # Plot thin data
+            if thin and rho_c_MS in standard_rho_c_MS:
+                thin_size = 30
+                thin_linewidth = 0.2
+                if thin_strings[i] == 'Blank':
+                    ax.scatter(thin_data_trim[rho_c_MS]['xi'], thin_data_trim[rho_c_MS]['M_nugget'], c = 'gray',
+                                alpha = 0.75, marker = '*', linewidths = thin_linewidth, s=thin_size)
+                    ax.scatter(thin_data_interp[rho_c_MS]['xi'], thin_data_interp[rho_c_MS]['M_nugget'], c = 'gray',
+                                alpha = 0.75, marker = '$\u2606$', linewidths = thin_linewidth, s=thin_size)
+                else:
+                    thin_plot_data_trim, thin_plot_data_interp = np.log10(thin_data_trim[rho_c_MS][thin_strings[i]]), np.log10(thin_data_interp[rho_c_MS][thin_strings[i]])
+
+                    ax.scatter(thin_data_trim[rho_c_MS]['xi'], thin_data_trim[rho_c_MS]['M_nugget'], c = thin_plot_data_trim,
+                                alpha = 0.75, norm = norm, cmap = cmaps[i], marker = '*', linewidths = thin_linewidth, s=thin_size)
+                    ax.scatter(thin_data_interp[rho_c_MS]['xi'], thin_data_interp[rho_c_MS]['M_nugget'], c = thin_plot_data_interp,
+                                alpha = 0.75, norm = norm, cmap = cmaps[i], marker = '$\u2606$', linewidths = thin_linewidth, s=thin_size)
+            
+            # Add tau contours
+            contour_kwargs_a = {'colors': 'white', 'linewidths':1, 'alpha':0.75, 'linestyles':'solid'}
+            contour_kwargs_b = {'colors': 'k', 'linewidths':0.5, 'alpha':0.75, 'linestyles':'solid'}
+            contours_a = ax.tricontour(*tau_dict[rho_c_MS], levels = 4, **contour_kwargs_a)
+            contours_b = ax.tricontour(*tau_dict[rho_c_MS], levels = 4, **contour_kwargs_b)
+            ax.clabel(contours_a, fontsize=8)
+            labels = ax.clabel(contours_b, fontsize=8)
+            plt.setp(labels, path_effects=[patheffects.withStroke(linewidth=1.5, foreground="white")])
+
+            if thin and rho_c_MS in standard_rho_c_MS:
+                log_xi, M_nugget_log_grams, tauMSEff, cap = extra_thin_data[rho_c_MS]
+                valid_inds = cap > 1
+                contours_a = ax.tricontour(log_xi[valid_inds], M_nugget_log_grams[valid_inds], tauMSEff[valid_inds], levels = 3, **contour_kwargs_a)
+                contours_b = ax.tricontour(log_xi[valid_inds], M_nugget_log_grams[valid_inds], tauMSEff[valid_inds], levels = 3, **contour_kwargs_b)
+                ax.clabel(contours_a, fontsize=8)
+                labels = ax.clabel(contours_b, fontsize=8)
+                plt.setp(labels, path_effects=[patheffects.withStroke(linewidth=1.5, foreground="white")])
+
+                ax.tricontour(log_xi, M_nugget_log_grams, cap, levels =[1], linewidths = 0.8, alpha=0.6, linestyles='dashed', colors='k')
+
+            # Get rid of interior labels
+            ax.set_xlim(*ax_lims[0])
+            ax.set_ylim(*ax_lims[1])
+            ax.tick_params(labelbottom=False, labelleft=False)
+        
+        # Re-add exterior labels
+        axs[-1][i].tick_params(labelbottom=True)
+        axs[-1][i].set_xticks(np.arange(-26, -14, 2))
+
+        # Add colorbars
+        cbar = fig.colorbar(mpl.cm.ScalarMappable(norm=norm, cmap=cmaps[i]), location = 'top', cax = axs[0][i], extend = 'max', ticks = cbar_ticks[i])
+        cbar.set_label(col_labels[i], fontsize='xx-large', labelpad=12)
+
+    # Add rho_c_MS labels on each row
+    for j, rho_c_MS in enumerate(rho_cores):
+        ax = axs[j+1][0]
+        if rho_c_MS in standard_rho_c_MS:
+            rho_c_MS_str = f'{rho_c_MS}'
+        else:
+            rho_c_MS_str = r'$10^{' + f'{int(np.log10(rho_c_MS))}' + r'}$'
+        ax.annotate(rho_c_MS_str+r'$\rho_{core,\odot}$', (0.97, 0.88), xycoords='axes fraction', fontsize='x-large', horizontalalignment='right')
         ax.tick_params(labelleft=True)
 
     fig.supxlabel(r"$\log \xi$", fontsize='xx-large')
