@@ -10,7 +10,7 @@ custom_cmap = mpl.colors.ListedColormap(['#0E0880', '#2518F1', '#3352FF', '#54B2
 custom_cmap.set_extremes(over= 'k')
 
 
-def plot_nugget_paper(nugget:Nugget, plotpath = None, figsize=(4.5,6.3), plot_Pgas_Prad=True):
+def plot_nugget_paper(nugget:Nugget, plotpath = None, figsize=(4.5,5), plot_Pgas_Prad=False):
     '''Create the plot used in the paper for one nugget: profiles of T, rho, Prad/Pgas. 
     If plotpath is not provided, plot will be shown, otherwise plot will be saved to the given path.'''
 
@@ -31,7 +31,7 @@ def plot_nugget_paper(nugget:Nugget, plotpath = None, figsize=(4.5,6.3), plot_Pg
     ax = axs[0]
     ax.scatter(r, T, c = -1.0*convective_tag, s= 1, cmap='flag', label = 'Convective')
     ylim = ax.get_ylim()
-    ax.scatter(-2,1, s=1, c='k', label = 'Radiative')
+    ax.scatter(1,-1e10, s=1, c='k', label = 'Radiative')
     ax.set_ylim(ylim)
     ax.axvline(r_photo, c = 'blue', linestyle = '--', label = 'Photosphere')
     ax.set_ylabel(r'$T\ \rm[K]$')

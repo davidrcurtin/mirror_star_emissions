@@ -399,7 +399,7 @@ def convert_dictionary(nuggets: list[Nugget]):
         properties = [np.log10(
             [
             n.rho_c(True), n.T_c(), n.L_heat(), n.r_photo(), n.T_photo(), n.rho_photo(), n.M_photo(),
-            n.r()[np.nonzero(n.convective_tag()-1)[0][0] if len(np.nonzero(n.convective_tag()-1)[0]) > 0 else -1], # First index where its radiative, for non-on-liner see condense profiles
+            n.r()[np.nonzero(n.convective_tag()-1)[0][0] if len(np.nonzero(n.convective_tag()-1)[0]) > 0 else -1], 
             n.L_ratio(), n.r()[-1], n.m()[-1], 
             n.total_tau(),
             n.g_photo()
@@ -510,7 +510,7 @@ def save_dictionary(filepath: str, contour_dict: dict):
         json.dump({key: [[list(prop) for prop in contour] for contour in value] for key, value in contour_dict.items()}, file)
 
 def load_dictionary(filepath: str):
-    '''Load a dictionary from filepath, given it is of the for given by convert_dictionary'''
+    '''Load a dictionary from filepath, given it is of the form given by convert_dictionary'''
     with open(filepath, 'r') as file:
         contour_dict = {float(key): [[np.array(prop) for prop in contour] for contour in value] for key, value in json.load(file).items()}
     return contour_dict
