@@ -3,8 +3,20 @@
 """
 Reproducible plot generator for EM signatures/mirror-star contours.
 
-Recommended usage:
-  python em_signatures/make_plots.py --data-root em_signatures/data --plots-root em_signatures/plots
+Usage
+- Recommended working directory: optically_thick/
+    python em_signatures/make_plots.py --data-root em_signatures/data --plots-root em_signatures/plots
+
+- Use an external spectra directory:
+    python em_signatures/make_plots.py --data-root em_signatures/data --plots-root em_signatures/plots --spectra-root D:/mps-atlas/spectra
+
+CLI flags
+- --set-type {set1,set2}
+- --spectra-root <path>
+- --skip-spectra-examples
+- --skip-loggT
+- --skip-hr
+- --skip-hr-3d
 
 Inputs expected under --data-root:
   grids/grid_mh.txt
@@ -176,7 +188,7 @@ def load_contours(contour_path: Path) -> Dict[float, List[List[np.ndarray]]]:
     """
     JSON structure: {rho_frac_str: [contour, contour, ...]}
     contour = [xis, rho_cs, T_cs, L_photos, R_photos, T_photos, rho_photos, m_photos, r_rads,
-               L_ratios, R_max, M_max, tau_center]
+               L_ratios, R_max, M_max, tau_center, g_photo]
     Each element is list-like -> convert to numpy arrays.
     """
     with contour_path.open("r", encoding="utf-8") as f:
@@ -191,7 +203,8 @@ def load_contours(contour_path: Path) -> Dict[float, List[List[np.ndarray]]]:
 
 def trim_contours_tau(contour_dict: Dict[float, List[List[np.ndarray]]], tau_min: float = 10.0) -> Dict[float, List[List[np.ndarray]]]:
     """
-    Keep only indices where (10**tau_center) > tau_min
+    Filter each contour to keep only points where optical depth satisfies
+    (10**tau_center) > tau_min.
     """
     out: Dict[float, List[List[np.ndarray]]] = {}
     for rho_frac, contours in contour_dict.items():
@@ -278,7 +291,8 @@ def process_spectra_examples(
     spectra_root: Path | None = None,
 ) -> None:
     """
-    Reproduces the "interpolated vs nearest model" plot(s) for the example nuggets.
+    Generate example spectra plots for the two profile nuggets in
+    optically_thick/profiles using interpolated MPS-Atlas spectra.
     """
     # Use nuggets from the repository `profiles/` directory under optically_thick
     nuggets_dir = Path(__file__).resolve().parents[1] / "profiles"
@@ -364,10 +378,12 @@ def combined_plot(
     filename: str,
 ) -> None:
     """
-    Combined T_photo vs logg plot, with analytic luminosity contours, star-region boxes,
-    and per-rho scatter points.
+    Build one logg-T panel with:
+    - model points for each core-density slice,
+    - stellar classification regions,
+    - analytic log10(L/Lsun) contours clipped to fitted model bounds.
 
-    luminosity_band is in log10(L/Lsun): e.g. (-9, -3) or (-3, 0)
+    luminosity_band is in log10(L/Lsun), e.g. (-9, -3) or (-3, 0).
     """
     star_regions, region_colors = build_star_regions()
 
@@ -518,6 +534,7 @@ def combined_plot(
 
 # Gaia cache
 def load_gaia_hr_cache(gaia_cache_dir: Path) -> Tuple[np.ndarray, np.ndarray]:
+    """Load Gaia HR cache columns (M_G, BP_RP) from gaia_observed_hr.csv."""
     fp = gaia_cache_dir / "gaia_observed_hr.csv"
     if not fp.exists():
         raise FileNotFoundError(
@@ -528,6 +545,7 @@ def load_gaia_hr_cache(gaia_cache_dir: Path) -> Tuple[np.ndarray, np.ndarray]:
 
 
 def load_gaia_hr_logg_cache(gaia_cache_dir: Path) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
+    """Load Gaia HR+logg cache columns (M_G, BP_RP, logg)."""
     fp = gaia_cache_dir / "gaia_observed_hr_logg.csv"
     if not fp.exists():
         raise FileNotFoundError(
@@ -538,6 +556,7 @@ def load_gaia_hr_logg_cache(gaia_cache_dir: Path) -> Tuple[np.ndarray, np.ndarra
 
 
 def load_wd_hr_logg_cache(gaia_cache_dir: Path) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
+    """Load white-dwarf HR+logg cache columns (M_G, BP_RP, logg_H)."""
     fp = gaia_cache_dir / "gaia_white_dwarfs_hr_logg.csv"
     if not fp.exists():
         raise FileNotFoundError(
@@ -553,6 +572,7 @@ def stacked_hr_plots(
     plots_root: Path,
     gaia_cache_dir: Path,
 ) -> None:
+    """Create stacked 2D HR panels and write plots_root/HR/stacked_HR_threecol.png."""
     ensure_dir(plots_root / "HR")
 
     m_g, bp_rp = load_gaia_hr_cache(gaia_cache_dir)
@@ -594,7 +614,7 @@ def stacked_hr_plots(
         norm1 = mpl.colors.Normalize(0, 7+1/3)
         sc1 = ax1.scatter(colors_hr, M_G, c=logg, cmap=custom_cmap, norm=norm1, s=10, zorder=3)
         ax1.hexbin(bp_rp, m_g, gridsize=150, cmap="Greys", bins="log", zorder=1, alpha=1)
-        ax1.annotate(rf"$\rho_c={format_rho(rho_frac)}\,\rho_\odot$", xy=(-0.1, 0.5),
+        ax1.annotate(rf"$\rho_\mathrm{{core}}={format_rho(rho_frac)}\,\rho_{{\mathrm{{core}},\odot}}$", xy=(-0.1, 0.5),
                      xycoords="axes fraction", ha="right", va="center", rotation=90)
 
         # Col 2: color=logmass (discrete custom_cmap)
@@ -649,8 +669,8 @@ def stacked_hr_plots_3d(
     gaia_cache_dir: Path,
 ) -> None:
     """
-    Single-column stacked 3D HR plot (BP-RP, M_G, logg) combining:
-      - model points (logg computed from rho_c_sun * R_photo)
+        Stacked 3D HR plot (BP-RP, M_G, logg) combining:
+            - model points from contour data
       - Gaia observed stars with logg_gspphot (from cache)
       - Gaia WD catalog with logg_H (from cache)
 
@@ -761,7 +781,7 @@ def stacked_hr_plots_3d(
         ax.set_zticks([0, 5, 10])
 
         ax.text2D(
-            -0.06, 0.5, rf"$\rho_c = {format_rho(rho_frac)}\,\rho_\odot$",
+            -0.06, 0.5, rf"$\rho_\mathrm{{core}} = {format_rho(rho_frac)}\,\rho_{{\mathrm{{core}},\odot}}$",
             transform=ax.transAxes,
             fontweight="bold",
             ha="right", va="center",
@@ -800,6 +820,7 @@ def stacked_hr_plots_3d(
 
 # Main
 def main():
+    """Parse CLI args and generate requested plot groups."""
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--data-root",
@@ -845,7 +866,7 @@ def main():
     rho_arr = [1e-5, 0.01, 0.1, 1, 10, 100, 1e5]
 
     # Load contour file from paramspace
-    contour_path = Path(__file__).parent.parent / "paramspace" / "contour_dict.json"
+    contour_path = Path(__file__).parent.parent / "paramspace_quick" / "contour_dict.json"
 
     contour_dict = load_contours(contour_path)
     contour_dict_trimmed = trim_contours_tau(contour_dict, tau_min=10.0)
