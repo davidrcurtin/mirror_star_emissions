@@ -866,7 +866,7 @@ def main():
     rho_arr = [1e-5, 0.01, 0.1, 1, 10, 100, 1e5]
 
     # Load contour file from paramspace
-    contour_path = Path(__file__).parent.parent / "paramspace_quick" / "contour_dict.json"
+    contour_path = Path(__file__).parent.parent / "paramspace" / "contour_dict.json"
 
     contour_dict = load_contours(contour_path)
     contour_dict_trimmed = trim_contours_tau(contour_dict, tau_min=10.0)
