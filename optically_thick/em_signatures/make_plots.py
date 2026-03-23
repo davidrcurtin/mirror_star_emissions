@@ -22,9 +22,6 @@ Inputs expected under --data-root:
   grids/grid_mh.txt
   grids/grid_teff.txt
   grids/grid_logg.txt
-  contours/contours_new__rho_c_MS=...json
-  nuggets/radiative_ex.nugget
-  nuggets/convective_ex.nugget
   gaia_cache/gaia_observed_hr.csv
   gaia_cache/gaia_observed_hr_logg.csv
   gaia_cache/gaia_white_dwarfs_hr_logg.csv
@@ -60,10 +57,6 @@ from matplotlib.lines import Line2D
 from matplotlib.patches import Rectangle
 from scipy.interpolate import interpn
 from scipy.optimize import curve_fit, fsolve
-
-# Local modules
-from stellar_parameters import GridOfStellarParameters
-from model_spectra_data import ReadData
 
 from mpl_toolkits.axes_grid1.inset_locator import inset_axes
 
@@ -330,7 +323,6 @@ def process_spectra_examples(
             continue
 
         teff_input = float(nug.T_photo())
-        R_input_m = float(nug.r_photo())   # assume meters
         xi_input = float(nug.xi())
         rho_c_input = float(nug.rho_c())
         T_c_input = float(nug.T_c())
@@ -342,30 +334,14 @@ def process_spectra_examples(
         grid = Grid(mh_input, teff_input, logg_input, set_type, grids_dir=grids_dir, spectra_root=spectra_root)
         wavelength_interp, flux_interp = grid.get_interpolated_disk_integrated_spectrum()
 
-        # Nearest model via helper classes
-        nearest = GridOfStellarParameters(mh_input, teff_input, logg_input)
-        mh, teff, logg = nearest.get_closest_mh_teff_logg()
-        print(f"NEAREST: Teff={teff}, logg={logg}, M/H={mh}")
-
-        data = ReadData(spectra_root=spectra_root)
-        wln, spectra = data.read_disk_integrated_spectra(mh, teff, logg, set_type)
-
-        wln = np.array(wln).flatten()
-        spectra = np.array(spectra).flatten()
-
-        # Map interpolated flux onto the nearest-model wavelength grid
-        flux_on_wln = np.interp(wln, wavelength_interp, flux_interp)
-
         plt.figure(figsize=(10, 8))
-        plt.plot(wavelength_interp, flux_interp, label="Interpolated", linewidth=1.2)
-        #plt.plot(wln, spectra, label="Nearest model", linewidth=1.0, alpha=0.8)
+        plt.plot(wavelength_interp, flux_interp, linewidth=1.2)
 
         plt.ylabel(r"Flux (erg/cm$^2$/s/nm)")
         plt.xlabel("Wavelength (nm)")
         plt.title(rf"$T_{{\mathrm{{eff}}}}={teff_input:.0f}\,$K, $\log g={logg_input:.2f}$, $[M/H]={mh_input:.3f}$")
         plt.grid(True, alpha=0.4)
         plt.xlim(0, 10000)
-        #plt.legend()
 
         fname = out_folder / f"xi={xi_input:.0e}_rho={rho_c_input:.3e}_Tc={T_c_input:.3e}.png"
         plt.tight_layout()
@@ -392,7 +368,7 @@ def combined_plot(
 
     ensure_dir(plots_root / "logg_T")
 
-    fig, ax = plt.subplots(figsize=(10, 8))
+    _, ax = plt.subplots(figsize=(10, 8))
     colors_list = plt.cm.viridis(np.linspace(0, 1, len(rho_arr)))
 
     Tmin_points = []
@@ -424,8 +400,6 @@ def combined_plot(
             continue
 
         T_photo = 10 ** arrays[5]  # K
-        R_m = 10 ** arrays[4]      # m
-        L_W = 10 ** arrays[3]      # W
         logg = arrays[13] + 2  # g_photo from contour_dict is log10(m/s^2), convert to cm/s^2 by adding log10(100)
 
         ax.scatter(T_photo, logg, color=color, s=20)
@@ -468,9 +442,6 @@ def combined_plot(
     ax.invert_yaxis()
     ax.set_xlabel(r"$T_{\mathrm{photo}}$ (K)")
     ax.set_ylabel(r"log$_{10}$(g [cm/s$^2$])")
-
-    def pow10_tex(exp: int) -> str:
-        return "1" if exp == 0 else rf"10^{{{exp}}}"
 
     lo_exp = int(round(lo))
     hi_exp = int(round(hi))
@@ -545,29 +516,6 @@ def load_gaia_hr_cache(gaia_cache_dir: Path) -> Tuple[np.ndarray, np.ndarray]:
         )
     df = pd.read_csv(fp)
     return df["M_G"].values, df["BP_RP"].values
-
-
-def load_gaia_hr_logg_cache(gaia_cache_dir: Path) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
-    """Load Gaia HR+logg cache columns (M_G, BP_RP, logg)."""
-    fp = gaia_cache_dir / "gaia_observed_hr_logg.csv"
-    if not fp.exists():
-        raise FileNotFoundError(
-            f"Missing Gaia cache {fp}."
-        )
-    df = pd.read_csv(fp)
-    return df["M_G"].values, df["BP_RP"].values, df["logg"].values
-
-
-def load_wd_hr_logg_cache(gaia_cache_dir: Path) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
-    """Load white-dwarf HR+logg cache columns (M_G, BP_RP, logg_H)."""
-    fp = gaia_cache_dir / "gaia_white_dwarfs_hr_logg.csv"
-    if not fp.exists():
-        raise FileNotFoundError(
-            f"Missing WD cache {fp}."
-        )
-    df = pd.read_csv(fp)
-    return df["M_G"].values, df["BP_RP"].values, df["logg_H"].values
-
 # HR plots
 def stacked_hr_plots(
     contour_dict_trimmed: Dict[float, List[List[np.ndarray]]],
@@ -599,7 +547,6 @@ def stacked_hr_plots(
 
         arrays = [np.array(p) for p in properties]
         T_photo = 10 ** arrays[5]
-        R_m = 10 ** arrays[4]
         m_photo_kg = 10 ** arrays[7]
         L_W = 10 ** arrays[3]
         xi = arrays[0]
@@ -612,24 +559,20 @@ def stacked_hr_plots(
         logxi = np.log10(xi)
 
         # Col 1: color=logg (use discrete custom_cmap)
-        Ncol = custom_cmap.N
-        #norm1 = mpl.colors.BoundaryNorm(np.linspace(0, 9, Ncol + 1), Ncol)
         norm1 = mpl.colors.Normalize(0, 7+1/3)
-        sc1 = ax1.scatter(colors_hr, M_G, c=logg, cmap=custom_cmap, norm=norm1, s=10, zorder=3)
+        ax1.scatter(colors_hr, M_G, c=logg, cmap=custom_cmap, norm=norm1, s=10, zorder=3)
         ax1.hexbin(bp_rp, m_g, gridsize=150, cmap="Greys", bins="log", zorder=1, alpha=1)
         ax1.annotate(rf"$\rho_\mathrm{{core}}={format_rho(rho_frac)}\,\rho_{{\mathrm{{core}},\odot}}$", xy=(-0.1, 0.5),
                      xycoords="axes fraction", ha="right", va="center", rotation=90)
 
         # Col 2: color=logmass (discrete custom_cmap)
-        #norm2 = mpl.colors.BoundaryNorm(np.linspace(11, 32, Ncol + 1), Ncol)
         norm2 = mpl.colors.Normalize(11, 33)
-        sc2 = ax2.scatter(colors_hr, M_G, c=logmass, cmap=custom_cmap, norm=norm2, s=10, zorder=3)
+        ax2.scatter(colors_hr, M_G, c=logmass, cmap=custom_cmap, norm=norm2, s=10, zorder=3)
         ax2.hexbin(bp_rp, m_g, gridsize=150, cmap="Greys", bins="log", zorder=1, alpha=1)
 
         # Col 3: color=logxi (discrete custom_cmap)
-        #norm3 = mpl.colors.BoundaryNorm(np.linspace(-26, -16, Ncol + 1), Ncol)
         norm3 = mpl.colors.Normalize(-26, -15)
-        sc3 = ax3.scatter(colors_hr, M_G, c=logxi, cmap=custom_cmap, norm=norm3, s=10, zorder=3)
+        ax3.scatter(colors_hr, M_G, c=logxi, cmap=custom_cmap, norm=norm3, s=10, zorder=3)
         ax3.hexbin(bp_rp, m_g, gridsize=150, cmap="Greys", bins="log", zorder=1, alpha=1)
 
         for ax in (ax1, ax2, ax3):
@@ -641,19 +584,16 @@ def stacked_hr_plots(
     # Shared discrete colorbars using the repo's custom_cmap with nice integer ticks
     cbar_ax1 = fig.add_axes([0.125, 0.93, 0.22, 0.01])
     sm1 = mpl.cm.ScalarMappable(norm=norm1, cmap=custom_cmap)
-    #bins1 = np.linspace(0, 9, Ncol + 1)
     cb1 = fig.colorbar(sm1, cax=cbar_ax1, orientation="horizontal", ticks=[0, 2, 4, 6], extend="max")
     cb1.set_label(r"log$_{10}(g$ [cm/s$^2$])")
 
     cbar_ax2 = fig.add_axes([0.425, 0.93, 0.22, 0.01])
     sm2 = mpl.cm.ScalarMappable(norm=norm2, cmap=custom_cmap)
-    #bins2 = np.linspace(11, 32, Ncol + 1)
     cb2 = fig.colorbar(sm2, cax=cbar_ax2, orientation="horizontal", ticks=[13, 17, 21, 25, 29, 33], extend="max")
     cb2.set_label(r"log$_{10}(M$ [g])")
 
     cbar_ax3 = fig.add_axes([0.7, 0.93, 0.22, 0.01])
     sm3 = mpl.cm.ScalarMappable(norm=norm3, cmap=custom_cmap)
-    #bins3 = np.linspace(-26, -16, Ncol + 1)
     cb3 = fig.colorbar(sm3, cax=cbar_ax3, orientation="horizontal", ticks=[-26, -22, -18, -16], extend="max")
     cb3.set_label(r"log$_{10}(\xi)$")
 
@@ -702,7 +642,6 @@ def stacked_hr_plots_3d(
     plot_folder = plots_root / "HR"
     ensure_dir(plot_folder)
 
-    n = len(rho_fracs)
     nrows, ncols = 3, 3
     fig = plt.figure(figsize=(25, 20), dpi=300)
     
@@ -712,7 +651,7 @@ def stacked_hr_plots_3d(
         ax = fig.add_subplot(nrows, ncols, row * ncols + col + 1, projection="3d")
         axes_list.append(ax)
         
-    for ax_idx, (ax, rho_frac) in enumerate(zip(axes_list, rho_fracs)):
+    for ax, rho_frac in zip(axes_list, rho_fracs):
         data = contour_dict_trimmed[rho_frac]
         properties = [[] for _ in data[0]]
 
@@ -726,7 +665,6 @@ def stacked_hr_plots_3d(
 
         arrays = [np.array(p) for p in properties]
         T_photo = 10 ** arrays[5]   # K
-        R_m = 10 ** arrays[4]       # m
         L_W = 10 ** arrays[3]       # W
         logg_model = arrays[13] + 2  # g_photo from contour_dict is log10(m/s^2), convert to cm/s^2 by adding log10(100)
 
@@ -739,10 +677,8 @@ def stacked_hr_plots_3d(
         z_all = np.concatenate([logg_model, logg_gaia, logg_wd])
 
         # Discrete 3D scatter using the repository custom_cmap
-        Ncol = custom_cmap.N
-        #norm_main = mpl.colors.BoundaryNorm(np.linspace(0, 9, Ncol + 1), Ncol)
         norm_main = mpl.colors.Normalize(0, 7+1/3)
-        sc = ax.scatter(
+        ax.scatter(
             x_all, y_all, z_all,
             c=z_all, cmap=custom_cmap, norm=norm_main,
             s=6
@@ -865,7 +801,6 @@ def main():
     # Data subdirs
     gaia_cache_dir = data_root / "gaia_cache"
 
-    # Keep as defaults but read from data_root
     rho_arr = [1e-5, 0.01, 0.1, 1, 10, 100, 1e5]
 
     # Load contour file from paramspace
