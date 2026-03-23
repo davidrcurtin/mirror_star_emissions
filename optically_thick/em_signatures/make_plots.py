@@ -311,8 +311,11 @@ def process_spectra_examples(
         )
 
 
-    # Expect convective.nugget and radiative.nugget in the `profiles/` folder
-    nugget_files = [nuggets_dir / "convective.nugget", nuggets_dir / "radiative.nugget"]
+    # Expect convective_nugget.nugget and radiative_nugget.nugget in the `profiles/` folder
+    nugget_files = [
+        nuggets_dir / "convective_nugget.nugget",
+        nuggets_dir / "radiative_nugget.nugget",
+    ]
     for f in nugget_files:
         if not f.exists():
             raise FileNotFoundError(f"Missing nugget file in profiles/: {f}")
