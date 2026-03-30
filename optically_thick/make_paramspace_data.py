@@ -25,7 +25,7 @@ output_path = os.path.join(os.path.dirname(__file__), output_path)
 os.makedirs(output_path, exist_ok=True)
 nugget_list_path = os.path.join(output_path, 'all_nuggets.nuggets')
 dictionary_path  = os.path.join(output_path, 'contour_dict.json')
-plot_path        = os.path.join(output_path, 'full_paramspace.png')
+plot_path        = os.path.join(output_path, 'full_paramspace')
  
 # Make the nuggets (Will take a long time, order 100 hours)
 start = timeit.default_timer()
@@ -46,5 +46,7 @@ contour_dict_trimmed = trim_dictionary(contour_dict)
 contour_dict_interpolated = interpolate_paramspace(contour_dict_trimmed)
 
 # Plot it
-plot_paramspace_tau(contour_dict_trimmed, contour_dict_interpolated, plotpath=plot_path)
-print(f'NOTE: A plot of the parameter space has been saved at the path: \n    {plot_path}')
+plot_paramspace_tau(contour_dict_trimmed, contour_dict_interpolated, plotpath=plot_path+'.png')
+print(f'NOTE: A plot of the parameter space has been saved at the path: \n    {plot_path}'+'.png')
+plot_paramspace_tau(contour_dict_trimmed, contour_dict_interpolated, plotpath=plot_path+'.pdf')
+print(f'NOTE: A plot of the parameter space has been saved at the path: \n    {plot_path}'+'.pdf')
