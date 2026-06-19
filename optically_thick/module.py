@@ -45,7 +45,7 @@ def nugget_profiles(rho_c_MS, rho_c, T_c, xi, unpack = False, convective_tagging
             convective_used = False
             dp_rad_radiative = grad_P_rad_rad(rho_c_MS, xi, p_rad, rho, m, r) * dr
             new_p_rad = p_rad + dp_rad_radiative
-            new_rho = rho__pressure(new_p, p_rad)
+            new_rho = rho__pressure(new_p, new_p_rad)
         
         return np.array([new_p, new_p_rad, new_rho, new_m]), new_r, convective_used
     

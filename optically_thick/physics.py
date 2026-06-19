@@ -63,30 +63,14 @@ def boundfreeopacity(rho,T):
 def electron_scattering_opacity():
     return (1+X)*0.02 # 1cm^2/g=0.1m^2/kg 
 
-saha_const = 2/(h_bar**3/(2*np.pi*m_e*k_b)**1.5) # 2/electron wavelength^3 without the T^3/2
 def H_ionization_fraction(T, rho):
-    exponential = np.exp(-13.59844*eV/(k_b*T))
-
-    # ionized has e- & p+ which both have 2 states so g_1=4, degeneracy in H atom is 2n^2 times 2 for proton spin and n=1 so g_0=4 
-    degeneracy_fraction = 1
-
-    saha_eq = saha_const*(T**1.5)*degeneracy_fraction*exponential
-
-    # This is equivalent to below method, but avoids division by zero/overflow
-    big_X = np.divide((X*rho/m_hydrogen), saha_eq, where= saha_eq >1e-50, out = np.zeros_like(saha_eq))
-    return 2/(1+np.sqrt(1+4*big_X))
-
-    # Following https://www.physics.unlv.edu/~jeffery/astro/educational_notes/100_saha.pdf somewhat
-    # saha_eq=n_e*n_ionized/n_unionized, but here n_ionized = n_e, and the total is n=n_e+n_unionized
-    # so 1/x=: saha_eq/n_e = n_e/n-n_e = x/X-x for x=n_e/saha, X=n/saha, so that I=x/X is the ionization fraction
-    # thus x = X-x/x => x^2+x-X = 0, and can use quadratic equation
-    # x = -1 + sqrt(1+4X)/2 = 2X/1+sqrt(1+4X) so I = 2/1+sqrt(1+4X)
-    # Notice X = rho_H/rho = n*m_h/rho, so n = X*rho*m_h
-    n = X*rho/m_hydrogen 
-    big_X = n/saha_eq
-
-    I = 2/(1+np.sqrt(1+4*big_X))
-    return I
+    # For x the ionization fraction and K_H as in K&W 14.21, the saha equation is:
+    # x^2/(1-x) = K_H
+    # x^2 + x*K_H - K_H = 0
+    # x = c/q = -K_H/(-0.5(K_H+sqrt(K_H^2+4K_H))
+    # x = 2/(1+sqrt(1+4/K_H))
+    K_H = ((2*np.pi*m_e)**1.5)*(h**-3)*((k_b*T)**2.5)*np.exp(-13.59844*eV/(k_b*T))/P_gas(T, rho)
+    return np.divide(2, 1+(1+(4/K_H))**0.5, where=K_H>0, out = np.zeros_like(K_H)) # Avoids diviion by zero at low T, in which case return unionized
 
 def kappa_old(T, rho):
     hminus = hminusopacity(rho, T)
