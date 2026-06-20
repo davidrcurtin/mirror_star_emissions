@@ -70,7 +70,7 @@ def H_ionization_fraction(T, rho):
     # x = c/q = -K_H/(-0.5(K_H+sqrt(K_H^2+4K_H))
     # x = 2/(1+sqrt(1+4/K_H))
     K_H = ((2*np.pi*m_e)**1.5)*(h**-3)*((k_b*T)**2.5)*np.exp(-13.59844*eV/(k_b*T))/P_gas(T, rho)
-    return np.divide(2, 1+(1+(4/K_H))**0.5, where=K_H>0, out = np.zeros_like(K_H)) # Avoids diviion by zero at low T, in which case return unionized
+    return np.divide(2, 1+(1+(4/K_H))**0.5, where=np.logical_not(np.isclose(K_H,0)), out = np.zeros_like(K_H)) # Avoids diviion by zero at low T, in which case return unionized
 
 def kappa_old(T, rho):
     hminus = hminusopacity(rho, T)
