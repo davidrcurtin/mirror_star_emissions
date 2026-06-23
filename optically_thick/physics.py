@@ -65,18 +65,13 @@ def electron_scattering_opacity():
 
 def H_ionization_fraction(T, rho):
     # For x the ionization fraction and K_H as in K&W 14.21, the saha equation is:
-    # x^2/(1-x) = K_H
-    # x^2 + x*K_H - K_H = 0
-    # x = c/q = -K_H/(-0.5(K_H+sqrt(K_H^2+4K_H))
-    # x = 2/(1+sqrt(1+4/K_H))
-    K_H = ((2*np.pi*m_e)**1.5)*(h**-3)*((k_b*T)**2.5)*np.exp(-13.59844*eV/(k_b*T))/P_gas(T, rho)
+    # x^2/(1-x^2) = K_H
+    # x^2(1+ K_H) - K_H = 0
+    # x = sqrt(K_H/(1+K_H))
+    K_H = np.divide(((2*np.pi*m_e)**1.5)*(h**-3)*((k_b*T)**1.5)*mmm*np.exp(-13.59844*eV/(k_b*T)), rho, where = (rho>1e-100) & (T>1e-100), out = np.zeros_like(rho))
+    return (K_H/(1+K_H))**0.5
 
-    if np.shape(K_H) == (): # Scalar case avoid division by zero
-        return 0 if np.isclose(K_H, 0) else 2/(1+(1+(4/K_H))**0.5)
-    four_over_K_H = np.divide(4, K_H, where=np.logical_not(np.isclose(K_H, 0)), out = np.zeros_like(K_H)) # Avoids division by zero at low T, in which case return unionized
-    return 2 / 1+(1+four_over_K_H)**0.5
-
-def kappa_old(T, rho):
+def kappa_analytic(T, rho):
     hminus = hminusopacity(rho, T)
     free = freefreeopacity(rho, T) + boundfreeopacity(rho, T)
     scattering = H_ionization_fraction(T,rho) * electron_scattering_opacity()
@@ -98,9 +93,8 @@ def kappa_freedman(T, rho):
 
 def kappa(T, rho):
     logkap_freedman = kappa_freedman(T, rho)
-    logkap_import = logkap_freedman
-    kap_old = kappa_old(T, rho)
-    return np.where(np.isfinite(logkap_import),10**logkap_import, kap_old) # if the imported exists, use it, otherwise default to analytic
+    kap_analytic = kappa_analytic(T, rho)
+    return np.where(np.isfinite(logkap_freedman),10**logkap_freedman, kap_analytic) # if the imported exists, use it, otherwise default to analytic
 
 def T__pressure(p_rad):
     return np.power(3 * p_rad / a_rad, 0.25)
