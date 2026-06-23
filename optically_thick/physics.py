@@ -63,12 +63,13 @@ def boundfreeopacity(rho,T):
 def electron_scattering_opacity():
     return (1+X)*0.02 # 1cm^2/g=0.1m^2/kg 
 
+saha_constant = ((2*np.pi*m_e)**1.5)*(h**-3)*(k_b**1.5)*mmm
 def H_ionization_fraction(T, rho):
     # For x the ionization fraction and K_H as in K&W 14.21, the saha equation is:
     # x^2/(1-x^2) = K_H
     # x^2(1+ K_H) - K_H = 0
     # x = sqrt(K_H/(1+K_H))
-    K_H = np.divide(((2*np.pi*m_e)**1.5)*(h**-3)*((k_b*T)**1.5)*mmm*np.exp(-13.59844*eV/(k_b*T)), rho, where = (rho>1e-100) & (T>1e-100), out = np.zeros_like(rho))
+    K_H = np.divide(saha_constant*(T**1.5)*np.exp(-13.59844*eV/(k_b*T)), rho, where = (rho>1e-100) & (T>1e-100), out = np.zeros_like(rho))
     return (K_H/(1+K_H))**0.5
 
 def kappa_analytic(T, rho):
