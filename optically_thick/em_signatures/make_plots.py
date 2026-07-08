@@ -64,17 +64,25 @@ from mpl_toolkits.axes_grid1.inset_locator import inset_axes
 import importlib.util
 import sys
 from pathlib import Path as _Path
-_module_path = _Path(__file__).resolve().parents[1] / "module.py"
-spec = importlib.util.spec_from_file_location("module", str(_module_path))
-_module = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(_module)
-sys.modules['module'] = _module
-load_nugget_file = _module.load_nugget_file
 
-_plot_path = _Path(__file__).resolve().parents[1] / "plotting.py"
-spec_plot = importlib.util.spec_from_file_location("repo_plotting", str(_plot_path))
-_plot_mod = importlib.util.module_from_spec(spec_plot)
-spec_plot.loader.exec_module(_plot_mod)
+
+def _load_repo_module(name: str, path: _Path):
+    spec = importlib.util.spec_from_file_location(name, str(path))
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[name] = module
+    spec.loader.exec_module(module)
+    return module
+
+
+_repo_root = _Path(__file__).resolve().parents[1]
+
+# Pin shared imports to the parent optically_thick modules so the EM-signature
+# plots use the same physics backend as the main nugget-generation workflow.
+_physics = _load_repo_module("physics", _repo_root / "physics.py")
+_module = _load_repo_module("module", _repo_root / "module.py")
+_plot_mod = _load_repo_module("repo_plotting", _repo_root / "plotting.py")
+
+load_nugget_file = _module.load_nugget_file
 custom_cmap = _plot_mod.custom_cmap
 
 

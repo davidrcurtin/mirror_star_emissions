@@ -3,7 +3,7 @@ This is the public repository for "Generalized Predictions for the Electromagnet
 
 For further questions regarding the following, please contact either of the first authors by email:\
 Stuart Williamson (stuart.williamson@mail.utoronto.ca)\
-Franco Cabral (############)
+Franco Cabral (franco.cabral@mail.utoronto.ca)
 
 This repository contains all files required to reproduce our results including additional data for all nuggets analyzed in the paper. It also contains the plotting scripts used to create the figures in the paper.
 
