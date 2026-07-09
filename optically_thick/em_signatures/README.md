@@ -24,7 +24,15 @@ The <code>data</code> directory contains local inputs used by the plotting scrip
 The <code>plots</code> directory is the default output location for <code>make_plots.py</code>. By default it contains the following subdirectories:
 - <code>spectra_examples</code>: interpolated disk-integrated spectra for the example convective and radiative nuggets,
 - <code>logg_T</code>: temperature-surface gravity comparison plots,
-- <code>HR</code>: 2D and 3D Hertzsprung-Russell comparison plots.
+- <code>HR</code>: 2D and 3D Hertzsprung-Russell comparison plots,
+- <code>data_exports</code>: machine-readable CSV files corresponding to the plotted model outputs.
+
+The <code>plots/data_exports</code> directory contains:
+- <code>spectra_examples/*.csv</code>: wavelength-flux tables for the example spectra plots, with columns <code>wavelength_nm</code> and <code>flux_erg_cm^-2_s^-1_nm^-1</code>,
+- <code>logg_T/*_points.csv</code>: the plotted model points for the temperature-surface gravity figures, including core-density slice, photospheric temperature, surface gravity, and luminosity,
+- <code>logg_T/*_boundaries.csv</code>: the fitted linear boundary parameters used to draw the lower- and upper-temperature envelopes in the temperature-surface gravity figures,
+- <code>HR/stacked_HR_threecol_model_points.csv</code>: the model points used in the 2D HR plots, including color, absolute magnitude, surface gravity, nugget mass, heating rate, and photospheric temperature,
+- <code>HR/stacked_HR_3D_model_points.csv</code>: the model points used in the 3D HR plots, including color, absolute magnitude, surface gravity, and photospheric temperature.
 
 ## Use of python scripts
 
@@ -63,5 +71,7 @@ The script provides the following optional flags:
 
 Because the HR and logg-T figures are built from <code>contour_dict.json</code>, updating the nugget set for this workflow typically means regenerating or replacing that file first, then rerunning <code>make_plots.py</code>.
 
+When <code>make_plots.py</code> is rerun, it updates both the figure files and the CSV exports in <code>plots/data_exports</code>.
 
-Last updated: July 7th 2026
+
+Last updated: July 9th 2026

@@ -114,6 +114,11 @@ def ensure_dir(p: Path) -> None:
     p.mkdir(parents=True, exist_ok=True)
 
 
+def write_csv(rows: list[dict], outpath: Path) -> None:
+    ensure_dir(outpath.parent)
+    pd.DataFrame(rows).to_csv(outpath, index=False)
+
+
 def format_rho(rho: float) -> str:
     # Return a mathtext-ready string so legend renders exponents correctly.
     # Use isclose to avoid float equality pitfalls.
@@ -325,6 +330,8 @@ def process_spectra_examples(
 
     out_folder = plots_root / "spectra_examples"
     ensure_dir(out_folder)
+    exports_dir = plots_root / "data_exports" / "spectra_examples"
+    ensure_dir(exports_dir)
 
     for nug in nuggets:
         if not (hasattr(nug, "has_photosphere") and nug.has_photosphere()):
@@ -342,6 +349,16 @@ def process_spectra_examples(
         grid = Grid(mh_input, teff_input, logg_input, set_type, grids_dir=grids_dir, spectra_root=spectra_root)
         wavelength_interp, flux_interp = grid.get_interpolated_disk_integrated_spectrum()
 
+        stem = f"xi={xi_input:.0e}_rho={rho_c_input:.3e}_Tc={T_c_input:.3e}"
+        csv_path = exports_dir / f"{stem}.csv"
+        np.savetxt(
+            csv_path,
+            np.column_stack((wavelength_interp, flux_interp)),
+            delimiter=",",
+            header="wavelength_nm,flux_erg_cm^-2_s^-1_nm^-1",
+            comments="",
+        )
+
         plt.figure(figsize=(10, 8))
         plt.plot(wavelength_interp, flux_interp, linewidth=1.2)
 
@@ -351,7 +368,7 @@ def process_spectra_examples(
         plt.grid(True, alpha=0.4)
         plt.xlim(0, 10000)
 
-        fname = out_folder / f"xi={xi_input:.0e}_rho={rho_c_input:.3e}_Tc={T_c_input:.3e}.png"
+        fname = out_folder / f"{stem}.png"
         plt.tight_layout()
         plt.savefig(fname, dpi=300, bbox_inches="tight")
         plt.close()
@@ -375,6 +392,8 @@ def combined_plot(
     star_regions, region_colors = build_star_regions()
 
     ensure_dir(plots_root / "logg_T")
+    exports_dir = plots_root / "data_exports" / "logg_T"
+    ensure_dir(exports_dir)
 
     _, ax = plt.subplots(figsize=(10, 8))
     colors_list = plt.cm.viridis(np.linspace(0, 1, len(rho_arr)))
@@ -382,6 +401,7 @@ def combined_plot(
     Tmin_points = []
     Tmax_points = []
     density_handles = []
+    point_rows = []
 
     lo, hi = luminosity_band
 
@@ -409,8 +429,15 @@ def combined_plot(
 
         T_photo = 10 ** arrays[5]  # K
         logg = arrays[13] + 2  # g_photo from contour_dict is log10(m/s^2), convert to cm/s^2 by adding log10(100)
+        logL = np.log10((10 ** arrays[3]) / L_sun_W)
 
         ax.scatter(T_photo, logg, color=color, s=20)
+        point_rows.extend({
+            "rho_core_over_rho_core_sun": rho_frac,
+            "T_photo_K": float(t),
+            "log10_g_cm_s2": float(g),
+            "log10_L_over_Lsun": float(l),
+        } for t, g, l in zip(T_photo, logg, logL))
 
         min_idx = int(np.argmin(T_photo))
         max_idx = int(np.argmax(T_photo))
@@ -430,6 +457,23 @@ def combined_plot(
 
     params_min = curve_fit(linear_fit, *map(np.array, zip(*Tmin_points)))[0]
     params_max = curve_fit(linear_fit, *map(np.array, zip(*Tmax_points)))[0]
+
+    write_csv(point_rows, exports_dir / f"{Path(filename).stem}_points.csv")
+    write_csv(
+        [
+            {
+                "boundary": "Tmin",
+                "slope": float(params_min[0]),
+                "intercept": float(params_min[1]),
+            },
+            {
+                "boundary": "Tmax",
+                "slope": float(params_max[0]),
+                "intercept": float(params_max[1]),
+            },
+        ],
+        exports_dir / f"{Path(filename).stem}_boundaries.csv",
+    )
 
     # boundary lines
     logT_space = np.linspace(0, 7, 100)
@@ -533,8 +577,11 @@ def stacked_hr_plots(
 ) -> None:
     """Create stacked 2D HR panels and write plots_root/HR/stacked_HR_threecol.png."""
     ensure_dir(plots_root / "HR")
+    exports_dir = plots_root / "data_exports" / "HR"
+    ensure_dir(exports_dir)
 
     m_g, bp_rp = load_gaia_hr_cache(gaia_cache_dir)
+    model_rows = []
 
     fig, axes = plt.subplots(
         nrows=len(rho_arr), ncols=3,
@@ -565,6 +612,15 @@ def stacked_hr_plots(
         colors_hr = invert_teff_to_color(T_photo)
         logmass = np.log10(m_photo_kg * 1000.0)  # kg -> g
         logxi = np.log10(xi)
+        model_rows.extend({
+            "rho_core_over_rho_core_sun": rho_frac,
+            "BP_RP_model": float(c),
+            "M_G_model": float(mag),
+            "log10_g_cm_s2": float(g),
+            "log10_M_g": float(mass),
+            "log10_xi": float(x),
+            "T_photo_K": float(t),
+        } for c, mag, g, mass, x, t in zip(colors_hr, M_G, logg, logmass, logxi, T_photo))
 
         # Col 1: color=logg (use discrete custom_cmap)
         norm1 = mpl.colors.Normalize(0, 7+1/3)
@@ -612,6 +668,7 @@ def stacked_hr_plots(
     outpath = plots_root / "HR" / "stacked_HR_threecol.png"
     plt.savefig(outpath, dpi=300, bbox_inches="tight")
     plt.close()
+    write_csv(model_rows, exports_dir / "stacked_HR_threecol_model_points.csv")
 
 def stacked_hr_plots_3d(
     contour_dict_trimmed: dict,
@@ -649,6 +706,9 @@ def stacked_hr_plots_3d(
 
     plot_folder = plots_root / "HR"
     ensure_dir(plot_folder)
+    exports_dir = plots_root / "data_exports" / "HR"
+    ensure_dir(exports_dir)
+    model_rows = []
 
     nrows, ncols = 3, 3
     fig = plt.figure(figsize=(25, 20), dpi=300)
@@ -678,6 +738,13 @@ def stacked_hr_plots_3d(
 
         M_G_model = 4.83 - 2.5 * np.log10(L_W / L_sun_W)
         colors_hr = invert_teff_to_color(T_photo)
+        model_rows.extend({
+            "rho_core_over_rho_core_sun": rho_frac,
+            "BP_RP_model": float(c),
+            "M_G_model": float(mag),
+            "log10_g_cm_s2": float(g),
+            "T_photo_K": float(t),
+        } for c, mag, g, t in zip(colors_hr, M_G_model, logg_model, T_photo))
 
         # Combine all points for the 3D scatter
         x_all = np.concatenate([colors_hr, bp_rp, bp_rp_wd])
@@ -763,6 +830,7 @@ def stacked_hr_plots_3d(
     plt.subplots_adjust(left=0.05, right=0.85, top=0.95, bottom=0.1, hspace=0.2, wspace=0.1)
     plt.savefig(plot_folder / "stacked_HR_3D.png", dpi=300, bbox_inches="tight", pad_inches=0.45)
     plt.close()
+    write_csv(model_rows, exports_dir / "stacked_HR_3D_model_points.csv")
 
 
 # Main
