@@ -6,25 +6,29 @@ Isabella Armstrong (isabella.armstrong@mail.utoronto.ca)
 
 Here we provide all files for you to replicate our results, including data files directly obtained from Cloudy, as well as further figures that were not present on the paper, such as spectra and profile (Rho(r), T(r)) of each nugget. Within each DM density file, you'll also find a "Properties" .csv file. This is a master file that contains any and all physical properties of each nugget, ranging from xi and mass to line ratios and Gaia magnitudes. Finally, we provide a tutorial on how to exactly replicate our results using Cloudy yourselves, including necessary conversions between Cloudy's conventions and those utilized in our paper.
 
+**Correction (October 2026).** The Gaia magnitudes released here before this date (columns G and Gbp-Grp of all .csv files, and the HR diagrams of Fig. 4) were affected by a normalisation error in the synthetic photometry: every G was too faint by 7.249 mag and every G_bp - G_rp too red by 0.360 mag. In addition, the circles in the Fig. 4 panels for rho_core >= 0.1 rho_solar were coloured with xi too large by a factor 10^(2 + log10(rho_core/rho_solar)). The tables and HR-diagram figures in this repository are now corrected. The notebook fig4_hr_corrected.ipynb recomputes the magnitudes from the Cloudy outputs and regenerates the Fig. 4 panels and these tables.
+
 #Properties#\
 The properties file gives the following data on each nugget per column\
 A) log(Xi) - Please see the paper for Xi's definition as the heating rate\
-B) Log(Rho) - This is the core density (g/cm^3) of the nugget\
+B) Log(Rho) - Central gas density of the nugget, 10^hden m_H (g/cm^3); this is not the mirror star core density. In the InterpolatedNuggets files this column is linear, not log.\
 C) Log(Lumi) - Luminosity (L_Sun) of the nugget\
-D) Log(Mass) - Mass (grams)\
-E) Log(Temp) - Core temperature (K) of the nugget\
-F) Gaia magnitude G\
-G) Gaia G_bp - Grp color\
+D) Log(Mass) - Mass (grams), summed over zones as 4 pi r^2 dr n_H x 1.08 u\
+E) Log(Temp) - Central temperature (K) of the nugget\
+F) Absolute Gaia magnitude M_G (Vega system, at 10 pc)\
+G) Gaia colour G_bp - G_rp\
 H) Log(Radius) - (cm, cutoff) Radius of the nugget\
 I Through S) Log(Line Emission) - Energy of line emissions\
 T through V) Log(Line Ratio) - Key line ratios
+
+The rows are not ordered by nugget number; match them to the Cloudy files by (Xi, Mass). The Properties files list the Cloudy solutions used as input for the interpolation, which is a subset of the solutions in CloudyFiles (some of which are repeated runs of the same input card). Fig. 4 shows all solutions in CloudyFiles, together with interpolated points of which InterpolatedNuggets lists a subset.
 
 Making use of the "Plotted" and "Interpolated" propety lines, which utilize our physical cutoffs as described in the paper, you can reproduce figure 3.
 
 #Spectra and Profile#\
 The figures from spectra and profile of each nugget following the naming convention:\
 Nugget(X)_Xi(Y)_Mass(Z)_T.pdf and Nugget(X)_Xi(Y)_Mass(Z)_Rho.pdf\
-Where (X) is the 'nugget number', aligned with rows of the properties master file, and (Y), and (Z) are the heating rate and mass (g) of the nugget, respectively. Note the difference in units for mass between properties file and the naming convention, for better identification of nuggets via phase space plots.
+Where (X) is the 'nugget number' (it does not follow the row order of the properties master file), and (Y), and (Z) are the heating rate and mass (g) of the nugget, respectively. Note the difference in units for mass between properties file and the naming convention, for better identification of nuggets via phase space plots.
 
 Do note that the spectra figures given here are not complete, and are instead focused on visible frequency. If you need the full spectrum of the nugget, please make use of the provided Cloudy output continuum file (.con), as described below.
 
@@ -70,27 +74,27 @@ blackbody t = 0.0001 K linear\
 ##############################################
 
 Let's go over these lines, and explain why we chose to make use of them:
-- Hextra X density: This is how we introduce the heating of the nugget due to the mirror star (photon dark-photon kinetic mixing). The density keyword makes this heating scale with the local hydrogen density. Here, X is the log of the volume heating rate (erg cm^-3 s^-1). We compute the conversion to be xi = 10^(X - 7) (rho_solar/rho_DMcore). For example, for DM core density = 0.1 rho_solar, we have that xi = 10^(X - 7) * 1/0.1 = 10^(X - 6).
+- Hextra X density: This is how we introduce the heating of the nugget due to the mirror star (photon dark-photon kinetic mixing). The density keyword makes this heating scale with the local hydrogen density. Here, 10^X is the heating rate per hydrogen nucleus (erg s^-1), i.e. the volume heating rate is 10^X n_H (erg cm^-3 s^-1). We compute the conversion to be xi = 10^(X - 7) (rho_solar/rho_DMcore). For example, for DM core density = 0.1 rho_solar, we have that xi = 10^(X - 7) * 1/0.1 = 10^(X - 6). The xi quoted in file names and tables is additionally shifted to enforce energy balance, xi -> xi L/H with total heating H = 10^X N_H (see the paper).
 - CMB: This introduces background CMB radiation. We choose to include this as otherwise Cloudy returns quite a few errors.
 - Sphere: This tells Cloudy that we are interested in a spherically symmetric geometry. The other option is a plane-like solution, but we are not interested in that.
 - Radius X Y: This creates a 'vacuum box' in which the solution will the contained within. X and Y are then the log of the inner and outer radius in cm of this box, respectively.
 - Set dr X: This breaks the space into radius increments (called zones) of length 10^X cm. Although Cloudy will shorten/lengthen zone sizes to minimize error, we chose to keep it constant as it helped eliminate a bunch of errors.
-- hden X: This determines the core density 10^X g/cm^3 of the nugget. Hydrostatic equilibrium is solved outwards starting from this core density.
+- hden X: This sets the central hydrogen density of the nugget, n_H = 10^X cm^-3 (mass density 10^X m_H g/cm^3). Hydrostatic equilibrium is solved outwards starting from this central density.
 - abundances "ISM.abn" no grains: This tells Cloudy to set the elemental composition of the nugget to the interstellar medium's abundances. This takes an average of the warm and cold phases of the ISM.
 - Constant pressure: This command tells Cloudy to solve for hydrostatic equilibrium.
 - Set pressure convergence X: This is our allowed relative error (X = 0.01 = 1%) between the zones of our nugget.
 - Set pressure ionize X: This is the number of calls to the ionization table that are made. Keeping this number very large resolves a particular error code, without adding any significant run time.
 - Gravity spherical: Creates a spherically symmetric gravitational potential.
-- Gravity external X Y Z: Determines the strength of the gravitational potential due to the mirror star. X is the mass of the source, Y is the extent in parsecs, and Z is the power law distribution of the mass. The huge mass alongside the 0.1 parsec extent imitates the constant dark matter density, where the mass is picked accordingly so that this constant is as desired. For example, 9.9e19g at 0.1 parsecs corresponds to DM core density = 0.01 rho_solar.
+- Gravity external X Y Z: Determines the strength of the gravitational potential due to the mirror star. X is the mass of the source in solar masses, Y is the extent in parsecs, and Z is the power law distribution of the mass. The huge mass alongside the 0.1 parsec extent imitates the constant dark matter density, where the mass is picked accordingly so that this constant is as desired. For example, 9.9e19 solar masses within 0.1 parsecs corresponds to DM core density = 0.01 rho_solar.
 - Stop temperature X exceeds: Cloudy requires some stop condition. Our primary stop condition is based on the corona temperature of the Corona. At the end of its stable radius, the nugget's temperature grows several orders of magnitude. We stop this from crashing our code by setting a stop condition at 10^X Kelvin. Cloudy completes an iteration of the zones when a zone exceeds 10^4.9 Kelvin.
 - Iterate X: This is how many times Cloudy will run through the zones of the nugget, reducing errors and equilibrating the zones each time. This is greatly at the cost of run time, so we set X = 3 iterations, as recommended by Hazy1.
 - Stop Zone X: This is a safety stop condition. If a nugget never reaches the 10^4.9 Kelvin criteria and keeps growing larger and larger, this condition will stop it. We have X = 10000, but nuggets usually don't get this far.
 - Print last iteration: This command gives us back an output file of the data of the last and least erroneous iteration.
 - Save continuum "m.con" units micron last: This tells Cloudy to save an output file of the continuum/spectra of the nugget. With 'units micron' set, this file has columns 0 and 6 corresponding to the wavelength (in microns) and the SED, respectively.
-- Save overview ".ovr" last: This tells Cloudy to save an output file of, amongst other things, the density and temperature profile of the nugget. Columns 0, 1, and 3 correspond to the radius, temperature, and density, respectively.
+- Save overview ".ovr" last: This tells Cloudy to save an output file of, amongst other things, the density and temperature profile of the nugget. Columns 0, 1, and 3 correspond to the radius, temperature, and hydrogen density, respectively.
 - Save pressure ".prs" last: Similar to the above, this tells Cloudy to save the pressure within the nugget versus the depth into the nugget.
 - save line list "line.txt" "LineList.dat": Cloudy's output does not keep track of each line intensity, and certain lines are dropped depending on their relative energy to H_beta. To force Cloudy to keep track of these lines, we give them to Cloudy in "LineList.dat", and Cloudy returns their intensity in "Nugget(X)_Xi(Y)_Mass(Z)_line.txt". LineList.dat can be found within each dark matter density subdirectory and should be saved in a common directory with .in files when iteratively running Cloudy.
-- Luminosity X linear & Blackbody t = Y K linear: This is how we trick Cloudy into switching to the "Luminosity Case". By introducing a Blackbody of negligible temperature/emissions at the center of our nugget, Cloudy detects input radiation given in Luminosity units. As a result, Cloudy switches to the case where it outputs the continuum in luminosity (nu L_nu) units. By default, Cloudy returns the continuum in the "Intensity Case", and since hextra works as background heating instead of incident radiation, it does not lead Cloudy to change to the "Luminosity Case". Therefore, it is crucial to put this dummy luminosity source into the code to get out the intensity units.
+- Luminosity X linear & Blackbody t = Y K linear: This is how we trick Cloudy into switching to the "Luminosity Case". By introducing a Blackbody of negligible temperature/emissions at the center of our nugget, Cloudy detects input radiation given in Luminosity units. As a result, Cloudy switches to the case where it outputs the continuum in luminosity (nu L_nu) units. By default, Cloudy returns the continuum in the "Intensity Case", and since hextra works as background heating instead of incident radiation, it does not lead Cloudy to change to the "Luminosity Case". Therefore, it is crucial to put this dummy luminosity source into the code to get out the luminosity units.
 
 A phase space of constant DM density nuggets corresponds to a grid .in files with (hextra, hden) changing across the grid. Typically, Hextra runs from -20 to -6 and Hden runs from 6 to 19 across this phase space, with each nugget keeping any properties relating to the geometry, gravitational potential, and stop condition unchanged. Between DM density phase spaces, the mass (and thus gravitational potential) is scaled by factors of 10.
 
@@ -99,13 +103,13 @@ We make use of the Digital Research Alliance of Canada's Niagara cluster superco
 Extracting physical properties from Cloudy output files is quite straightforward, and Hazy1 clearly defines each column. However, the columns relevant to our analysis are
 - Radius: Column 0 of .ovr in cm
 - Temperature: Column 1 of .ovr in Kelvin
-- Density: Column 3 of .ovr in g/cm^3
+- Hydrogen density n_H: Column 3 of .ovr in cm^-3
 - Wavelength: Column 0 of .con in microns. Should be turned to frequency to use with the continuum.
-- Continuum: Column 6 of .con in Erg (nu L_nu). Divide out the frequency to obtain the luminosity per frequency.
+- Continuum: Column 6 of .con in erg s^-1 (nu L_nu). Divide out the frequency to obtain the luminosity per frequency.
 - Pressure: Column 2 of .prs in Dyne cm^-2. Note that this column starts at the outer shell and moves inward.
 
 All physical properties discussed in the paper (Mass, Luminosity, ...) can be integrated for using these columns.
 
-We make use of GAIA DR3 passbands, available here: https://www.cosmos.esa.int/web/gaia/edr3-passbands to get G and Gbp-Grp using the spectra available in .con files.
+We make use of GAIA DR3 passbands, available here: https://www.cosmos.esa.int/web/gaia/edr3-passbands to get G and Gbp-Grp using the spectra available in .con files. Following the Gaia photometric system (Riello et al. 2021), we place the nugget at 10 pc, F_lambda = L_lambda / (4 pi (10 pc)^2), compute the photon rate through the Gaia pupil, N_b = (P_A/hc) Int F_lambda T_b(lambda) lambda dlambda with P_A = 0.7278 m^2, and take m_b = -2.5 log10(N_b) + ZP_b with the EDR3 Vega zero points ZP = 25.6874 (G), 25.3385 (BP), 24.7479 (RP). This reproduces m = 0.01 for Vega. See fig4_hr_corrected.ipynb.
 
-Last updated: March 21st 2024
+Last updated: October 28th 2026
