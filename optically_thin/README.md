@@ -1,7 +1,7 @@
 This is the public repository for "Electromagnetic Signatures of Mirror Stars" by Isabella Armstrong, Berkin Gurbuz, David Curtin, Christopher D. Matzner. (https://arxiv.org/abs/2311.18086)
 
 For further questions regarding the following, please contact either of the first authors by email:\
-Berkin Gurbuz (berkin.gurbuz@mail.utoronto.ca, berkingurbuz@gmail.com)\
+Berkin Gurbuz (berkin.gurbuz@mail.mcgill.ca, berkingurbuz@gmail.com)\
 Isabella Armstrong (isabella.armstrong@mail.utoronto.ca)
 
 Here we provide all files for you to replicate our results, including data files directly obtained from Cloudy, as well as further figures that were not present on the paper, such as spectra and profile (Rho(r), T(r)) of each nugget. Within each DM density file, you'll also find a "Properties" .csv file. This is a master file that contains any and all physical properties of each nugget, ranging from xi and mass to line ratios and Gaia magnitudes. Finally, we provide a tutorial on how to exactly replicate our results using Cloudy yourselves, including necessary conversions between Cloudy's conventions and those utilized in our paper.
